@@ -31,6 +31,8 @@ License: GPL2
 if ( is_admin() )
   require_once dirname( __FILE__ ) . '/admin.php';
 
+require_once dirname( __FILE__ ) . '/edit.php';
+
 // forcing Optimizely to load first in the head tag
 add_action('wp_head', 'add_optimizely_script', -1000);
 
