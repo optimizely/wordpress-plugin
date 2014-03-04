@@ -59,4 +59,8 @@ function add_optimizely_script() {
 
 }
 
+function can_create_experiments() {
+  return get_option('optimizely_app_key') && get_option('optimizely_app_id');
+}
+
 ?>
