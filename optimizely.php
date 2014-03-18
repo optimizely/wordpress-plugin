@@ -30,6 +30,8 @@ License: GPL2
 */
 if ( is_admin() )
   require_once dirname( __FILE__ ) . '/admin.php';
+  wp_enqueue_script('jquery');
+
 
 require_once dirname( __FILE__ ) . '/edit.php';
 require_once dirname( __FILE__ ) . '/content.php';

@@ -20,20 +20,11 @@ function optimizely_conf() {
   global $optimizely_nonce;
 
 
-  if ( isset($_POST['submit']) ) {
+  if ( isset($_POST['submit_credentials']) ) {
     if ( function_exists('current_user_can') && !current_user_can('manage_options') )
       die(__('Cheatin&#8217; uh?'));
 
     check_admin_referer( $optimizely_nonce );
-    $project_code = htmlentities(stripslashes($_POST['project_code']));
-
-    if ( empty($project_code) ) {
-      $ms = 'new_code_empty';
-      delete_option('optimizely_project_code');
-    } else {
-      update_option('optimizely_project_code', $project_code);
-      $ms = 'new_code_saved';
-    }
 
     $app_id = $_POST['app_id'];
     $app_key = $_POST['app_key'];
@@ -54,14 +45,7 @@ function optimizely_conf() {
       $ms = 'credentials_saved';
     }
 
-    $messages = array(
-      'new_code_empty' => 'Your project code has been cleared. Please enter a new project code to use Optimizely on this site.',
-      'new_code_saved' => 'Your project code has been saved. Enjoy using Optimizely!',
-      'credentials_saved' => 'Your API credentials have been saved. Now you can set up experiments from the edit post page!',
-      'code_empty' => 'Please enter your project code.'
-    );
-
-    echo "<div id='message' class='updated fade'><p><strong>Configuration saved.</strong><br \>$messages[$ms]</p></div>";
+    echo "<div id='message' class='updated fade'><p><strong>Authentication saved.</strong> Next, choose a project.</p></div>";
 
   }
 
@@ -73,7 +57,7 @@ function optimizely_admin_warnings() {
   if ( !get_option('optimizely_project_code') && !isset($_POST['submit']) ) {
     function optimizely_warning() {
       echo "
-      <div id='optimizely-warning' class='updated fade'><p><strong>".__('Optimizely is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your Optimizely project code</a> to begin using Optimizely on your site.'), "admin.php?page=optimizely-config")."</p></div>";
+      <div id='optimizely-warning' class='updated fade'><p><strong>".__('Optimizely is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">authenticate and choose a project</a> to begin using Optimizely on your site.'), "admin.php?page=optimizely-config")."</p></div>";
     }
     add_action('admin_notices', 'optimizely_warning');
     return;
