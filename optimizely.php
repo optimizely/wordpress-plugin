@@ -30,13 +30,11 @@ License: GPL2
 */
 if ( is_admin() )
   require_once dirname( __FILE__ ) . '/admin.php';
+  require_once dirname( __FILE__ ) . '/edit.php';
+  require_once dirname( __FILE__ ) . '/api.php';
   wp_enqueue_script('jquery');
   wp_enqueue_script('optimizely_plugin', plugins_url('api.js', __FILE__));
   wp_enqueue_style('optimizely_styles', plugins_url('style.css', __FILE__));
-
-
-
-require_once dirname( __FILE__ ) . '/edit.php';
 
 
 $DEFAULT_VARIATION_TEMPLATE = '

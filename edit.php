@@ -58,12 +58,23 @@ function ab_postbox_save($post_id)
 			if ( get_post_meta($post_id, 'optimizely_experiment_created', true) ) {
 
 				// Edit variations
-				
 
 			} else {
 
 				// Create variations
-				
+				/*
+				$optly = new OptimizelyAPI();
+				$response = $optly->get('_health');
+				var_dump($response);
+				die();
+				*/
+
+
+
+
+
+
+
 			}
 
 
