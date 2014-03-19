@@ -10,37 +10,54 @@
       <p>
         <label for="app_id" style="font-weight:bold;">Application ID</label>
         <br />
-        <input id="app_id" name="app_id" type="text"  maxlength="80" value="<?php echo get_option('optimizely_app_id'); ?>" style="width: 100%; font-family: 'Courier New', Courier, mono; font-size: 1.5em;" />
+        <input id="app_id" name="app_id" type="text" maxlength="80" value="<?= get_option('optimizely_app_id'); ?>" class="code" />
       </p>
       <p>
         <label for="app_key" style="font-weight:bold;">Application Key</label>
         <br />
-        <input id="app_key" name="app_key" type="text" maxlength="80" value="<?php echo get_option('optimizely_app_key'); ?>" style="width: 100%; font-family: 'Courier New', Courier, mono; font-size: 1.5em;" />
+        <input id="app_key" name="app_key" type="text" maxlength="80" value="<?= get_option('optimizely_app_key'); ?>" class="code" />
       </p>
-      
+      <!--
       <p class="submit"><input type="submit" name="submit_credentials" value="<?php _e('Connect Optimizely &raquo;'); ?>" /></p>
-
-
-      <?php if (get_option('optimizely_app_key')) { ?>
+      -->
+      
+      <button id="connect_optimizely">Connect Optimizely</button>
+      
       <h3>Choose a Project</h3>
-      <p>We'll create new experiments in this project.</p>
+      <p>We'll include this project code on your site automatically.</p>
       <select id="project_id" name="project_id">
+        <?php if (get_option('optimizely_project_id')) { ?>
+        <option>Choose your project...</option>
+        <option value="<?= get_option('optimizely_project_id') ?>"><?= get_option('optimizely_project_name') ?></option>
+        <?php } else { ?>
+        <option>Connect Optimizely to choose a project...</option>
+        <?php } ?>
 
       </select>
+
+
+      <h3>Variation Code</h3>
+      <p>Optimizely will use this variation code to change headlines on your site. We've provided code that works with the default theme, but you might want to add or change it to work with your themes and plugins.</p>  
+      
+      <textarea class="code" rows="5">$('.post-$POST_ID .entry-title a').text("$NEW_TITLE");</textarea>
+      
+      <p>You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.</p>
+
+
       <script>
         $j = jQuery;
-        $j(document).ready(function() {
-
-          //$j("select#project_id").empty();
-          $j.getJSON("https://www.optimizelyapis.com/api/v1/projects/", {
-            app_id: $j("#app_id").val(),
-            app_key: $j("#app_key").val()
-          }, function(response) {
-
+        //$j(document).ready(function() {
+        $j("button#connect_optimizely").click(function(event) {
+          event.preventDefault();
+          $j("select#project_id").html("<option>Loading projects...</option>");
+          
+          var optly = new OptimizelyAPI($j("#app_id").val(), $j("#app_key").val());
+          optly.get('projects', function(response){
+            console.log(response);
+          
             $j.each(response, function(key, val) {
               $j("select#project_id").append("<option value='" + key + "'>" + val + "</option>");  
             });
-
           });
 
         });
@@ -49,7 +66,6 @@
 
       <p class="submit"><input type="submit" name="submit_project" value="<?php _e('Select Project &raquo;'); ?>" /></p>
 
-      <?php } ?>
 
       
 
