@@ -17,10 +17,10 @@ function optimizely_plugin_action_links( $links, $file ) {
 add_filter( 'plugin_action_links', 'optimizely_plugin_action_links', 10, 2 );
 
 function optimizely_conf() {
-  global $optimizely_nonce;
+  global $optimizely_nonce, $DEFAULT_VARIATION_TEMPLATE;
 
 
-  if ( isset($_POST['submit_credentials']) ) {
+  if ( isset($_POST['submit']) ) {
     if ( function_exists('current_user_can') && !current_user_can('manage_options') )
       die(__('Cheatin&#8217; uh?'));
 
@@ -28,6 +28,8 @@ function optimizely_conf() {
 
     $app_id = $_POST['app_id'];
     $app_key = $_POST['app_key'];
+    $project_id = $_POST['project_id'];
+    $variation_template = $_POST['variation_template'];
 
     if ( empty($app_id) ) {
       delete_option('optimizely_app_id');
@@ -41,11 +43,20 @@ function optimizely_conf() {
       update_option('optimizely_app_key', $app_key);
     }
 
-    if ( !empty($app_key) && !empty($app_id) ) {
-      $ms = 'credentials_saved';
+    if ( empty($project_id) ) {
+      delete_option('optimizely_project_id');
+    } else {
+      update_option('optimizely_project_id', $project_id);
     }
 
-    echo "<div id='message' class='updated fade'><p><strong>Authentication saved.</strong> Next, choose a project.</p></div>";
+    if ( empty($variation_template) ) {
+      update_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
+      //delete_option('optimizely_variation_template');
+    } else {
+      update_option('optimizely_variation_template', $variation_template);
+    }
+
+    echo "<div id='message' class='updated fade'><p><strong>Settings saved.</strong></p></div>";
 
   }
 

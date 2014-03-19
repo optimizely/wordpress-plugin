@@ -17,11 +17,8 @@
         <br />
         <input id="app_key" name="app_key" type="text" maxlength="80" value="<?= get_option('optimizely_app_key'); ?>" class="code" />
       </p>
-      <!--
-      <p class="submit"><input type="submit" name="submit_credentials" value="<?php _e('Connect Optimizely &raquo;'); ?>" /></p>
-      -->
       
-      <button id="connect_optimizely">Connect Optimizely</button>
+      <button id="connect_optimizely" class="button">Connect Optimizely</button>
       
       <h3>Choose a Project</h3>
       <p>We'll include this project code on your site automatically.</p>
@@ -39,9 +36,11 @@
       <h3>Variation Code</h3>
       <p>Optimizely will use this variation code to change headlines on your site. We've provided code that works with the default theme, but you might want to add or change it to work with your themes and plugins.</p>  
       
-      <textarea class="code" rows="5">$('.post-$POST_ID .entry-title a').text("$NEW_TITLE");</textarea>
+      <textarea class="code" rows="5" name="variation_template" id="variation_template"><?= get_option('optimizely_variation_template') ?></textarea>
       
       <p>You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.</p>
+
+      <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
 
 
       <script>
@@ -62,12 +61,6 @@
 
         });
       </script>
-
-
-      <p class="submit"><input type="submit" name="submit_project" value="<?php _e('Select Project &raquo;'); ?>" /></p>
-
-
-      
 
 
     </form>

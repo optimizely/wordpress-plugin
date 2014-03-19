@@ -1,27 +1,29 @@
 <?php
 
+$num_variations = 3;
 
 function ab_postbox_render($post) {
-	$titleB = get_post_meta( $post->ID, 'post_titleB', true);
-	$titleC = get_post_meta( $post->ID, 'post_titleC', true);
+
+	global $num_variations;
+	$titles = array();
+	$contents = "";
+
+	for ($i = 1; $i <= $num_variations; $i++) {
+		$key = "post_title$i";
+		$titles[$i] = get_post_meta( $post->ID, $key, true);
+		$contents .= "<p>";
+		$contents .= "<label for='$key'>Variation #$i</label>";
+		$contents .= "<input type='text' name='$key' id='$key' placeholder='Title $i' value='$titles[$i]'>";
+		$contents .= "</p>";
+	}
 
 	if ( can_create_experiments() ) {
-		?>
-		<p>
-		<label for='titleB'>Variation #1</label>
-		<input type="text" name="post_titleB" placeholder="Title B" value="<?= $titleB ?>" id="titleB" autocomplete="off">
-		</p>
-		<p>
-		<label for='titleB'>Variation #2</label>
-		<input type="text" name="post_titleC" placeholder="Title C" value="<?= $titleC ?>" id="titleC" autocomplete="off">
-		</p>
-		<?php
+		echo $contents;
 	} else {
 		?>
 		<p>Please configure your API credentials in the <a href="<?php menu_page_url('optimizely-config'); ?>">Optimizely settings page</a>.</p>
 		<?php
 	}
-
 	
 }
 
@@ -34,19 +36,59 @@ function ab_postbox_add()
 add_action( 'save_post', 'ab_postbox_save' );
 function ab_postbox_save($post_id)
 {
+	global $num_variations;
+
 	if( !current_user_can( 'edit_post' ) ) return;
 	if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 
+	for ($i = 1; $i <= $num_variations; $i++) {
+		
+	    $key = "post_title$i";
+	    if( isset( $_POST[$key] ) ) {
+	        // Save titles
+	        $new_title = esc_attr($_POST[$key]);
+	        update_post_meta( $post_id, $key, $new_title);
+	
+		    // Variation code
+		    $code = get_option('optimizely_variation_template');
+		    $code = str_replace('$NEW_TITLE', $new_title, $code);
+		    $code = str_replace('$POST_ID', $post_id, $code);
 
-	// Make sure your data is set before trying to save it
-    if( isset( $_POST['post_titleB'] ) )
-        update_post_meta( $post_id, 'post_titleB', esc_attr( $_POST['post_titleB'] ) );
-         
-    if( isset( $_POST['post_titleC'] ) )
-        update_post_meta( $post_id, 'post_titleC', esc_attr( $_POST['post_titleC'] ) );
-         
-    // Do campaign API magic here
+			// Create or edit variations on Optimizely
+			if ( get_post_meta($post_id, 'optimizely_experiment_created') , true) {
+
+				// Edit variations
+
+
+			} else {
+
+				// Create variations
+				
+			}
+
+
+
+
+		}
+
+
+
+	}
+	       
+    
+
+
+
+
 
 }
+
+add_action('publish_post', 'ab_create_experiment');
+function ab_create_experiment($post_id) {
+
+
+
+}
+
 
 ?>

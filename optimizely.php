@@ -38,6 +38,14 @@ if ( is_admin() )
 
 require_once dirname( __FILE__ ) . '/edit.php';
 
+
+$DEFAULT_VARIATION_TEMPLATE = '
+$(".post-$POST_ID .entry-title a").text("$NEW_TITLE");
+';
+
+
+add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
+
 // forcing Optimizely to load first in the head tag
 add_action('wp_head', 'add_optimizely_script', -1000);
 
