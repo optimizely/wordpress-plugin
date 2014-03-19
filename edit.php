@@ -55,10 +55,10 @@ function ab_postbox_save($post_id)
 		    $code = str_replace('$POST_ID', $post_id, $code);
 
 			// Create or edit variations on Optimizely
-			if ( get_post_meta($post_id, 'optimizely_experiment_created') , true) {
+			if ( get_post_meta($post_id, 'optimizely_experiment_created', true) ) {
 
 				// Edit variations
-
+				
 
 			} else {
 
