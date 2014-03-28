@@ -21,16 +21,15 @@
       <button id="connect_optimizely" class="button">Connect Optimizely</button>
       
       <h3>Choose a Project</h3>
-      <p>We'll include this project code on your site automatically.</p>
+      <input type="hidden" id="project_name" name="project_name" value="<?= get_option('optimizely_project_name') ?>" />
       <select id="project_id" name="project_id">
         <?php if (get_option('optimizely_project_id')) { ?>
-        <option>Choose your project...</option>
-        <option value="<?= get_option('optimizely_project_id') ?>"><?= get_option('optimizely_project_name') ?></option>
-        <?php } else { ?>
-        <option>Connect Optimizely to choose a project...</option>
+          <option value="<?= get_option('optimizely_project_id') ?>" selected><?= get_option('optimizely_project_name') ?></option>
         <?php } ?>
-
+        <option value="">Connect Optimizely to choose a project...</option>
       </select>
+      <p>Optimizely will add the following project code to your page automatically:</p>
+      <textarea class="code" id="project_code" name="project_code" readonly><?= get_option('optimizely_project_code') ?></textarea>
 
 
       <h3>Variation Code</h3>
@@ -41,26 +40,6 @@
       <p>You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.</p>
 
       <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
-
-
-      <script>
-        $j = jQuery;
-        //$j(document).ready(function() {
-        $j("button#connect_optimizely").click(function(event) {
-          event.preventDefault();
-          $j("select#project_id").html("<option>Loading projects...</option>");
-          
-          var optly = new OptimizelyAPI($j("#app_id").val(), $j("#app_key").val());
-          optly.get('projects', function(response){
-            console.log(response);
-          
-            $j.each(response, function(key, val) {
-              $j("select#project_id").append("<option value='" + key + "'>" + val + "</option>");  
-            });
-          });
-
-        });
-      </script>
 
 
     </form>

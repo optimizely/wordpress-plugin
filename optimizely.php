@@ -48,25 +48,7 @@ add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
 add_action('wp_head', 'add_optimizely_script', -1000);
 
 function add_optimizely_script() {
-  if ( empty( $project_code) ) {
-	  $project_code = get_option('optimizely_project_code');
-	  if ( !empty($project_code)) {
-  	  
-  	  $project_code_html = html_entity_decode($project_code);
-  	  $patterns = array('/\<script src="/','/"\>\<\/script\>/');
-      $projectScript = preg_replace($patterns, '', $project_code_html);
-
-      if (!$_SERVER['HTTPS']) {
-        $script = "http:".$projectScript;
-      } else {
-        $script = "https:".$projectScript;
-      }
-      
-	  echo '<script type="text/javascript" src="'.$script.'"></script>';
-
-	  }
-	}
-
+	echo get_option('optimizely_project_code');
 }
 
 function can_create_experiments() {

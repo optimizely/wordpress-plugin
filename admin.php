@@ -29,7 +29,9 @@ function optimizely_conf() {
     $app_id = $_POST['app_id'];
     $app_key = $_POST['app_key'];
     $project_id = $_POST['project_id'];
-    $variation_template = $_POST['variation_template'];
+    $project_name = stripcslashes($_POST['project_name']);
+    $project_code = stripcslashes($_POST['project_code']);
+    $variation_template = stripcslashes($_POST['variation_template']);
 
     if ( empty($app_id) ) {
       delete_option('optimizely_app_id');
@@ -48,6 +50,19 @@ function optimizely_conf() {
     } else {
       update_option('optimizely_project_id', $project_id);
     }
+
+    if ( empty($project_name) ) {
+      delete_option('optimizely_project_name');
+    } else {
+      update_option('optimizely_project_name', $project_name);
+    }
+
+    if ( empty($project_code) ) {
+      delete_option('optimizely_project_code');
+    } else {
+      update_option('optimizely_project_code', $project_code);
+    }
+
 
     if ( empty($variation_template) ) {
       update_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
