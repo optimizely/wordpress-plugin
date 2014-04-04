@@ -3,16 +3,39 @@ OptimizelyAPI = function(app_id, app_key) {
   this.app_key = app_key;
 }
 
-OptimizelyAPI.prototype.get = function(endpoint, data, callback) {
+// Debug stuff, kill this later
+log = function(data) {
+  console.log(data);
+}
+
+OptimizelyAPI.prototype.get = function(endpoint, callback) {
+  this.call('GET', endpoint, {}, callback);
+}
+
+OptimizelyAPI.prototype.delete = function(endpoint, callback) {
+  this.call('DELETE', endpoint, {}, callback);
+}
+
+OptimizelyAPI.prototype.post = function(endpoint, data, callback) {
+  this.call('POST', endpoint, data, callback);
+}
+
+OptimizelyAPI.prototype.put = function(endpoint, data, callback) {
+  this.call('PUT', endpoint, data, callback);
+}
+
+OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
 
   var options = {
     url: "https://www.optimizelyapis.com/api/" + endpoint,
+    type: type,
     dataType: 'json',
     headers: {
       App_Id: this.app_id,
       App_Key: this.app_key
     },
     data: data,
+    contentType: 'application/json',
     success: callback
   }
 
@@ -39,7 +62,7 @@ function configPage() {
     $("#project_id").html("<option>Loading projects...</option>");
     
     optly = new OptimizelyAPI($("#app_id").val(), $("#app_key").val());
-    optly.get('projects', null, function(response){
+    optly.get('projects', function(response){
       $("#project_id").empty();          
       $.each(response, function(key, val) {
         $("#project_id").append("<option value='" + val.id + "'>" + val.project_name + "</option>"); 

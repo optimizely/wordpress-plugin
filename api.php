@@ -1,6 +1,5 @@
 <?php
 
-
 class OptimizelyAPI
 {
     function __construct($app_id = null, $app_key = null) {
@@ -13,16 +12,30 @@ class OptimizelyAPI
     	$this->app_key = $app_key;
     }
 
-    function get($endpoint, $data = null) {
+    function call($type, $endpoint, $data = null) {
     	$args = array(
     		'headers' => array(
     			'App_Id' => $this->app_id,
     			'App_Key' => $this->app_key 
     		),
-    		'body' => $data
+    		'body' => $data,
+            'method' => $type,
+            'content-type' => 'application/json'
     	);
     	$url = "https://www.optimizelyapis.com/api/".$endpoint;
-    	$response = wp_remote_get($url, $args);
+    	$response = wp_remote_request($url, $args);
+
+        if ($response->response->code != 200) {
+            ?>
+            <h1>Optimizely API Error :(</h1>
+            <p>Response was:</p>
+            <pre><?= print_r($response); ?></pre>
+            <p>Request was:</p>
+            <pre><?= print_r($args); ?></pre>
+            <?php
+            die();
+        }
+        
     	return json_decode($response['body']); //todo: handle errors?
     }
 
