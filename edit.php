@@ -9,22 +9,63 @@ function title_variations_render($post) {
 	$contents = "";
 
 	for ($i = 1; $i <= $num_variations; $i++) {
+		$variation_id_key = "optimizely_variation$i_id";
+		$variation_id = get_post_meta($post->id, "optimizely_variation$i_id", true);
+
 		$key = "post_title$i";
 		$titles[$i] = get_post_meta( $post->ID, $key, true);
 		$contents .= "<p>";
 		$contents .= "<label for='$key'>Variation #$i</label>";
-		$contents .= "<input type='text' name='$key' id='$key' placeholder='Title $i' value='$titles[$i]'>";
+		$contents .= "<input type='text' name='$key' id='$key' class='optimizely_variation' data-variation-id='$variation_id' placeholder='Title $i' value='$titles[$i]'>";
 		$contents .= "</p>";
 	}
 
+	
+
 	if ( can_create_experiments() ) {
 		echo $contents;
+
+		?>
+		<div class="not_created">
+			<button class="optimizely_start button-primary">Start Experiment</button>
+		</div>
+		<div class="created">
+			<button class="optimizely_view button">View on Optimizely</button>
+			<p>Status: <b>Running</b>
+			<br />
+			Results: <a class="result_link">View Results</a></p>
+		</div>
+		<input type="hidden" id="optimizely_app_id" value="<?= get_option('optimizely_app_id'); ?>" />
+		<input type="hidden" id="optimizely_app_key" value="<?= get_option('optimizely_app_key'); ?>" />
+		<input type="hidden" id="optimizely_project_id" value="<?= get_option('optimizely_project_id'); ?>" />
+		<input type="hidden" id="optimizely_experiment_id" value="<?= get_option('optimizely_experiment_id'); ?>" />
+		<textarea id="optimizely_variation_template" style="display: none"><?= get_option('optimizely_variation_template') ?></textarea>
+
+		<script type="text/javascript">
+		editPage();
+		</script>
+		<?php
+
 	} else {
 		?>
 		<p>Please configure your API credentials in the <a href="<?php menu_page_url('optimizely-config'); ?>">Optimizely settings page</a>.</p>
 		<?php
 	}
-	
+	/*
+	?>
+	<script>
+		$ = jQuery;
+		$('.optimizely_start').click(function() {
+
+
+
+		})
+
+	</script>
+	<?php
+	*/
+
+
 }
 
 add_action( 'add_meta_boxes', 'title_variations_add' );
@@ -53,10 +94,10 @@ function title_variations_save($post_id)
 
 }
 
-
 add_action( 'publish_post', 'title_variations_publish' );
 function title_variations_publish($post_id)
 {
+	return false; //skip this for now
 	// Note: this will trigger only when you publish or edit a published post
 
 	global $num_variations;
@@ -142,5 +183,4 @@ function title_variations_publish($post_id)
     $experiment_meta->status = "Running";
 	$experiment_meta = $optly->call('PUT',"experiments/$experiment_id", $experiment_meta);
 }
-
 ?>

@@ -16,9 +16,10 @@ class OptimizelyAPI
     	$args = array(
     		'headers' => array(
     			'App_Id' => $this->app_id,
-    			'App_Key' => $this->app_key 
+    			'App_Key' => $this->app_key,
+                'mime_type' => 'application/json',
     		),
-    		'body' => $data,
+    		'body' => json_encode($data),
             'method' => $type,
             'content-type' => 'application/json'
     	);
@@ -31,7 +32,7 @@ class OptimizelyAPI
             <p>Response was:</p>
             <pre><?= print_r($response); ?></pre>
             <p>Request was:</p>
-            <pre><?= print_r($args); ?></pre>
+            <pre><?= var_dump($args); ?></pre>
             <?php
             die();
         }
