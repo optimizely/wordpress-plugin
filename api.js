@@ -1,6 +1,7 @@
 OptimizelyAPI = function(app_id, app_key) {
   this.app_id = app_id;
   this.app_key = app_key;
+  this.outstanding_requests = 0;
 }
 
 // Debug stuff, kill this later
@@ -36,20 +37,30 @@ OptimizelyAPI.prototype.put = function(endpoint, data, callback) {
 }
 
 OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
+  o = this;
+
+  doCallback = function(response) {
+    o.outstanding_requests -= 1;
+    callback(response);
+  }
 
   var options = {
     url: "https://www.optimizelyapis.com/api/" + endpoint,
     type: type,
-    dataType: 'json',
     headers: {
-      App_Id: this.app_id,
-      App_Key: this.app_key
+      "App-Id": this.app_id,
+      "App-Key": this.app_key
     },
-    data: JSON.stringify(data),
     contentType: 'application/json',
-    success: callback
+    success: doCallback
   }
+  if (data) {
+    options.data = JSON.stringify(data);
+    options.dataType = 'json';
+  }
+
   console.log(options);
+  o.outstanding_requests += 1;
   jQuery.ajax(options);
 }
 
@@ -89,15 +100,30 @@ function configPage() {
 
 function editPage() {
   var $ = jQuery;
+  
+  var postId = $('#post_ID').val();
+  var projectId = $('#optimizely_project_id').val();
+  var experimentId = $("#optimizely_experiment_id").val();
+
+  if (experimentId) {
+    $('.not_created').hide();
+  } else {
+    $('.created').hide();
+  }
 
   $('.optimizely_start').click(function() {
+    $('.optimizely_start').text('Starting...');
     event.preventDefault();
+
+    /*
+    $('.not_created').hide();
+    $('.created').show();
+    return;
+    */
+
     optly = new OptimizelyAPI($("#optimizely_app_id").val(), $("#optimizely_app_key").val());
 
     var originalTitle = $('#title').val();
-    var postId = $('#post_ID').val();
-    var projectId = $('#optimizely_project_id').val();
-    var experimentId = $("#optimizely_experiment_id").val();
     var experimentMeta = {
       'description': "Wordpress: " + originalTitle,
       'edit_url': $('#post-preview').attr('href')
@@ -112,8 +138,14 @@ function editPage() {
     }
 
     function afterCreateExperiment(response) {
+      
+      // Save experiment data
       var experimentMeta = response;
       var experimentId = experimentMeta.id;
+      $("#optimizely_experiment_id").val(experimentId);
+      // todo: http://stackoverflow.com/questions/21711071/how-to-update-post-meta-on-wordpress-with-ajax
+
+      // Set up variations
       var variationIds = experimentMeta.variation_ids;
       var variationWeight = Math.floor(10000 / numVariations);
       var leftoverWeight = 10000 - variationWeight*numVariations;
@@ -140,7 +172,16 @@ function editPage() {
           function afterCreateVariation(response) {
             variationMeta = response;
             variationId = variationMeta.id;
-            console.log(id);
+            $('#post_title' + i).attr('data-variation-id', variationId);
+            experimentReady();
+          }
+
+          function experimentReady() {
+              if (optly.outstanding_requests == 0) {
+                $('.optimizely_view').attr('href','https://www.optimizely.com/edit?experiment_id=' + experimentId)
+                $('.not_created').hide();
+                $('.created').show();                
+              }
           }
 
 

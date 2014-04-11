@@ -1,6 +1,6 @@
 <?php
 
-$num_variations = 3;
+$num_variations = 2;
 
 function title_variations_render($post) {
 
@@ -30,7 +30,7 @@ function title_variations_render($post) {
 			<button class="optimizely_start button-primary">Start Experiment</button>
 		</div>
 		<div class="created">
-			<button class="optimizely_view button">View on Optimizely</button>
+			<a class="optimizely_view button" target="_blank">View on Optimizely</a>
 			<p>Status: <b>Running</b>
 			<br />
 			Results: <a class="result_link">View Results</a></p>
@@ -80,7 +80,7 @@ function title_variations_save($post_id)
 	global $num_variations;
 
 	if( !current_user_can( 'edit_post' ) ) return;
-	if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+	//if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 
 	for ($i = 1; $i <= $num_variations; $i++) {
 
@@ -90,6 +90,10 @@ function title_variations_save($post_id)
 	        $new_title = esc_attr($_POST[$key]);
 	        update_post_meta( $post_id, $key, $new_title);
 	    }
+	}
+
+	if( isset( $_POST["optimizely_experiment_id"] ) ) {	
+		update_post_meta( $post_id, "optimizely_experiment_id", $_POST["optimizely_experiment_id"]);
 	}
 
 }
