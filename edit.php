@@ -27,18 +27,21 @@ function title_variations_render($post) {
 
 		?>
 		<div class="not_created">
-			<button class="optimizely_start button-primary">Start Experiment</button>
+			<button class="optimizely_create button-primary">Create Experiment</button>
 		</div>
 		<div class="created">
+			<a class="optimizely_toggle_running button button-primary">Start Experiment</a>	
+			<p></p>
 			<a class="optimizely_view button" target="_blank">View on Optimizely</a>
-			<p>Status: <b>Running</b>
+			<p>Status: <b class="optimizely_experiment_status_text"><?= get_post_meta($post->ID, 'optimizely_experiment_status', true); ?></b>
 			<br />
-			Results: <a class="result_link">View Results</a></p>
+			Results: <a class="optimizely_results" target="_blank">View Results</a></p>
 		</div>
 		<input type="hidden" id="optimizely_app_id" value="<?= get_option('optimizely_app_id'); ?>" />
 		<input type="hidden" id="optimizely_app_key" value="<?= get_option('optimizely_app_key'); ?>" />
 		<input type="hidden" id="optimizely_project_id" value="<?= get_option('optimizely_project_id'); ?>" />
-		<input type="hidden" id="optimizely_experiment_id" value="<?= get_option('optimizely_experiment_id'); ?>" />
+		<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?= get_post_meta($post->ID, 'optimizely_experiment_id', true); ?>" />
+		<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?= get_post_meta($post->ID, 'optimizely_experiment_status', true); ?>" />
 		<textarea id="optimizely_variation_template" style="display: none"><?= get_option('optimizely_variation_template') ?></textarea>
 
 		<script type="text/javascript">
@@ -94,97 +97,9 @@ function title_variations_save($post_id)
 
 	if( isset( $_POST["optimizely_experiment_id"] ) ) {	
 		update_post_meta( $post_id, "optimizely_experiment_id", $_POST["optimizely_experiment_id"]);
+		update_post_meta( $post_id, "optimizely_experiment_status", $_POST["optimizely_experiment_status"]);
 	}
 
 }
 
-add_action( 'publish_post', 'title_variations_publish' );
-function title_variations_publish($post_id)
-{
-	return false; //skip this for now
-	// Note: this will trigger only when you publish or edit a published post
-
-	global $num_variations;
-
-	if( !current_user_can( 'edit_post' ) ) return;
-	if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-
-	// Skip all this if they don't set the first title
-	if ( !$_POST['post_title1'] ) return;
-
-	$old_title = $_POST['post_title'];
-	$article_url = get_permalink( $post_id );
-	$project_id = get_option('optimizely_project_id');
-	$experiment_id = get_post_meta($post_id, 'optimizely_experiment_id', true);
-	$experiment_data = array(
-		'description' => "Wordpress Experiment for $old_title",
-		'edit_url' => $article_url
-	);
-
-	// API connection	
-	$optly = new OptimizelyAPI();
-
-	/*
-	 * Create/edit Optimizely experiment
-	 */
-	if ( !$experiment_id ) {
-		// Create experiment
-		$experiment_meta = $optly->call('POST','projects/758824777/experiments', $experiment_data);
-		$experiment_id = $experiment_meta->id;
-	} else {
-		// Edit Experiment
-		$old_data = $optly->call('GET',"experiments/$experiment_id");
-		$new_data = $experiment_data + $old_data;
-		$new_data->status = "Paused"; // pause it if it's not already so we can edit
-		$experiment_meta = $optly->call('PUT',"experiments/$experiment_id", $new_data);
-	}
-
-	// For each variation...
-	// TODO: create original variation
-	$variation_weight = floor(10000 / $num_variations);
-	$leftover_weight = 10000 - $num_variations * $variation_weight;
-
-	for ($i = 1; $i <= $num_variations; $i++) {
-		
-	    $title_key = "post_title$i";
-	    if( isset( $_POST[$titleKey] ) ) {
-	        // Save titles
-	        $new_title = esc_attr($_POST[$title_key]);
-	        update_post_meta( $post_id, $title_key, $new_title);
-	
-		    // Generate variation code
-		    $code = get_option('optimizely_variation_template');
-		    $code = str_replace('$NEW_TITLE', $new_title, $code);
-		    $code = str_replace('$POST_ID', $post_id, $code);
-
-			/*
-			 * Create/edit Optimizely variations
-			 */
-			$variation_id_key = "optimizely_variation$i_id";
-			$variation_id = get_post_meta($post_id, $variation_id_key, true);
-			$variation_data = array(
-				'description' => "Variation #$i: $new_title",
-				'js_component' => $code,
-				'weight' => $variation_weight + ($i == 1 ? $leftover_weight : 0) // round up on first variation
-			);
-			if ( !$variation_id ) {
-				// Create variation
-				$variation_meta = $optly->call('POST',"experiments/$experiment_id/variations", $variation_data);
-				$variation_id = $variation_meta->id;
-				update_post_meta( $post_id, $variation_id_key, $variation_id);
-			} else {
-				// Edit variation
-				$old_data = $optly->call('GET',"variations/$variation_id");
-				$new_data = $variation_data + $old_data;
-				$variation_meta = $optly->call('PUT',"variations/$variation_id", $new_data);
-			}
-		}
-	}
-	       
-    /*
-	 * Start the experiment
-	 */
-    $experiment_meta->status = "Running";
-	$experiment_meta = $optly->call('PUT',"experiments/$experiment_id", $experiment_meta);
-}
 ?>

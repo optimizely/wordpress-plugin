@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Optimizely
- * @version 1.0.1
+ * @version 1.0.2
  */
 /*
 Plugin Name: Optimizely
 Plugin URI: http://wordpress.org/extend/plugins/optimizely/
 Description: Simple, fast, and powerful.  <a href="http://www.optimizely.com">Optimizely</a> is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with our easy-to-use visual interface with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue today! To get started: 1) Click the "Activate" link to the left of this description, 2) Sign up for an <a href="http://www.optimizely.com">Optimizely account</a>, and 3) Go to the <a href="admin.php?page=optimizely-config">settings page</a>, and enter your Optimizely project code.
-Author: Arthur Suermondt
-Version: 1.0.1
+Author: Arthur Suermondt & Jon Noronha
+Version: 1.0.2
 Author URI: http://www.optimizely.com/
 License: GPL2
 */
@@ -31,7 +31,6 @@ License: GPL2
 if ( is_admin() )
   require_once dirname( __FILE__ ) . '/admin.php';
   require_once dirname( __FILE__ ) . '/edit.php';
-  require_once dirname( __FILE__ ) . '/api.php';
   wp_enqueue_script('jquery');
   wp_enqueue_script('optimizely_plugin', plugins_url('api.js', __FILE__));
   wp_enqueue_style('optimizely_styles', plugins_url('style.css', __FILE__));

@@ -105,23 +105,43 @@ function editPage() {
   var projectId = $('#optimizely_project_id').val();
   var experimentId = $("#optimizely_experiment_id").val();
 
+  optly = new OptimizelyAPI($("#optimizely_app_id").val(), $("#optimizely_app_key").val());
+
+  function showExperimentData(experimentMeta) {
+      $("#optimizely_experiment_id").val(experimentMeta.id);
+      $('.optimizely_view').attr('href','https://www.optimizely.com/edit?experiment_id=' + experimentMeta.id);
+      $('.optimizely_results').attr('href','https://www.optimizely.com/results?experiment_id=' + experimentMeta.id);
+
+      $("#optimizely_experiment_status").val(experimentMeta.status);
+      $('.optimizely_experiment_status_text').text(experimentMeta.status);
+      if (experimentMeta.status == "Running") {
+        $('.optimizely_toggle_running').text('Pause Experiment');
+      } else {
+        $('.optimizely_toggle_running').text('Start Experiment');
+      }
+
+      $('.not_created').hide();
+      $('.created').show();  
+  }
+
+  function experimentCreated(experimentMeta) {
+      if (optly.outstanding_requests == 0) {
+        showExperimentData(experimentMeta)              
+      }
+  }
+
   if (experimentId) {
-    $('.not_created').hide();
+    showExperimentData({
+      id: experimentId,
+      status: $("#optimizely_experiment_status").val()
+    });
   } else {
     $('.created').hide();
   }
 
-  $('.optimizely_start').click(function() {
-    $('.optimizely_start').text('Starting...');
+  $('.optimizely_create').click(function() {
+    $('.optimizely_create').text('Creating...');
     event.preventDefault();
-
-    /*
-    $('.not_created').hide();
-    $('.created').show();
-    return;
-    */
-
-    optly = new OptimizelyAPI($("#optimizely_app_id").val(), $("#optimizely_app_key").val());
 
     var originalTitle = $('#title').val();
     var experimentMeta = {
@@ -143,6 +163,8 @@ function editPage() {
       var experimentMeta = response;
       var experimentId = experimentMeta.id;
       $("#optimizely_experiment_id").val(experimentId);
+      $("#optimizely_experiment_status").val(experimentMeta.status);
+      $('.optimizely_experiment_status_text').text(experimentMeta.status);
       // todo: http://stackoverflow.com/questions/21711071/how-to-update-post-meta-on-wordpress-with-ajax
 
       // Set up variations
@@ -173,23 +195,35 @@ function editPage() {
             variationMeta = response;
             variationId = variationMeta.id;
             $('#post_title' + i).attr('data-variation-id', variationId);
-            experimentReady();
+            experimentCreated(experimentMeta);
           }
-
-          function experimentReady() {
-              if (optly.outstanding_requests == 0) {
-                $('.optimizely_view').attr('href','https://www.optimizely.com/edit?experiment_id=' + experimentId)
-                $('.not_created').hide();
-                $('.created').show();                
-              }
-          }
-
 
         }
       }
     }
 
   });
+
+  $('.optimizely_toggle_running').click(function(){
+    event.preventDefault();
+
+    // Stop running experiments
+    if ($("#optimizely_experiment_status").val() == "Running") {
+      $('.optimizely_toggle_running').text('Pausing...');
+      optly.patch('experiments/' + $("#optimizely_experiment_id").val(), {'status': 'Paused'}, function(response) {
+          showExperimentData(response)
+        });
+
+    // Start non-running experiments
+    } else {
+      $('.optimizely_toggle_running').text('Starting...');
+      optly.patch('experiments/' + $("#optimizely_experiment_id").val(), {'status': 'Running'}, function(response) {
+          showExperimentData(response)
+        });
+    }
+
+  });
+    
 }
 
 jQuery(document).ready(function() {
