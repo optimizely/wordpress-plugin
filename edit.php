@@ -1,6 +1,6 @@
 <?php
 
-$num_variations = 2;
+$num_variations = 3;
 
 function title_variations_render($post) {
 
@@ -9,43 +9,37 @@ function title_variations_render($post) {
 	$contents = "";
 
 	for ($i = 1; $i <= $num_variations; $i++) {
-		$variation_id_key = "optimizely_variation$i_id";
-		$variation_id = get_post_meta($post->id, "optimizely_variation$i_id", true);
 
-		$key = "post_title$i";
-		$titles[$i] = get_post_meta( $post->ID, $key, true);
+		$titles[$i] = get_post_meta( $post->ID, "post_title$i", true);
 		$contents .= "<p>";
 		$contents .= "<label for='$key'>Variation #$i</label>";
-		$contents .= "<input type='text' name='$key' id='$key' class='optimizely_variation' data-variation-id='$variation_id' placeholder='Title $i' value='$titles[$i]'>";
+		$contents .= "<input type='text' name='post_title$i' id='post_title$i' class='optimizely_variation' placeholder='Title $i' value='$titles[$i]'>";
 		$contents .= "</p>";
 	}
-
-	
 
 	if ( can_create_experiments() ) {
 		echo $contents;
 
 		?>
-		<div class="not_created">
-			<button class="optimizely_create button-primary">Create Experiment</button>
+		<div id="optimizely_not_created">
+			<a id="optimizely_create" class="button-primary">Create Experiment</a>
 		</div>
-		<div class="created">
-			<a class="optimizely_toggle_running button button-primary">Start Experiment</a>	
+		<div id="optimizely_created">
+			<a id="optimizely_toggle_running" class="button-primary">Start Experiment</a>	
 			<p></p>
-			<a class="optimizely_view button" target="_blank">View on Optimizely</a>
-			<p>Status: <b class="optimizely_experiment_status_text"><?= get_post_meta($post->ID, 'optimizely_experiment_status', true); ?></b>
+			<a id="optimizely_view" class="button" target="_blank">View on Optimizely</a>
+			<p>Status: <b id="optimizely_experiment_status_text"><?= get_post_meta($post->ID, 'optimizely_experiment_status', true); ?></b>
 			<br />
-			Results: <a class="optimizely_results" target="_blank">View Results</a></p>
+			Results: <a id="optimizely_results" target="_blank">View Results</a></p>
 		</div>
-		<input type="hidden" id="optimizely_app_id" value="<?= get_option('optimizely_app_id'); ?>" />
-		<input type="hidden" id="optimizely_app_key" value="<?= get_option('optimizely_app_key'); ?>" />
+		<input type="hidden" id="optimizely_token" value="<?= get_option('optimizely_token'); ?>" />
 		<input type="hidden" id="optimizely_project_id" value="<?= get_option('optimizely_project_id'); ?>" />
 		<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?= get_post_meta($post->ID, 'optimizely_experiment_id', true); ?>" />
 		<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?= get_post_meta($post->ID, 'optimizely_experiment_status', true); ?>" />
 		<textarea id="optimizely_variation_template" style="display: none"><?= get_option('optimizely_variation_template') ?></textarea>
 
 		<script type="text/javascript">
-		editPage();
+		optimizelyEditPage();
 		</script>
 		<?php
 
@@ -54,20 +48,6 @@ function title_variations_render($post) {
 		<p>Please configure your API credentials in the <a href="<?php menu_page_url('optimizely-config'); ?>">Optimizely settings page</a>.</p>
 		<?php
 	}
-	/*
-	?>
-	<script>
-		$ = jQuery;
-		$('.optimizely_start').click(function() {
-
-
-
-		})
-
-	</script>
-	<?php
-	*/
-
 
 }
 

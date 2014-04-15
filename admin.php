@@ -26,23 +26,16 @@ function optimizely_conf() {
 
     check_admin_referer( $optimizely_nonce );
 
-    $app_id = $_POST['app_id'];
-    $app_key = $_POST['app_key'];
+    $token = $_POST['token'];
     $project_id = $_POST['project_id'];
     $project_name = stripcslashes($_POST['project_name']);
     $project_code = stripcslashes($_POST['project_code']);
     $variation_template = stripcslashes($_POST['variation_template']);
 
-    if ( empty($app_id) ) {
-      delete_option('optimizely_app_id');
+    if ( empty($token) ) {
+      delete_option('optimizely_token');
     } else {
-      update_option('optimizely_app_id', $app_id);
-    }
-
-    if ( empty($app_key) ) {
-      delete_option('optimizely_app_key');
-    } else {
-      update_option('optimizely_app_key', $app_key);
+      update_option('optimizely_token', $token);
     }
 
     if ( empty($project_id) ) {
@@ -62,7 +55,6 @@ function optimizely_conf() {
     } else {
       update_option('optimizely_project_code', $project_code);
     }
-
 
     if ( empty($variation_template) ) {
       update_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);

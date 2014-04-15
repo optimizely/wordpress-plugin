@@ -6,16 +6,11 @@
       <h3>About Optimizely</h3>
       <p>Simple, fast, and powerful. <a href="http://www.optimizely.com" target="_blank">Optimizely</a> is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue: create an account at <a href="http://www.optimizely.com" target="_blank">optimizely.com</a> and start A/B testing today!</p>
       <h3>Optimizely API tokens</h3>
-      <p>Once you create an account, you can find your Application ID and API Key on your dashboard at <a href="https://www.optimizely.com/dashboard">optimizely.com/dashboard</a>. Copy the Application ID from the top of the page, then click "Generate Token" to get an API Key.
+      <p>Once you create an account, you can find your API Token on your account page at <a href="https://www.optimizely.com/account">optimizely.com/account</a>.
       <p>
-        <label for="app_id" style="font-weight:bold;">Application ID</label>
+        <label for="token"><strong>API Token</strong></label>
         <br />
-        <input id="app_id" name="app_id" type="text" maxlength="80" value="<?= get_option('optimizely_app_id'); ?>" class="code" />
-      </p>
-      <p>
-        <label for="app_key" style="font-weight:bold;">Application Key</label>
-        <br />
-        <input id="app_key" name="app_key" type="text" maxlength="80" value="<?= get_option('optimizely_app_key'); ?>" class="code" />
+        <input id="token" name="token" type="text" maxlength="80" value="<?= get_option('optimizely_token'); ?>" class="code" />
       </p>
       
       <button id="connect_optimizely" class="button">Connect Optimizely</button>
@@ -43,7 +38,9 @@
 
 
     </form>
-
+    <script type="text/javascript">
+    optimizelyConfigPage();
+    </script>
 
 
 
