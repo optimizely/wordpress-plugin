@@ -10,13 +10,13 @@ function optimizelyEditPage() {
   }
 
   if (optly.experiment.id) {
-    showExperimentState(optly.experiment);
+    showExperiment(optly.experiment);
   } else {
     $('#optimizely_created').hide();
   }
 
   $('#optimizely_create').click(function(){
-    createExperiment(optly.experiment);
+    createExperiment();
   });
 
   $('#optimizely_toggle_running').click(function(){
@@ -43,73 +43,82 @@ function optimizelyEditPage() {
       $('#optimizely_toggle_running').text('Start Experiment');
     }
 
-    // Created?
+    // Hide create button, show status
     $('#optimizely_not_created').hide();
     $('#optimizely_created').show();  
+
+    // Update Wordpress backend w/ experiment data
+    var data = {
+      action: "update_experiment_meta",
+      post_id: $('#post_ID').val(),
+      optimizely_experiment_id: experiment.id,
+      optimizely_experiment_status: experiment.status
+    };
+
+    $('.optimizely_variation').each(function(index, input) {
+      data[$(input).attr('name')] = $(input).val();
+    });
+    $.post(wpAjaxUrl, data);
   }
 
-  function createExperiment(experiment) {
+  function createExperiment() {
     $('#optimizely_create').text('Creating...');
 
+    experiment = {};
     experiment.description = "Wordpress: " + $('#title').val();
-    experiment.edit_url = $('#post-preview').attr('href'); // barfs on localhost :(
+    experiment.edit_url = $('#post-preview').attr('href');
 
-    // Create or update
-    if (!experiment.id) {
-      optly.post('projects/' + projectId + '/experiments', experiment, onExperimentCreated);
-    } else {
-      optly.patch('experiments/' + experiment.id, experiment, onExperimentCreated);
-    }
+    optly.post('projects/' + projectId + '/experiments', experiment, onExperimentCreated);
   }
 
   function onExperimentCreated(experiment) {
 
     optly.experiment = experiment;
-    // todo: http://stackoverflow.com/questions/21711071/how-to-update-post-meta-on-wordpress-with-ajax
 
-    // Set variation weights
     var variations = $('.optimizely_variation').filter(function(){return $(this).val().length > 0})
-
-    var numVariations = variations.length;
-    numVariations += 1; // original
+    
+    // Set variation weights
+    var numVariations = variations.length + 1;
     var variationWeight = Math.floor(10000 / numVariations);
     var leftoverWeight = 10000 - variationWeight*numVariations;
 
-    variations.each(function(i, elt) {
-      var weight = variationWeight + (i == 0 ? leftoverWeight : 0);
-      createVariation(i, $(elt).val(), weight);
+    // Create variations
+    variations.each(function(index, input) {
+      var weight = variationWeight + (index == 0 ? leftoverWeight : 0);
+      createVariation(experiment, index + 1, $(input).val(), weight);
     });
 
   }
 
-  function createVariation(i, newTitle, weight) {
+  function createVariation(experiment, index, newTitle, weight) {
 
     // Generate variation code
+    var variationTemplate = $('#optimizely_variation_template').val();
     var postId = $('#post_ID').val();
     var originalTitle = $('#title').val();
-    var code = $('#optimizely_variation_template').val()
+    var code = variationTemplate
       .replace(/\$OLD_TITLE/g, originalTitle)
       .replace(/\$NEW_TITLE/g, newTitle)
       .replace(/\$POST_ID/g, postId);
 
+    // Request data
     var variation = {
-      "description": "Variation #" + i + ": " + newTitle,
+      "description": newTitle,
       "js_component": code,
       "weight": weight,
-      "id": optly.experiment.variation_ids[i+1]
     }
 
-    // Create or update
-    if (!variation.id) {
-      optly.post('experiments/' + optly.experiment.id + '/variations', variation, onVariationCreated);
+    // Update variation #1, create the others
+    if (index == 1) {
+      optly.patch('variations/' + experiment.variation_ids[1], variation, onVariationCreated);
     } else {
-      optly.patch('variations/' + variation.id, variation, onVariationCreated);
+      optly.post('experiments/' + experiment.id + '/variations', variation, onVariationCreated);
     }
 
   }
 
   function onVariationCreated(variation) {
-    if (optly.outstanding_requests == 0) {
+    if (optly.outstandingRequests == 0) {
       showExperiment(optly.experiment);
     }
   }
@@ -117,16 +126,16 @@ function optimizelyEditPage() {
   function startExperiment(experiment) {
     $('#optimizely_toggle_running').text('Starting...');
     optly.patch('experiments/' + experiment.id, {'status': 'Running'}, function(response) {
-      experiment = response;
-      showExperiment(experiment);
+      optly.experiment = response;
+      showExperiment(optly.experiment);
     });
   }
 
   function pauseExperiment(experiment) {
     $('#optimizely_toggle_running').text('Pausing...');
     optly.patch('experiments/' + experiment.id, {'status': 'Paused'}, function(response) {
-      experiment = response;
-      showExperiment(experiment);
+      optly.experiment = response;
+      showExperiment(optly.experiment);
     });
   }
 

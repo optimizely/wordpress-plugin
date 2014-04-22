@@ -32,16 +32,14 @@ if ( is_admin() )
   require_once dirname( __FILE__ ) . '/admin.php';
   require_once dirname( __FILE__ ) . '/edit.php';
   wp_enqueue_script('jquery');
-  wp_enqueue_script('optimizely_api', plugins_url('api.js', __FILE__));
+  wp_enqueue_script('optimizely_api', plugins_url('optimizely.js', __FILE__));
   wp_enqueue_script('optimizely_editor', plugins_url('edit.js', __FILE__));
+  wp_localize_script('optimizely_editor', 'wpAjaxUrl', admin_url('admin-ajax.php'));
   wp_enqueue_script('optimizely_config', plugins_url('config.js', __FILE__));
   wp_enqueue_style('optimizely_styles', plugins_url('style.css', __FILE__));
 
 
-$DEFAULT_VARIATION_TEMPLATE = '
-$(".post-$POST_ID .entry-title a").text("$NEW_TITLE");
-';
-
+$DEFAULT_VARIATION_TEMPLATE = '$(".post-$POST_ID .entry-title a").text("$NEW_TITLE");';
 add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
 
 // Force Optimizely to load first in the head tag

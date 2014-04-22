@@ -2,8 +2,8 @@
 Contributors: arthuracs, jonslaught
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
-Tested up to: 3.4
-Stable tag: 1.0.2
+Tested up to: 3.9
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,11 +23,14 @@ Sign up at [Optimizely.com](http://www.optimizely.com).
 
 1. Upload the Optimizely WordPress plugin to your blog
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Enter your Optimizely project code in the plugin's settings page. 
+3. Enter your Optimizely API token in the plugin's settings page, choose a project to use, then save.
 
 You're ready to start using Optimizely!
 
 == Changelog ==
+
+= 2.0.0 =
+* Added headline testing
 
 = 1.0.1 =
 * Prioritizing the Optimizely code snippet so that it appears above other scripts.

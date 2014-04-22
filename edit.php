@@ -1,6 +1,6 @@
 <?php
 
-$num_variations = 3;
+$num_variations = 2;
 
 function title_variations_render($post) {
 
@@ -80,6 +80,13 @@ function title_variations_save($post_id)
 		update_post_meta( $post_id, "optimizely_experiment_status", $_POST["optimizely_experiment_status"]);
 	}
 
+}
+
+add_action("wp_ajax_update_experiment_meta", "update_experiment_meta");
+function update_experiment_meta()
+{
+	$post_id = $_REQUEST["post_id"];
+	title_variations_save($post_id);
 }
 
 ?>

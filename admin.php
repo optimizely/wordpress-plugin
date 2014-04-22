@@ -58,7 +58,6 @@ function optimizely_conf() {
 
     if ( empty($variation_template) ) {
       update_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
-      //delete_option('optimizely_variation_template');
     } else {
       update_option('optimizely_variation_template', $variation_template);
     }
