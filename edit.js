@@ -104,11 +104,7 @@ function optimizelyEditPage() {
       experiment_ids: [experiment.id]
     }
 
-    optly.post('projects/' + experiment.project_id + '/goals/', goal, onGoalCreated);
-
-  }
-
-  function onGoalCreated(goal) {
+    optly.post('projects/' + experiment.project_id + '/goals/', goal, checkExperimentReady);
 
   }
 
@@ -132,14 +128,14 @@ function optimizelyEditPage() {
 
     // Update variation #1, create the others
     if (index == 1) {
-      optly.patch('variations/' + experiment.variation_ids[1], variation, onVariationCreated);
+      optly.patch('variations/' + experiment.variation_ids[1], variation, checkExperimentReady);
     } else {
-      optly.post('experiments/' + experiment.id + '/variations', variation, onVariationCreated);
+      optly.post('experiments/' + experiment.id + '/variations', variation, checkExperimentReady);
     }
 
   }
 
-  function onVariationCreated(variation) {
+  function checkExperimentReady(response) {
     if (optly.outstandingRequests == 0) {
       showExperiment(optly.experiment);
     }
