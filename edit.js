@@ -66,7 +66,7 @@ function optimizelyEditPage() {
 
     experiment = {};
     experiment.description = "Wordpress: " + $('#title').val();
-    experiment.edit_url = $('#post-preview').attr('href');
+    experiment.edit_url = $('#sample-permalink').text();
 
     optly.post('projects/' + projectId + '/experiments', experiment, onExperimentCreated);
   }
@@ -87,6 +87,28 @@ function optimizelyEditPage() {
       var weight = variationWeight + (index == 0 ? leftoverWeight : 0);
       createVariation(experiment, index + 1, $(input).val(), weight);
     });
+
+    // Create goal
+    createGoal(experiment);
+
+  }
+
+  function createGoal(experiment) {
+
+    var goal = {
+      goal_type: 3, // pageview goal
+      title: "Views to page",
+      urls: [$('#sample-permalink').text()],
+      url_match_types: [4], // substring
+      // addable: false, // don't clog up the goal list
+      experiment_ids: [experiment.id]
+    }
+
+    optly.post('projects/' + experiment.project_id + '/goals/', goal, onGoalCreated);
+
+  }
+
+  function onGoalCreated(goal) {
 
   }
 
