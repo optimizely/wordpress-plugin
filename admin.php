@@ -1,4 +1,7 @@
 <?php
+
+// PHP controller for plugin configuration page. The page itself is rendered in config.php
+
 add_action( 'admin_menu', 'optimizely_admin_menu' );
   
 optimizely_admin_warnings();

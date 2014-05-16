@@ -1,14 +1,24 @@
 <?php
 
-$num_variations = 2;
+/*
+
+HEADLINE INPUT BOX
+
+When users go to write their posts, they'll see a new section for A/B testing headlines. This section will include inputs for users to write alternate headlines and a button to create the experiment.
+
+We also use several hidden input fields to store data about the project and experiment. These are used in edit.js to send AJAX requests to the Optimizely API.
+
+*/
+
+// The number of variations to show in the box
+define("NUM_VARIATIONS", 2);
 
 function title_variations_render($post) {
 
-	global $num_variations;
 	$titles = array();
 	$contents = "";
 
-	for ($i = 1; $i <= $num_variations; $i++) {
+	for ($i = 1; $i <= NUM_VARIATIONS; $i++) {
 
 		$titles[$i] = get_post_meta( $post->ID, "post_title$i", true);
 		$contents .= "<p>";
@@ -60,12 +70,9 @@ function title_variations_add()
 add_action( 'save_post', 'title_variations_save' );
 function title_variations_save($post_id)
 {
-	global $num_variations;
-
 	if( !current_user_can( 'edit_post' ) ) return;
-	//if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 
-	for ($i = 1; $i <= $num_variations; $i++) {
+	for ($i = 1; $i <= NUM_VARIATIONS; $i++) {
 
 	    $key = "post_title$i";
 	    if( isset( $_POST[$key] ) ) {

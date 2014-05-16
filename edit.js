@@ -1,7 +1,7 @@
 function optimizelyEditPage() {
   var $ = jQuery;
 
-  // Initialize data
+  // Initialize data from the input fields
   var projectId = $('#optimizely_project_id').val();
   var optly = new OptimizelyAPI($("#optimizely_token").val()); 
   optly.experiment = {
@@ -9,16 +9,19 @@ function optimizelyEditPage() {
     status: $("#optimizely_experiment_status").val()
   }
 
+  // If there's already an associated experiment, show it in the editor
   if (optly.experiment.id) {
     showExperiment(optly.experiment);
   } else {
     $('#optimizely_created').hide();
   }
 
+  // On click, run the createExperiment function
   $('#optimizely_create').click(function(){
     createExperiment();
   });
 
+  // Then, handle starts and pauses on the experiment
   $('#optimizely_toggle_running').click(function(){
     if (optly.experiment.status == "Running") {
       pauseExperiment(optly.experiment);
@@ -61,6 +64,9 @@ function optimizelyEditPage() {
     $.post(wpAjaxUrl, data);
   }
 
+  /*
+  This function creates an experiment by providing a description based on the post's title and an edit_url based on the permalink of the Wordpress post. We send these as a POST request and register a callback to run the onExperimentCreated function when it completes.
+  */
   function createExperiment() {
     $('#optimizely_create').text('Creating...');
 
@@ -71,6 +77,12 @@ function optimizelyEditPage() {
     optly.post('projects/' + projectId + '/experiments', experiment, onExperimentCreated);
   }
 
+  /*
+  The experiment we created has two built-in variations, but now we need to add a third and update the content. Since we're adding a variation, we also need to calculate the traffic weight to use for each one. Once we've done this, we'll call the createVariation function explained below.
+
+  Our experiment comes with an Engagement goal, but we'll also add one to measure views to the post.
+
+  */
   function onExperimentCreated(experiment) {
 
     optly.experiment = experiment;
@@ -93,6 +105,11 @@ function optimizelyEditPage() {
 
   }
 
+  /*
+  We create a pageview goal that measures how many times the post is viewed. We add one url, the permalink, and use the substring match type. We also set "addable" to false so that the goal won't clog up the list of goals for other experiments.
+
+  Finally, we associate the goal with the experiment we just created by adding the experiment's id to experiment_ids. We POST the goal to the projects/{id}/goals endpoint to create it.
+  */
   function createGoal(experiment) {
 
     var goal = {
@@ -100,13 +117,23 @@ function optimizelyEditPage() {
       title: "Views to page",
       urls: [$('#sample-permalink').text()],
       url_match_types: [4], // substring
-      // addable: false, // don't clog up the goal list
+      addable: false, // don't clog up the goal list
       experiment_ids: [experiment.id]
     }
 
     optly.post('projects/' + experiment.project_id + '/goals/', goal, checkExperimentReady);
 
   }
+
+  /*
+  To create a variation, we first generate the variation code. We use a template based on the Wordpress theme, and then we drop in the values for our variation. The result would be:
+
+  $(".post-27 .entry-title a").text("Alternate Title #1");
+
+  Once we've generated this variation code, we include it in the js_component parameter of our API request. We also add a variation title and weight.
+
+  In this example, we have two alternate headlines plus an original. When we created the experiment, it also came with two variations that were created automatically. We'll leave variation 0 alone as the original, update variation 1 to use the first alternate headline, and create a new variation 2 with the second alternate headline.
+  */
 
   function createVariation(experiment, index, newTitle, weight) {
 
@@ -135,12 +162,18 @@ function optimizelyEditPage() {
 
   }
 
+  /*
+  Once all the PUT and POST requests have returned, we're done! At this point, we can let the user know that the experiment is created and ready.
+  */
   function checkExperimentReady(response) {
     if (optly.outstandingRequests == 0) {
       showExperiment(optly.experiment);
     }
   }
 
+  /*
+  To start a pause an experiment, we just need to change it's status to running. The patch method GETs the experiment metadata, changes the specified fields, and PUTs the object back to Optimizely.
+  */
   function startExperiment(experiment) {
     $('#optimizely_toggle_running').text('Starting...');
     optly.patch('experiments/' + experiment.id, {'status': 'Running'}, function(response) {
@@ -158,8 +191,3 @@ function optimizelyEditPage() {
   }
 
 }
-
-
-
-
-
