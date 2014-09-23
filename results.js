@@ -4,6 +4,7 @@ function optimizelyResultsPage(apiToken,projectId) {
 
 	var optly = new OptimizelyAPI(apiToken);  
 	
+	//fetch only Wordpress experiments from project
 	optly.get('projects/' + projectId + '/experiments/', function(response) {
 		optly.wordpressExps = [];
 		for (i=0; i<response.length; i++) {
@@ -14,24 +15,31 @@ function optimizelyResultsPage(apiToken,projectId) {
 		getWPExpResults(optly.wordpressExps);
 	});
 
+	//launch winning variation when Launch button is clicked...will this work with 
+	$(".launch").bind('click', function() {
+   		var loserVars = [];
+   		$(this).parents('.opt_results').find("tr:not('.winner')").each(function() {  //[NEED] loser class or use "tr:not('.winner')""
+      		loserVars.push($(this).attr('data-var-id'));
+   			launchWinner(loserVars);
+		});
+	});
+
 	function getWPExpResults(WPexpArray) {
 		optly.results = [];
-		for (j=0; j<WPexpArray.length; j++){
-			optly.get('experiments/' + WPexpArray[j].id + '/results', function(response) { //this is throwing an error
-				 
+		for (j=0; j < WPexpArray.length; j++){
+			optly.get('experiments/' + WPexpArray[j].id + '/results', function(response) { 
 				 optly.results.push(response);
 			});
 		}
 	}
 
-	/* function launchVariation(experiment) {
-		var varId = $(".variation_id[data=XXXXXXXX]").val();  //store var id
-    	$('#optimizely_launch_var').text('Launching...');  //[NEED] update selectors, etc.
-    	//for each variation that is not the one being launched, set is_paused=true
-    	optly.patch('variations/' + optly.experiment.results[The other vars], {'is_paused': 'true'}, function(response) {
-      		optly.experiment = response;
-  			//need to call function that updates UI
-    	});
-  	} */
+	function launchWinner(loserArray) {
+		for (i=0; i<loserArray.length; i++) {
+			optly.patch('variations/' + loserArray[i], {'is_paused': 'true'}, function(response) {
+      			optly.experiment = response;
+      			//function to update UI
+    		});
+		}	
+  	} 
 
 }
