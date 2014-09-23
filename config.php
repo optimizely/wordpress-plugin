@@ -2,6 +2,7 @@
   <script>
     jQuery(function() {
       jQuery( "#tabsTesting" ).tabs();
+      optimizelyResultsPage("<?= get_option('optimizely_token'); ?>","<?= get_option('optimizely_project_id'); ?>");
     });
     </script>
   <div id="tabsTesting">

@@ -1,10 +1,8 @@
 
-function optimizelyResultsPage() {
+function optimizelyResultsPage(apiToken,projectId) {
 	var $ = jQuery;
 
-
-	var projectId = $('#optimizely_project_id').val();  
-	var optly = new OptimizelyAPI($("#optimizely_token").val());  
+	var optly = new OptimizelyAPI(apiToken);  
 	
 	optly.get('projects/' + projectId + '/experiments/', function(response) {
 		optly.wordpressExps = [];
@@ -18,7 +16,7 @@ function optimizelyResultsPage() {
 
 	function getWPExpResults(WPexpArray) {
 		optly.results = [];
-		for (j=0; j<expArray.length; j++){
+		for (j=0; j<WPexpArray.length; j++){
 			optly.get('experiments/' + WPexpArray[j].id + '/results', function(response) { //this is throwing an error
 				 
 				 optly.results.push(response);
