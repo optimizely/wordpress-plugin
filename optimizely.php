@@ -32,10 +32,14 @@ if ( is_admin() )
   require_once dirname( __FILE__ ) . '/admin.php';
   require_once dirname( __FILE__ ) . '/edit.php';
   wp_enqueue_script('jquery');
+  wp_enqueue_script('jquery-ui-core');
+  wp_enqueue_script('jquery-ui-tabs');
   wp_enqueue_script('optimizely_api', plugins_url('optimizely.js', __FILE__));
   wp_enqueue_script('optimizely_editor', plugins_url('edit.js', __FILE__));
   wp_localize_script('optimizely_editor', 'wpAjaxUrl', admin_url('admin-ajax.php'));
   wp_enqueue_script('optimizely_config', plugins_url('config.js', __FILE__));
+  wp_enqueue_style('jquery_ui_styles', plugins_url('jquery-ui.css', __FILE__));
+  wp_enqueue_style('font_awesome_styles',plugins_url('font-awesome.min.css', __FILE__));
   wp_enqueue_style('optimizely_styles', plugins_url('style.css', __FILE__));
 
 
