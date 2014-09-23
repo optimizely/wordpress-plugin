@@ -85,5 +85,5 @@ function optimizely_admin_warnings() {
 }
 
 function optimizely_admin_menu() {
-  add_submenu_page('plugins.php', __('Optimizely Configuration'), __('Optimizely Configuration'), 'manage_options', 'optimizely-config', 'optimizely_conf');
+  add_menu_page( __('Optimizely'), __('Optimizely'), 'manage_options', 'optimizely-config', 'optimizely_conf');
 }
