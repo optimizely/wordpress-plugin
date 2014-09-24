@@ -16,16 +16,27 @@ function optimizelyResultsPage(apiToken,projectId) {
 				});
 			}
 		}
-		
 	});
 
 	//launch winning variation when Launch button is clicked...will this work with 
-	$(".launch").bind('click', function() {
-   		var loserVars = [];
-   		$(this).parents('.opt_results').find("tr:not('.winner')").each(function() {  //[NEED] loser class or use "tr:not('.winner')""
-      		loserVars.push($(this).attr('data-var-id'));
-   			launchWinner(loserVars);
+	$("html").delegate(".launch", 'click', function() {
+			var loserVars = [];
+			$(this).parents('.opt_results').find("tr:not('.winner')").each(function() {  //[NEED] loser class or use "tr:not('.winner')""
+  			loserVars.push($(this).attr('data-var-id'));
+				launchWinner(loserVars);
 		});
+	});
+
+	//pause experiment when pause button is pressed
+	$("html").delegate(".pause", 'click', function() {
+		var expID = $(this).parents('.opt_results').attr("data-exp-id");
+		pauseExperiment(expID);
+	});
+	//start experiment when play button is pressed
+	$("html").delegate(".play", 'click', function() {
+		console.log("clicked play");
+		var expID = $(this).parents('.opt_results').attr("data-exp-id");
+		startExperiment(expID);
 	});
 
 	function getWPExpResults(expObj,cb) {
@@ -51,13 +62,29 @@ function optimizelyResultsPage(apiToken,projectId) {
 		}	
   	}
 
-  	function displayResultsList(exp,i){
+  	function pauseExperiment(experiment) {
+  		console.log("called pauseExperiment");
+    	optly.patch('experiments/' + experiment, {'status': 'Paused'}, function(response) {
+    		console.log('in callback of pauseExperiment');
+      		$(".opt_results[data-exp-id="+ experiment+"]").find(".pause").removeClass("pause").addClass("play");
+      		$(".opt_results[data-exp-id="+ experiment+"]").find(".fa-pause").removeClass("fa-pause").addClass("fa-play");
+    	});
+    }
+
+    function startExperiment(experiment) {
+    	optly.patch('experiments/' + experiment, {'status': 'Running'}, function(response) {
+    		$(".opt_results[data-exp-id="+ experiment+"]").find(".play").removeClass("play").addClass("pause");
+      		$(".opt_results[data-exp-id="+ experiment+"]").find(".fa-play").removeClass("fa-play").addClass("fa-pause");
+      	});
+    }
+
+  	function displayResultsList(exp,i) {
   		$('.loading').hide();
   		$('#results_list').append(buildResultsModuleHTML(exp));
   	}
 
 
-  	function buildResultsModuleHTML(exp){
+  	function buildResultsModuleHTML(exp) {
   		// Set the checkbox html
   		var statusClass = 'play';
   		if(exp.status == "Running"){
