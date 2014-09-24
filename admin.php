@@ -31,6 +31,7 @@ function optimizely_conf() {
 
     $token = $_POST['token'];
     $project_id = $_POST['project_id'];
+    $powered_number = $_POST['powered_number'];
     $project_name = stripcslashes($_POST['project_name']);
     $project_code = stripcslashes($_POST['project_code']);
     $variation_template = stripcslashes($_POST['variation_template']);
@@ -45,6 +46,12 @@ function optimizely_conf() {
       delete_option('optimizely_project_id');
     } else {
       update_option('optimizely_project_id', $project_id);
+    }
+
+    if ( empty($powered_number) ) {
+      delete_option('optimizely_powered_number');
+    } else {
+      update_option('optimizely_powered_number', $powered_number);
     }
 
     if ( empty($project_name) ) {
@@ -85,5 +92,5 @@ function optimizely_admin_warnings() {
 }
 
 function optimizely_admin_menu() {
-  add_menu_page( __('Optimizely'), __('Optimizely'), 'manage_options', 'optimizely-config', 'optimizely_conf');
+  add_menu_page( __('Optimizely'), __('Optimizely'), 'manage_options', 'optimizely-config', 'optimizely_conf',plugin_dir_url( __FILE__ ).'images/optimizely-icon.png');
 }

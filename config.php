@@ -139,12 +139,19 @@
               
               <p>You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.</p>
 
+              <h3>Powered Testing</h3>
+
+                <br />
+                <input id="powered_number" name="powered_number" type="text" maxlength="80" value="<?= get_option('powered_number'); ?>" class="code" />
+
               <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
 
 
             </form>
             <script type="text/javascript">
-            optimizelyConfigPage();
+                optimizelyConfigPage();
+                jQuery( "#tabsTesting" ).tabs();
+                optimizelyResultsPage("<?= get_option('optimizely_token'); ?>","<?= get_option('optimizely_project_id'); ?>");
             </script>
         </div>
     </div>
