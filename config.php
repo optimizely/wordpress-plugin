@@ -14,87 +14,92 @@
         <h2>Wordpress Experiement Results</h2>
         <p>This is a list of all of the experiements that are running headline experiments. <p>
         <div class="button" id="launchWinners">Launch Winners</div>
-        <div id="exp_123456" data-exp-id="" class="opt_results">
-            <div class="header">
-                <div class="title"><i class="fa fa-check-circle fa-fw"></i> This is the Experiement Name</div>
-                <div class="results_toolbar">
-                    <div class="start button">
-                        <i class="fa fa-play fa-fw"></i>
-                    </div>
-                    <div class="edit button">
-                        <i class="fa fa-edit fa-fw"></i>
-                    </div>
-                    <div class="prev button">
-                        <i class="fa fa-eye fa-fw"></i>
-                    </div>
-                    <div class="launch button">
-                        <i class="fa fa-rocket fa-fw"></i>
+        <div id="results_list">
+            <div class="loading">
+                <img src="/wordpress/wp-content/plugins/<?= plugin_basename( dirname(__FILE__).'/images/ajax-loader.gif' ) ?>" />
+            </div>
+            <!-- <div id="exp_123456" data-exp-id="" class="opt_results">
+                <div class="header">
+                    <div class="title"><i class="fa fa-check-circle fa-fw"></i> This is the Experiement Name</div>
+                    <div class="results_toolbar">
+                        <div class="start button">
+                            <i class="fa fa-play fa-fw"></i>
+                        </div>
+                        <div class="edit button">
+                            <i class="fa fa-edit fa-fw"></i>
+                        </div>
+                        <div class="prev button">
+                            <i class="fa fa-eye fa-fw"></i>
+                        </div>
+                        <div class="launch button">
+                            <i class="fa fa-rocket fa-fw"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="variations">
-                <table>
-                    <tr class="first">
-                        <th class="first">VARIATION</th>
-                        <th>VISITORS</th>
-                        <th>CONVERSIONS</th>
-                        <th>CONVERSION RATE</th>
-                        <th>IMPROVEMENT</th>
-                        <th>CHANCE TO BEAT BASELINE</th>
-                    </tr>
-                    <tr class="winner" data-var-id="">
-                        <td class="first">Variation 1</td>
-                        <td>123456</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>1234</td>
-                    </tr>
-                    <tr data-var-id="">
-                        <td class="first">Variation 2</td>
-                        <td>123456</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>1234</td>
-                    </tr>
-                </table>
-            </div>
-        </div> 
+                <div class="variations">
+                    <table>
+                        <tr class="first">
+                            <th class="first">VARIATION</th>
+                            <th>VISITORS</th>
+                            <th>CONVERSIONS</th>
+                            <th>CONVERSION RATE</th>
+                            <th>IMPROVEMENT</th>
+                            <th>CHANCE TO BEAT BASELINE</th>
+                        </tr>
+                        <tr class="winner" data-var-id="">
+                            <td class="first">Variation 1</td>
+                            <td>123456</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>1234</td>
+                        </tr>
+                        <tr data-var-id="">
+                            <td class="first">Variation 2</td>
+                            <td>123456</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>1234</td>
+                        </tr>
+                    </table>
+                </div>
+            </div> 
 
-        <div id="exp_123456" class="opt_results">
-            <div class="header"> <i class="fa fa-clock-o fa-fw"></i> This is the Experiement Name </div>
-            <div class="variations">
-                <table>
-                    <tr class="first">
-                        <th class="first">VARIATION</th>
-                        <th>VISITORS</th>
-                        <th>CONVERSIONS</th>
-                        <th>CONVERSION RATE</th>
-                        <th>IMPROVEMENT</th>
-                        <th>CHANCE TO BEAT BASELINE</th>
-                        <th class="last"></th>
-                    </tr>
-                    <tr>
-                        <td class="first">Variation 1</td>
-                        <td>123456</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>1234</td>
-                        <td class="last"></td>
-                    </tr>
-                    <tr>
-                        <td class="first">Variation 2</td>
-                        <td>123456</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>2.34%</td>
-                        <td>1234</td>
-                        <td class="last"></td>
-                    </tr>
-                </table>
-            </div>
+            <div id="exp_123456" class="opt_results">
+                <div class="header"> <i class="fa fa-clock-o fa-fw"></i> This is the Experiement Name </div>
+                <div class="variations">
+                    <table>
+                        <tr class="first">
+                            <th class="first">VARIATION</th>
+                            <th>VISITORS</th>
+                            <th>CONVERSIONS</th>
+                            <th>CONVERSION RATE</th>
+                            <th>IMPROVEMENT</th>
+                            <th>CHANCE TO BEAT BASELINE</th>
+                            <th class="last"></th>
+                        </tr>
+                        <tr>
+                            <td class="first">Variation 1</td>
+                            <td>123456</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>1234</td>
+                            <td class="last"></td>
+                        </tr>
+                        <tr>
+                            <td class="first">Variation 2</td>
+                            <td>123456</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>2.34%</td>
+                            <td>1234</td>
+                            <td class="last"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div> -->
         </div>  
 
     </div>
