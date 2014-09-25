@@ -18,7 +18,7 @@ function optimizelyResultsPage(apiToken,projectId) {
 		}
 	});
 
-	//launch winning variation when Launch button is clicked...will this work with 
+	//launch winning variation when Launch button is clicked
 	$("html").delegate(".launch", 'click', function() {
 			var loserVars = [];
 			$(this).parents('.opt_results').find("tr:not('.winner')").each(function() {  //[NEED] loser class or use "tr:not('.winner')""
@@ -34,10 +34,14 @@ function optimizelyResultsPage(apiToken,projectId) {
 	});
 	//start experiment when play button is pressed
 	$("html").delegate(".play", 'click', function() {
-		console.log("clicked play");
 		var expID = $(this).parents('.opt_results').attr("data-exp-id");
 		startExperiment(expID);
 	});
+	//archive experiment when archive button is pressed
+	$("html").delegate(".archive", 'click', function() {
+		var expID = $(this).parents('.opt_results').attr("data-exp-id");
+		archiveExperiment(expID);
+	})
 
 	function getWPExpResults(expObj,cb) {
 		expObj.results = [];
@@ -62,20 +66,24 @@ function optimizelyResultsPage(apiToken,projectId) {
 		}	
   	}
 
-  	function pauseExperiment(experiment) {
-  		console.log("called pauseExperiment");
-    	optly.patch('experiments/' + experiment, {'status': 'Paused'}, function(response) {
-    		console.log('in callback of pauseExperiment');
-      		$(".opt_results[data-exp-id="+ experiment+"]").find(".pause").removeClass("pause").addClass("play");
-      		$(".opt_results[data-exp-id="+ experiment+"]").find(".fa-pause").removeClass("fa-pause").addClass("fa-play");
+  	function pauseExperiment(experimentID) {
+    	optly.patch('experiments/' + experimentID, {'status': 'Paused'}, function(response) {
+      		$(".opt_results[data-exp-id="+ experimentID +"]").find(".pause").removeClass("pause").addClass("play");
+      		$(".opt_results[data-exp-id="+ experimentID +"]").find(".fa-pause").removeClass("fa-pause").addClass("fa-play");
     	});
     }
 
-    function startExperiment(experiment) {
-    	optly.patch('experiments/' + experiment, {'status': 'Running'}, function(response) {
-    		$(".opt_results[data-exp-id="+ experiment+"]").find(".play").removeClass("play").addClass("pause");
-      		$(".opt_results[data-exp-id="+ experiment+"]").find(".fa-play").removeClass("fa-play").addClass("fa-pause");
+    function startExperiment(experimentID) {
+    	optly.patch('experiments/' + experimentID, {'status': 'Running'}, function(response) {
+    		$(".opt_results[data-exp-id="+ experimentID +"]").find(".play").removeClass("play").addClass("pause");
+      		$(".opt_results[data-exp-id="+ experimentID +"]").find(".fa-play").removeClass("fa-play").addClass("fa-pause");
       	});
+    }
+
+    function archiveExperiment(experimentID) {
+    	optly.patch('experiments/'+ experimentID, {'status': 'Archived'}, function(response) {
+    		$(".opt_results[data-exp-id="+ experimentID +"]").hide();
+    	});
     }
 
   	function displayResultsList(exp,i) {
@@ -90,6 +98,10 @@ function optimizelyResultsPage(apiToken,projectId) {
   		if(exp.status == "Running"){
   			statusClass = 'pause';
   		}
+  		var previewURL = exp.edit_url+ "?optimizely_x" +exp.id+ "=1";
+  		if (exp.edit_url.indexOf('?') > -1) {
+  			previewURL = exp.edit_url+ "&optimizely_x" +exp.id+ "=1";
+  		} 
 
 		var html = ""+
 		'<div id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results">'+
@@ -99,14 +111,21 @@ function optimizelyResultsPage(apiToken,projectId) {
                     '<div class="'+statusClass+' button">'+
                         '<i class="fa fa-'+statusClass+' fa-fw"></i>'+
                     '</div>'+
-                    '<div class="edit button">'+
-                        '<i class="fa fa-edit fa-fw"></i>'+
-                    '</div>'+
-                    '<div class="prev button">'+
-                        '<i class="fa fa-eye fa-fw"></i>'+
-                    '</div>'+
+                    '<a href="https://www.optimizely.com/edit?experiment_id='+exp.id+'" target="_new">'+
+	                    '<div class="edit button">'+
+	                        '<i class="fa fa-edit fa-fw"></i>'+
+	                    '</div>'+
+	                '</a>'+
+                    '<a href="'+previewURL+'" target="_new">'+
+	                    '<div class="prev button">'+
+	                        '<i class="fa fa-eye fa-fw"></i>'+
+	                    '</div>'+
+                    '</a>'+
                     '<div class="launch button">'+
                         '<i class="fa fa-rocket fa-fw"></i>'+
+                    '</div>'+
+                    '<div class="archive button">'+
+                    	'<i class="fa fa-archive fa=fw"></i>'+
                     '</div>'+
                 '</div>'+
             '</div>'+
