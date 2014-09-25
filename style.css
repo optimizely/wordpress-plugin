@@ -39,7 +39,7 @@ textarea {
 	margin-bottom: 15px;
 }
 
-.header{
+.header, .footer{
 	height: 20px;
 	background: #EAEFF1;
 	border-bottom: solid 1px #d5d5d5;
@@ -104,5 +104,21 @@ td.last i{
 }
 td.last{
 	padding: 0px;
+}
+
+.loading{
+	width: 100%;
+	padding:20px;
+	text-align:center;
+}
+
+.progressbar{
+	border-bottom-right-radius: 15px;
+	border-top-right-radius: 15px;
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	width:80%;
+	display: inline-block;
+	height: 20px;
 }
 
