@@ -159,14 +159,21 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                   '<div class="'+statusClass+' button">'+
                       '<i class="fa fa-'+statusClass+' fa-fw"></i>'+
                   '</div>'+
-                  '<div class="edit button">'+
-                      '<i class="fa fa-edit fa-fw"></i>'+
-                  '</div>'+
-                  '<div class="prev button">'+
-                      '<i class="fa fa-eye fa-fw"></i>'+
-                  '</div>'+
+                  '<a href="https://www.optimizely.com/edit?experiment_id='+exp.id+'" target="_new">'+
+                      '<div class="edit button">'+
+                          '<i class="fa fa-edit fa-fw"></i>'+
+                      '</div>'+
+                  '</a>'+
+                  '<a href="'+previewURL+'" target="_new">'+
+                    '<div class="prev button">'+
+                        '<i class="fa fa-eye fa-fw"></i>'+
+                    '</div>'+
+                  '</a>'+
                   '<div class="launch button">'+
                       '<i class="fa fa-rocket fa-fw"></i>'+
+                  '</div>'+
+                  '<div class="archive button">'+
+                      '<i class="fa fa-archive fa=fw"></i>'+
                   '</div>'+
               '</div>'+
           '</div>'+
