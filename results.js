@@ -16,26 +16,30 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		}
   	});
 
-  	//launch winning variation when Launch button is clicked...will this work with 
-  	$("html").delegate(".launch", 'click', function() {
-  			var loserVars = [];
-  			$(this).parents('.opt_results').find("tr:not('.winner')").each(function() {  //[NEED] loser class or use "tr:not('.winner')""
-    			loserVars.push($(this).attr('data-var-id'));
-  				launchWinner(loserVars);
-  		});
-  	});
+  	//launch winning variation when Launch button is clicked
+  $("html").delegate(".launch", 'click', function() {
+      var loserVars = [];
+      $(this).parents('.opt_results').find("tr:not('.winner')").each(function() {  //[NEED] loser class or use "tr:not('.winner')""
+        loserVars.push($(this).attr('data-var-id'));
+        launchWinner(loserVars);
+    });
+  });
 
-  	//pause experiment when pause button is pressed
-  	$("html").delegate(".pause", 'click', function() {
-  		var expID = $(this).parents('.opt_results').attr("data-exp-id");
-  		pauseExperiment(expID);
-  	});
-  	//start experiment when play button is pressed
-  	$("html").delegate(".play", 'click', function() {
-  		console.log("clicked play");
-  		var expID = $(this).parents('.opt_results').attr("data-exp-id");
-  		startExperiment(expID);
-  	});
+  //pause experiment when pause button is pressed
+  $("html").delegate(".pause", 'click', function() {
+    var expID = $(this).parents('.opt_results').attr("data-exp-id");
+    pauseExperiment(expID);
+  });
+  //start experiment when play button is pressed
+  $("html").delegate(".play", 'click', function() {
+    var expID = $(this).parents('.opt_results').attr("data-exp-id");
+    startExperiment(expID);
+  });
+  //archive experiment when archive button is pressed
+  $("html").delegate(".archive", 'click', function() {
+    var expID = $(this).parents('.opt_results').attr("data-exp-id");
+    archiveExperiment(expID);
+  })
 
   	function getWPExpResults(expObj,cb) {
   		expObj.results = [];
@@ -50,6 +54,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		});
   	}
 
+
   	function launchWinner(loserArray) {
   		for (i=0; i<loserArray.length; i++) {
   			optly.patch('variations/' + loserArray[i], {'is_paused': 'true'}, function(response) {
@@ -59,20 +64,24 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		}	
   	}
 
-  	function pauseExperiment(experiment) {
-  		console.log("called pauseExperiment");
-    	optly.patch('experiments/' + experiment, {'status': 'Paused'}, function(response) {
-    		console.log('in callback of pauseExperiment');
-      		$(".opt_results[data-exp-id="+ experiment+"]").find(".pause").removeClass("pause").addClass("play");
-      		$(".opt_results[data-exp-id="+ experiment+"]").find(".fa-pause").removeClass("fa-pause").addClass("fa-play");
+  	function pauseExperiment(experimentID) {
+    	optly.patch('experiments/' + experimentID, {'status': 'Paused'}, function(response) {
+      		$(".opt_results[data-exp-id="+ experimentID +"]").find(".pause").removeClass("pause").addClass("play");
+      		$(".opt_results[data-exp-id="+ experimentID +"]").find(".fa-pause").removeClass("fa-pause").addClass("fa-play");
     	});
     }
 
-    function startExperiment(experiment) {
-    	optly.patch('experiments/' + experiment, {'status': 'Running'}, function(response) {
-    		$(".opt_results[data-exp-id="+ experiment+"]").find(".play").removeClass("play").addClass("pause");
-      		$(".opt_results[data-exp-id="+ experiment+"]").find(".fa-play").removeClass("fa-play").addClass("fa-pause");
+    function startExperiment(experimentID) {
+    	optly.patch('experiments/' + experimentID, {'status': 'Running'}, function(response) {
+    		$(".opt_results[data-exp-id="+ experimentID +"]").find(".play").removeClass("play").addClass("pause");
+      		$(".opt_results[data-exp-id="+ experimentID +"]").find(".fa-play").removeClass("fa-play").addClass("fa-pause");
       	});
+    }
+
+    function archiveExperiment(experimentID) {
+    	optly.patch('experiments/'+ experimentID, {'status': 'Archived'}, function(response) {
+    		$(".opt_results[data-exp-id="+ experimentID +"]").hide();
+    	});
     }
 
   	function displayResultsList(exp,i) {
@@ -137,6 +146,10 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		if(exp.status == "Running"){
   			statusClass = 'pause';
   		}
+  		var previewURL = exp.edit_url+ "?optimizely_x" +exp.id+ "=1";
+  		if (exp.edit_url.indexOf('?') > -1) {
+  			previewURL = exp.edit_url+ "&optimizely_x" +exp.id+ "=1";
+  		} 
 
 	    var html = ""+
 	    '<div id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results">'+
