@@ -104,39 +104,39 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     function animateProgressBar(exp){
       var progressbar = $('#exp_'+exp.id).find('.progressbar');
       //var averageVisitorPerVariation = getAverageVisitor(exp.results);
-      var averageVisitorPerVariation = 20000,
+      var averageVisitorPerVariation = Math.floor((Math.random() * 20000) + 1),
           poweredPercentage = Math.round((averageVisitorPerVariation/poweredVisitor)*100);
       progressbar.progressbar({
         value: averageVisitorPerVariation,
         max: poweredVisitor
       });
 
-      var progBarColor = '#FF0000';
+      var progBarColor;
       switch(true){
-        case (poweredPercentage < 10):
-          progBarColor = "#FF0011";
+        case (poweredPercentage < 25):
+          progBarColor = "#FF0000";
           break;
-        case (poweredPercentage >= 10 && poweredPercentage < 30):
-          progBarColor = "#FF0011";
+        case (poweredPercentage >= 25 && poweredPercentage < 50):
+          progBarColor = "#FB7948";
           break;
-        case (poweredPercentage >= 30 && poweredPercentage < 50):
-          progBarColor = "#FF0011";
+        case (poweredPercentage >= 50 && poweredPercentage < 75):
+          progBarColor = "#FBA92F";
           break;
-        case (poweredPercentage >= 50 && poweredPercentage < 70):
-          progBarColor = "#FF0011";
-          break;
-        case (poweredPercentage >= 70 && poweredPercentage < 90):
-          progBarColor = "#FF0011";
-          break;
-        case (poweredPercentage >= 90 && poweredPercentage < 100):
-          progBarColor = "#FF0011";
+        case (poweredPercentage >= 75 && poweredPercentage < 100):
+          progBarColor = "#CFF43B";
           break;
         default:
-          progBarColor = "#00FF00";
+          progBarColor = "#90b71c";
           break;
       }
 
       $(progressbar).find('.ui-progressbar-value').css({'background':progBarColor,'border':'1px solid '+progBarColor});
+
+      if(averageVisitorPerVariation >= poweredVisitor){
+        $('.ready').addClass('launch button');
+        $('.ready > i').attr('class','fa fa-rocket fa-fw');
+        $('.ready > span').text('Launch!');
+      }
     }
 
 
@@ -146,33 +146,21 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		if(exp.status == "Running"){
   			statusClass = 'pause';
   		}
-  		var previewURL = exp.edit_url+ "?optimizely_x" +exp.id+ "=1";
-  		if (exp.edit_url.indexOf('?') > -1) {
-  			previewURL = exp.edit_url+ "&optimizely_x" +exp.id+ "=1";
-  		} 
 
 	    var html = ""+
 	    '<div id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results">'+
           '<div class="header">'+
               '<div class="title">'+exp.description+'</div>'+
               '<div class="results_toolbar">'+
-                  '<div class="'+statusClass+' button">'+
+                  '<div title="Start Experiment" class="'+statusClass+' button">'+
                       '<i class="fa fa-'+statusClass+' fa-fw"></i>'+
                   '</div>'+
                   '<a href="https://www.optimizely.com/edit?experiment_id='+exp.id+'" target="_new">'+
-                      '<div class="edit button">'+
+                      '<div title="Edit on Optimizely" class="edit button">'+
                           '<i class="fa fa-edit fa-fw"></i>'+
                       '</div>'+
                   '</a>'+
-                  '<a href="'+previewURL+'" target="_new">'+
-                    '<div class="prev button">'+
-                        '<i class="fa fa-eye fa-fw"></i>'+
-                    '</div>'+
-                  '</a>'+
-                  '<div class="launch button">'+
-                      '<i class="fa fa-rocket fa-fw"></i>'+
-                  '</div>'+
-                  '<div class="archive button">'+
+                  '<div title="Archive Experiment" class="archive button">'+
                       '<i class="fa fa-archive fa=fw"></i>'+
                   '</div>'+
               '</div>'+
@@ -186,11 +174,12 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                       '<th>CONVERSION RATE</th>'+
                       '<th>IMPROVEMENT</th>'+
                   '</tr>';
-                  for(i=0;i < exp.results.length;i++){
+                  for(i=exp.results.length -1;i >= 0;i--){
+                    debugger;
                   	var result = exp.results[i];
                   	html = html+
                   	'<tr class="'+result.status+'" data-var-id="">'+
-                        '<td class="first">'+result.variation_name+'</td>'+
+                        '<td class="first"><a target="_blank" href="'+exp.edit_url+ '?optimizely_x' +exp.id+ '='+result.variation_id+'">'+result.variation_name+'</a></td>'+
                         '<td>'+result.visitors+'</td>'+
                         '<td>'+result.conversions+'</td>'+
                         '<td>'+result.conversion_rate+'</td>'+
@@ -202,7 +191,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
               '</table>'+
           '</div>'+
           '<div class="footer">'+
-              '<div class="progressbar"></div><i class="fa fa-clock-o fa-fw"></i> Not Ready Yet!'+
+              '<div class="progressbar"></div><div class="ready"><i class="fa fa-clock-o fa-fw"></i> <span>Not Ready Yet!</span></div>'+
           '</div>'+
       '</div>';
       return html;
