@@ -65,9 +65,21 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     $.post(wpAjaxUrl, data, function(){
         console.lgo('it worked!');
     });
-
-    
   });
+
+  function updateWPTitle(extID, expTitle, winningVarName){
+    var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
+
+    var data = {
+      action: "update_post_title",
+      post_id: wpPostID,
+      title: winningVarName
+    };
+
+    $.post(wpAjaxUrl, data, function(){
+        $('#exp_'+extID).hide();
+    });
+  }
 
 
   function addSelectChange(expId){ 
