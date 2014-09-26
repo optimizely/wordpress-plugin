@@ -51,6 +51,9 @@ add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
 $DEFAULT_VISITOR_COUNT = 10316;
 add_option('optimizely_visitor_count', $DEFAULT_VISITOR_COUNT);
 
+add_option('optimizely_launch_auto', false);
+
+
 // Force Optimizely to load first in the head tag
 add_action('wp_head', 'add_optimizely_script', -1000);
 

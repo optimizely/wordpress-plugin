@@ -69,6 +69,12 @@
 
               <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
 
+              <h3>Launch Winners Automatically</h3>
+              <p>When Optimizely has determined a winner and each variation has recieved enough visitors as defined above, winners will automatically be launched.</p>
+                <input id="optimizely_launch_auto" name="optimizely_launch_auto" value="checked" type="checkbox" <?= get_option('optimizely_launch_auto') ?> />Yes launch winners automatically!
+
+              <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
+
 
             </form>
             <script type="text/javascript">

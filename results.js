@@ -51,6 +51,37 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     window.open('https://www.optimizely.com/results2?experiment_id='+expID)
   });
 
+  $("html").delegate(".headline", 'click', function() {
+    var expID = $(this).parents('.opt_results').attr("data-exp-id");
+    var expTitle = $(this).parents('.opt_results').attr("data-exp-title");
+    var winningVarName = 'This is soooooo cool, its working!!';
+    var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
+
+    var data = {
+      action: "update_post_title",
+      post_id: wpPostID,
+      title: winningVarName
+    };
+
+    $.post(wpAjaxUrl, data, function(){
+        console.lgo('it worked!');
+    });
+  });
+
+  function updateWPTitle(extID, expTitle, winningVarName){
+    var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
+
+    var data = {
+      action: "update_post_title",
+      post_id: wpPostID,
+      title: winningVarName
+    };
+
+    $.post(wpAjaxUrl, data, function(){
+        $('#exp_'+extID).hide();
+    });
+  }
+
 
   function addSelectChange(expId){ 
     $('#goal_'+expId).bind('change', function(){ 
@@ -71,6 +102,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
         var goalNameArray = [];
         response.sort(compare);
         expObj.results = response;
+        expObj.avgVisitorCount = getAverageVisitor(expObj.results);
   			cb(expObj);
   		});
   	}
@@ -191,7 +223,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     }
 
     function getReadyButton(isWinner,avgVisitors,results){
-      if(isWinner){
+      if(isWinner && avgVisitors >= poweredVisitor){
         // Show Launch Button
         return '<div class="ready launch button"><i class="fa fa-rocket fa-fw"></i> <span>Launch Winner!</span></div>';
       }else if(avgVisitors >= poweredVisitor && checkIfOriginalIsWinner(results,avgVisitors)){
@@ -214,6 +246,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   			statusClass = 'pause';
   		}
       var expTitle = exp.description;
+      expTitle = expTitle.substring(expTitle.indexOf(']:')+3);
       if(expTitle.length > 73){
         expTitle = expTitle.substring(0,72)+'...';
       }
@@ -251,6 +284,9 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                   '</div>'+
                   '<div title="Archive Experiment" class="archive button">'+
                       '<i class="fa fa-archive fa=fw"></i>'+
+                  '</div>'+
+                  '<div title="Change Headline Experiment" class="headline button">'+
+                      '<i class="fa fa-anchor fa=fw"></i>'+
                   '</div>'+
               '</div>'+
           '</div>'+

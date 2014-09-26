@@ -70,6 +70,7 @@ function title_variations_add()
 add_action( 'save_post', 'title_variations_save' );
 function title_variations_save($post_id)
 {
+
 	if( !current_user_can( 'edit_post' ) ) return;
 
 	for ($i = 1; $i <= NUM_VARIATIONS; $i++) {
@@ -94,6 +95,25 @@ function update_experiment_meta()
 {
 	$post_id = $_REQUEST["post_id"];
 	title_variations_save($post_id);
+}
+
+add_action( 'wp_ajax_update_post_title', 'update_post_title' );
+function update_post_title()
+{
+    error_log('Hello AJAX UPDATE POST', 3, "/var/tmp/my-errors.log");
+    $post_id = $_REQUEST["post_id"];
+    $winning_var_title = $_REQUEST["title"];
+    error_log($post_id, 3, "/var/tmp/my-errors.log");
+    error_log($winning_var_title, 3, "/var/tmp/my-errors.log");
+
+    $my_post = array(
+      'ID'           => (int)$post_id,
+      'post_title' => $winning_var_title
+  );
+
+    error_log($my_post, 3, "/var/tmp/my-errors.log");
+
+    wp_update_post( $my_post );
 }
 
 ?>

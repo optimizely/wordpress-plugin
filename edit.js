@@ -69,9 +69,9 @@ function optimizelyEditPage() {
   */
   function createExperiment() {
     $('#optimizely_create').text('Creating...');
-
     experiment = {};
-    experiment.description = "Wordpress: " + $('#title').val();
+    post_id = $('#post_ID').val();
+    experiment.description = "Wordpress ["+post_id+"]: " + $('#title').val();
     experiment.edit_url = $('#sample-permalink').text();
 
     optly.post('projects/' + projectId + '/experiments', experiment, onExperimentCreated);
