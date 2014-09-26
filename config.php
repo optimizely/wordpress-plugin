@@ -2,6 +2,9 @@
   <script>
     jQuery(function() {
       jQuery( "#tabsTesting" ).tabs();
+      jQuery( document ).tooltip({
+          track: true
+        });
       optimizelyResultsPage("<?= get_option('optimizely_token'); ?>","<?= get_option('optimizely_project_id'); ?>",20000);
     });
     </script>

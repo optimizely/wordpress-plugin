@@ -35,6 +35,7 @@ if ( is_admin() )
   wp_enqueue_script('jquery-ui-core');
   wp_enqueue_script('jquery-ui-tabs');
   wp_enqueue_script('jquery-ui-progressbar');
+  wp_enqueue_script('jquery-ui-tooltip');
   wp_enqueue_script('optimizely_api', plugins_url('optimizely.js', __FILE__));
   wp_enqueue_script('optimizely_editor', plugins_url('edit.js', __FILE__));
   wp_localize_script('optimizely_editor', 'wpAjaxUrl', admin_url('admin-ajax.php'));
