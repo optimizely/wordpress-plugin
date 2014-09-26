@@ -116,7 +116,8 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
         		optly.variation.expName = $('tr[data-var-id="'+optly.variation.id+'"]').parents('.opt_results').attr('data-exp-title');
       		});
   		}
-  		
+  		var experimentID = $('tr[data-var-id="'+optly.variation.id+'"]').parents('.opt_results').attr('data-exp-id');
+  		updateWPTitle(experimentID, optly.variation.expName, winningVar);
   	}
 
   	function pauseExperiment(experimentID) {
