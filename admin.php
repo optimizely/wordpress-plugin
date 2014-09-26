@@ -31,7 +31,7 @@ function optimizely_conf() {
 
     $token = $_POST['token'];
     $project_id = $_POST['project_id'];
-    $powered_number = $_POST['powered_number'];
+    $optimizely_visitor_count = $_POST['optimizely_visitor_count'];
     $project_name = stripcslashes($_POST['project_name']);
     $project_code = stripcslashes($_POST['project_code']);
     $variation_template = stripcslashes($_POST['variation_template']);
@@ -48,10 +48,10 @@ function optimizely_conf() {
       update_option('optimizely_project_id', $project_id);
     }
 
-    if ( empty($powered_number) ) {
-      delete_option('optimizely_powered_number');
+    if ( empty($optimizely_visitor_count) ) {
+      delete_option('optimizely_visitor_count');
     } else {
-      update_option('optimizely_powered_number', $powered_number);
+      update_option('optimizely_visitor_count', $optimizely_visitor_count);
     }
 
     if ( empty($project_name) ) {

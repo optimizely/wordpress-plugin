@@ -16,7 +16,7 @@ textarea {
 
 .header .title{
 	display: inline-block;
-	width: 70%;
+	width: 60%;
 }
 
 .header .title i{
@@ -30,12 +30,14 @@ textarea {
 
 .header .results_toolbar{
 	display: inline-block;
-	width: 30%;
+	width: 40%;
 	float: right;
 	text-align: right;
 }
 
-
+.variationrow{
+	display:none;
+}
 
 #launchWinners{
 	margin-bottom: 15px;

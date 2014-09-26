@@ -5,7 +5,7 @@
       jQuery( document ).tooltip({
           track: true
         });
-      optimizelyResultsPage("<?= get_option('optimizely_token'); ?>","<?= get_option('optimizely_project_id'); ?>",20000);
+      optimizelyResultsPage("<?= get_option('optimizely_token'); ?>","<?= get_option('optimizely_project_id'); ?>",<?= get_option('optimizely_visitor_count'); ?>);
     });
     </script>
   <div id="tabsTesting">
@@ -16,7 +16,7 @@
     <div id="tabs-1">
         <h2>Wordpress Headline Results</h2>
         <p>This is a list of all of the experiments that are running headline tests.<p>
-        <div class="button" id="launchWinners">Launch Winners</div>
+        <!-- <div class="button" id="launchWinners">Launch Winners</div> -->
         <div id="results_list">
             <div class="loading">
                 Loading Results.....<br>
@@ -62,9 +62,10 @@
               <p>You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.</p>
 
               <h3>Powered Testing</h3>
-
+              <p>By default we use a sample size of 10,316 per variation to be considered powered. thsi is based on a baseline conversion rate of 3%, a minimum relative change of 20%, 80% statistical power, 95% statistical significance and 1-tailed test. If you need to change this number use the <a href="https://www.optimizely.com/resources/sample-size-calculator">Sample Size Calculator</a> to adjust to your needs</p>
+                Visitors Per Variation
                 <br />
-                <input id="powered_number" name="powered_number" type="text" maxlength="80" value="<?= get_option('powered_number'); ?>" class="code" />
+                <input id="powered_number" name="optimizely_visitor_count" type="text" maxlength="80" value="<?= get_option('optimizely_visitor_count') ?>" class="code" />
 
               <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
 
