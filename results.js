@@ -25,9 +25,10 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       var loserVars = [];
       $(this).parents('.opt_results').find(".variationrow:visible:not('.winner')").each(function() {
         loserVars.push($(this).attr('data-var-id'));
-        launchWinner(loserVars);
+      });
+      var winningVar = $(this).parents(".opt_results").find('.winner').text();
+      launchWinner(loserVars, winningVar);
     });
-  });
 
   //pause experiment when pause button is pressed
   $("html").delegate(".pause", 'click', function() {
@@ -75,16 +76,15 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   	}
 
 
-  	function launchWinner(loserArray) {
+  	function launchWinner(loserArray, winningVar) {
   		for (i=0; i<loserArray.length; i++) {
   			optly.patch('variations/' + loserArray[i], {'is_paused': true}, function(response) {
   				console.log('just launched winner');
         		optly.variation = response;
         		optly.variation.expName = $('tr[data-var-id="'+optly.variation.id+'"]').parents('.opt_results').attr('data-exp-title');
-        		//function to update UI
       		});
   		}
-
+  		
   	}
 
   	function pauseExperiment(experimentID) {
