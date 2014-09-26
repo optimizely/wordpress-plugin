@@ -7,15 +7,14 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   	//fetch only Wordpress experiments from project
   	optly.get('projects/' + projectId + '/experiments/', function(response) {
   		optly.wordpressExps = [];
-      //i<response.length && 
       var counter = 0;
-  		for (i=0; counter<20; i++) {
-        //response[i].description.indexOf('Wordpress') > -1 && 
-  			if (response[i].status != 'Archived' && response[i].status != 'Draft') {
-          counter++;
+  		for (i=0; i<response.length; i++) {
+  			if (response[i].description.indexOf('Wordpress') > -1 && response[i].status != 'Archived' && response[i].status != 'Draft') {
   				getWPExpResults(response[i],function(exp){
-  					displayResultsList(exp,i);
-            
+  					displayResultsList(exp,i,function(){
+              showGoalSelected(exp.id);
+              addSelectChange(exp.id);
+            });
   				});
   			}
   		}
@@ -49,7 +48,17 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   $("html").delegate(".fullresults", 'click', function() {
     var expID = $(this).parents('.opt_results').attr("data-exp-id");
     window.open('https://www.optimizely.com/results2?experiment_id='+expID)
-  })
+  });
+
+
+  function addSelectChange(expId){ 
+    $('#goal_'+expId).bind('change', function(){ 
+      showGoalSelected(expId);
+    });
+  } 
+
+  
+
 
     function compare(a,b) {
       if (a.goal_name < b.goal_name)
@@ -98,11 +107,11 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     	});
     }
 
-  	function displayResultsList(exp,i) {
+  	function displayResultsList(exp,i,cb) {
   		$('.loading').hide();
   		$('#results_list').append(buildResultsModuleHTML(exp));
       animateProgressBar(exp);
-      
+      cb();
   	}
 
     function getAverageVisitor(results){
@@ -144,7 +153,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       }
 
       $(progressbar).find('.ui-progressbar-value').css({'background':progBarColor,'border':'1px solid '+progBarColor});
-      $(progressbar).attr('title',averageVisitorPerVariation+' / '+poweredVisitor+' visitors');
+      $(progressbar).attr('title',Math.round(averageVisitorPerVariation)+' / '+poweredVisitor+' visitors');
 
       if(checkIfOriginalIsWinner(exp.results,averageVisitorPerVariation)){
 
@@ -165,6 +174,12 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       return 0;
     }
 
+    function showGoalSelected(expID){
+      $('#exp_'+expID).find('.variationrow').hide();
+      var goalClass = $('#goal_'+expID).val();
+      $('#exp_'+expID).find('.'+goalClass).show();
+
+    }
     function checkIfOriginalIsWinner(results,avgVisitor){
       var origVarId = 0;
       for(var i=0;i<results.length;i++){
@@ -198,18 +213,30 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		if(exp.status == "Running"){
   			statusClass = 'pause';
   		}
-      debugger;
+      var expTitle = exp.description;
+      if(expTitle.length > 73){
+        expTitle = expTitle.substring(0,72)+'...';
+      }
 	    var html = ""+
 	    '<div id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results">'+
           '<div class="header">'+
-              '<div class="title">'+exp.description+'</div>'+
+              '<div class="title">'+expTitle+'</div>'+
               '<div class="results_toolbar">'+
-                  '<select name="goal" id="goal_"'+statusClass+'>'+
-                    '<option>Slower</option>'+
-                    '<option>Slow</option>'+
-                    '<option selected="selected">Medium</option>'+
-                    '<option>Fast</option>'+
-                    '<option>Faster</option>'+
+                  '<select class="goalSelector" id="goal_'+exp.id+'">';
+                    var goalIdArray = [];
+                    for(var i = 0;i <exp.results.length;i++){
+                      var result = exp.results[i];
+                      console.log($.inArray(goalIdArray,result.goal_id));
+                      var selected = '';
+                      if(goalIdArray.indexOf(result.goal_id) == -1){
+                        if(result.goal_name == 'Views to page'){
+                          selected = 'selected';
+                        }
+                        html += '<option value="'+result.goal_id+'" '+selected+'>'+result.goal_name+'</option>';
+                        goalIdArray.push(result.goal_id);
+                      } 
+                    }
+                    html +=
                   '</select>'+
                   '<div title="Start Experiment" class="'+statusClass+' button">'+
                       '<i class="fa fa-'+statusClass+' fa-fw"></i>'+
@@ -255,7 +282,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                       isWinner = true;
                     }
                   	html = html+
-                  	'<tr class="'+result.status+'" id="variation_'+result.variation_id+'">'+
+                  	'<tr class="variationrow '+result.status+' '+result.goal_id+'" id="variation_'+result.variation_id+'">'+
                         '<td class="first"><a target="_blank" href="'+exp.edit_url+ '?optimizely_x' +exp.id+ '='+result.variation_id+'">'+result.variation_name+'</a></td>'+
                         '<td>'+result.visitors+'</td>'+
                         '<td>'+result.conversions+'</td>'+
@@ -274,5 +301,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       '</div>';
       return html;
 	}
+
+
 
 }

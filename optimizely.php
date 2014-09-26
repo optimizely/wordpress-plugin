@@ -48,6 +48,8 @@ if ( is_admin() )
 
 $DEFAULT_VARIATION_TEMPLATE = '$(".post-$POST_ID .entry-title a").text("$NEW_TITLE");';
 add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
+$DEFAULT_VISITOR_COUNT = 10316;
+add_option('optimizely_visitor_count', $DEFAULT_VISITOR_COUNT);
 
 // Force Optimizely to load first in the head tag
 add_action('wp_head', 'add_optimizely_script', -1000);
