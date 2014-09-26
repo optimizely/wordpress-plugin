@@ -21,9 +21,9 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   	});
 
   	//launch winning variation when Launch button is clicked
-  $("html").delegate(".launch", 'click', function() {
+  	$("html").delegate(".launch", 'click', function() {
       var loserVars = [];
-      $(this).parents('.opt_results').find("tr:not('.winner')").each(function() {  //[NEED] loser class or use "tr:not('.winner')""
+      $(this).parents('.opt_results').find(".variationrow:visible:not('.winner')").each(function() {
         loserVars.push($(this).attr('data-var-id'));
         launchWinner(loserVars);
     });
@@ -76,9 +76,6 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     });
   } 
 
-  
-
-
     function compare(a,b) {
       if (a.goal_name < b.goal_name)
          return -1;
@@ -100,11 +97,14 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
 
   	function launchWinner(loserArray) {
   		for (i=0; i<loserArray.length; i++) {
-  			optly.patch('variations/' + loserArray[i], {'is_paused': 'true'}, function(response) {
-        			optly.experiment = response;
-        			//function to update UI
+  			optly.patch('variations/' + loserArray[i], {'is_paused': true}, function(response) {
+  				console.log('just launched winner');
+        		optly.variation = response;
+        		optly.variation.expName = $('tr[data-var-id="'+optly.variation.id+'"]').parents('.opt_results').attr('data-exp-title');
+        		//function to update UI
       		});
-  		}	
+  		}
+
   	}
 
   	function pauseExperiment(experimentID) {
@@ -306,7 +306,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                       isWinner = true;
                     }
                   	html = html+
-                  	'<tr class="variationrow '+result.status+' '+result.goal_id+'" id="variation_'+result.variation_id+'">'+
+                  	'<tr class="variationrow '+result.status+' '+result.goal_id+'" id="variation_'+result.variation_id+'" data-var-id="'+result.variation_id+'">'+
                         '<td class="first"><a target="_blank" href="'+exp.edit_url+ '?optimizely_x' +exp.id+ '='+result.variation_id+'">'+result.variation_name+'</a></td>'+
                         '<td>'+result.visitors+'</td>'+
                         '<td>'+result.conversions+'</td>'+
@@ -325,7 +325,5 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       '</div>';
       return html;
 	}
-
-
 
 }
