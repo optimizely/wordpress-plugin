@@ -31,6 +31,7 @@ function optimizely_conf() {
 
     $token = $_POST['token'];
     $project_id = $_POST['project_id'];
+    $optimizely_launch_auto = $_POST['optimizely_launch_auto'];
     $optimizely_visitor_count = $_POST['optimizely_visitor_count'];
     $project_name = stripcslashes($_POST['project_name']);
     $project_code = stripcslashes($_POST['project_code']);
@@ -40,6 +41,12 @@ function optimizely_conf() {
       delete_option('optimizely_token');
     } else {
       update_option('optimizely_token', $token);
+    }
+
+    if ( empty($optimizely_launch_auto) ) {
+      delete_option('optimizely_launch_auto');
+    } else {
+      update_option('optimizely_launch_auto', $optimizely_launch_auto);
     }
 
     if ( empty($project_id) ) {
