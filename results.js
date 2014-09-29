@@ -26,8 +26,10 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       $(this).parents('.opt_results').find(".variationrow:visible:not('.winner')").each(function() {
         loserVars.push($(this).attr('data-var-id'));
       });
-      var winningVar = $(this).parents(".opt_results").find('.winner').text();
-      launchWinner(loserVars, winningVar);
+      var winningVar = $(this).parents(".opt_results").find('.winner .first a').text();
+      var expID = $(this).parents('.opt_results').attr("data-exp-id");
+      var expTitle = $(this).parents('.opt_results').attr("data-exp-title");
+      launchWinner(loserVars, winningVar,expID,expTitle);
     });
 
   //pause experiment when pause button is pressed
@@ -51,25 +53,10 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     window.open('https://www.optimizely.com/results2?experiment_id='+expID)
   });
 
-  $("html").delegate(".headline", 'click', function() {
-    var expID = $(this).parents('.opt_results').attr("data-exp-id");
-    var expTitle = $(this).parents('.opt_results').attr("data-exp-title");
-    var winningVarName = 'This is soooooo cool, its working!!';
-    var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
-
-    var data = {
-      action: "update_post_title",
-      post_id: wpPostID,
-      title: winningVarName
-    };
-
-    $.post(wpAjaxUrl, data, function(){
-        console.lgo('it worked!');
-    });
-  });
 
   function updateWPTitle(extID, expTitle, winningVarName){
     var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
+    
 
     var data = {
       action: "update_post_title",
@@ -78,7 +65,10 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     };
 
     $.post(wpAjaxUrl, data, function(){
-        $('#exp_'+extID).hide();
+        $('#exp_'+extID).fadeOut(1000,function(){
+          $('#successMessage').html('<h3>You have succesfully launched the new headline</h3> Old Headline: '+expTitle+'<br>New Headline: '+winningVarName);
+          $('#successMessage').show();
+        });
     });
   }
 
@@ -108,7 +98,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   	}
 
 
-  	function launchWinner(loserArray, winningVar) {
+  	function launchWinner(loserArray, winningVar, expID,expTitle) {
   		for (i=0; i<loserArray.length; i++) {
   			optly.patch('variations/' + loserArray[i], {'is_paused': true}, function(response) {
   				console.log('just launched winner');
@@ -116,8 +106,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
         		optly.variation.expName = $('tr[data-var-id="'+optly.variation.id+'"]').parents('.opt_results').attr('data-exp-title');
       		});
   		}
-  		var experimentID = $('tr[data-var-id="'+optly.variation.id+'"]').parents('.opt_results').attr('data-exp-id');
-  		updateWPTitle(experimentID, optly.variation.expName, winningVar);
+  		updateWPTitle(expID, expTitle, winningVar);
   	}
 
   	function pauseExperiment(experimentID) {
@@ -142,7 +131,16 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
 
   	function displayResultsList(exp,i,cb) {
   		$('.loading').hide();
-  		$('#results_list').append(buildResultsModuleHTML(exp));
+      var html = buildResultsModuleHTML(exp);
+      // TODO: Take this out!
+      if($(html).find('.winner').length > 0){
+        $('#winners').show();
+        $('#winners').append(html);
+      }else{
+        $('#stillwaiting').show();
+        $('#stillwaiting').append(html);
+      }
+  		//$('#results_list').append(buildResultsModuleHTML(exp));
       animateProgressBar(exp);
       cb();
   	}
@@ -285,9 +283,6 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                   '</div>'+
                   '<div title="Archive Experiment" class="archive button">'+
                       '<i class="fa fa-archive fa=fw"></i>'+
-                  '</div>'+
-                  '<div title="Change Headline Experiment" class="headline button">'+
-                      '<i class="fa fa-anchor fa=fw"></i>'+
                   '</div>'+
               '</div>'+
           '</div>'+

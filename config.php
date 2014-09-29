@@ -16,8 +16,20 @@
     <div id="tabs-1">
         <h2>Wordpress Headline Results</h2>
         <p>This is a list of all of the experiments that are running headline tests.<p>
+        <div id="successMessage">
+
+        </div>
         <!-- <div class="button" id="launchWinners">Launch Winners</div> -->
         <div id="results_list">
+            <div id="winners">
+                <h2>Winners</h2>
+
+
+            </div>
+            <div id="stillwaiting">
+                <h2>Almost There!</h2>
+
+            </div>
             <div class="loading">
                 Loading Results.....<br>
                 <img src="<?= plugin_dir_url( __FILE__ ).'images/ajax-loader.gif' ?>" />

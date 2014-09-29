@@ -28,6 +28,10 @@ textarea {
 	background-color: #D9FBD6;
 }
 
+#winners, #stillwaiting{
+	display:none;
+}
+
 .header .results_toolbar{
 	display: inline-block;
 	width: 40%;
@@ -149,5 +153,13 @@ td.last{
 .ready.launch{
 	background-color:#1964AF;
 	color:#ffffff; 
+}
+
+#successMessage{
+	display:none;
+	width: 100%;
+	padding:10px;
+	background-color: #D9FBD6;
+	
 }
 
