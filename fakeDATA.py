@@ -4,27 +4,27 @@ from datetime import datetime
 import time
 import requests
 
-#for i in xrange(0, 3000):
-#	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"http://localhost:8080/wordpress/2014/09/25/time-lapse-se", "x2010620328":"2010010298"}
+#for i in xrange(0, 100):
+#	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"http://localhost:8080/wordpress/2014/09/25/jim-gaffigan/", "x2015740096":"2026220524"}
 #	r = requests.get('https://1918280687.log.optimizely.com/event', params=parameters)
 
-for i in xrange(0, 2000):
-	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"http://localhost:8080/wordpress/2014/09/25/time-lapse-se", "x2010620328":"2010010299"}
+for i in xrange(0, 110):
+	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"http://localhost:8080/wordpress/2014/09/25/jim-gaffigan/", "x2015740096":"2026220525"}
 	r = requests.get('https://1918280687.log.optimizely.com/event', params=parameters)
 
-#for i in xrange(0, 200):
-#	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"http://localhost:8080/wordpress/2014/09/25/time-lapse-seams-hyperlapse/", "x2010620328":"2018780212"}
+for i in xrange(0, 120):
+	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"http://localhost:8080/wordpress/2014/09/25/jim-gaffigan/", "x2015740096":"1999220140"}
+	r = requests.get('https://1918280687.log.optimizely.com/event', params=parameters)
+
+
+#for i in xrange(0, 900):
+#	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"engagement", "x2015740096":"2026220524"}
 #	r = requests.get('https://1918280687.log.optimizely.com/event', params=parameters)
 
-
-for i in xrange(0, 9000):
-	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"engagement", "x2010620328":"2010010298"}
+for i in xrange(0, 890):
+	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"engagement", "x2015740096":"2026220525"}
 	r = requests.get('https://1918280687.log.optimizely.com/event', params=parameters)
 
-for i in xrange(0, 2000):
-	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"engagement", "x2010620328":"2010010299"}
+for i in xrange(0, 880):
+	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"engagement", "x2015740096":"1999220140"}
 	r = requests.get('https://1918280687.log.optimizely.com/event', params=parameters)
-
-#for i in xrange(0, 2000):
-#	parameters = {"a":"1918280687","u":"oeu"+str(i + time.time()), "n":"engagement", "x2010620328":"2018780212"}
-#	r = requests.get('https://1918280687.log.optimizely.com/event', params=parameters)
