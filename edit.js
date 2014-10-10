@@ -35,7 +35,6 @@ function optimizelyEditPage() {
     // ID and links
     $("#optimizely_experiment_id").val(experiment.id);
     $('#optimizely_view').attr('href','https://www.optimizely.com/edit?experiment_id=' + experiment.id);
-    $('#optimizely_results').attr('href','https://www.optimizely.com/results?experiment_id=' + experiment.id);
 
     // Status and buttons
     $("#optimizely_experiment_status").val(experiment.status);

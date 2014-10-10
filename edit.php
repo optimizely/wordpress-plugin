@@ -40,7 +40,7 @@ function title_variations_render($post) {
 			<a id="optimizely_view" class="button" target="_blank">View on Optimizely</a>
 			<p>Status: <b id="optimizely_experiment_status_text"><?= get_post_meta($post->ID, 'optimizely_experiment_status', true); ?></b>
 			<br />
-			Results: <a id="optimizely_results" target="_blank">View Results</a></p>
+			Results: <a href="<?php menu_page_url('optimizely-config'); ?>" id="optimizely_results" target="_blank">View Results</a></p>
 		</div>
 		<input type="hidden" id="optimizely_token" value="<?= get_option('optimizely_token'); ?>" />
 		<input type="hidden" id="optimizely_project_id" value="<?= get_option('optimizely_project_id'); ?>" />

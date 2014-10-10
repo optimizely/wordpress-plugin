@@ -21,8 +21,8 @@
         </div>
         <!-- <div class="button" id="launchWinners">Launch Winners</div> -->
         <div id="results_list">
-            <div id="winners">
-                <h2>Winners</h2>
+            <div id="ready">
+                <h2>Ready</h2>
 
 
             </div>
