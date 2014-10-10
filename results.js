@@ -20,7 +20,6 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		}
   	});
 
-  	
 
   //pause experiment when pause button is pressed
   $("html").delegate(".pause", 'click', function() {
@@ -82,7 +81,6 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     // AJAX function that updates the title in Wordpress
     function launchWinner(expID, expTitle, winningVarName){
       // Get the ID of the Wordpress post
-      debugger;
       var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
       var data = {
         action: "update_post_title",
@@ -139,6 +137,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       cb();
   	}
 
+    // Loops through the variations and gets an average of the visitor count for powered testing
     function getAverageVisitor(results){
       var totalVisitors = 0;
       for(var i=0;i < results.length;i++){
@@ -148,13 +147,12 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       return totalVisitors/results.length;
     }
 
+    // Uses the average visitor count to create the progress bar
     function animateProgressBar(exp){
-      var progressbar = $('#exp_'+exp.id).find('.progressbar');
-      var averageVisitorPerVariation = getAverageVisitor(exp.results),
-      //var averageVisitorPerVariation = Math.floor((Math.random() * 20000) + 1),
-          poweredPercentage = Math.round((averageVisitorPerVariation/poweredVisitor)*100);
+      var progressbar = $('#exp_'+exp.id).find('.progressbar'),
+          poweredPercentage = Math.round((exp.avgVisitorCount/poweredVisitor)*100);
       progressbar.progressbar({
-        value: averageVisitorPerVariation,
+        value: exp.avgVisitorCount,
         max: poweredVisitor
       });
 
@@ -178,14 +176,15 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       }
 
       $(progressbar).find('.ui-progressbar-value').css({'background':progBarColor,'border':'1px solid '+progBarColor});
-      $(progressbar).attr('title',Math.round(averageVisitorPerVariation)+' / '+poweredVisitor+' visitors');
+      $(progressbar).attr('title',Math.round(exp.avgVisitorCount)+' / '+poweredVisitor+' visitors');
     }
 
+    // Used to convert the value returned by the results API to a rounded percentage
     function getRoundedPercentage(num){
       return (num*100).toFixed(2)+"%";
     }
 
-
+    // Changes the goal results based on what is selcted
     function showGoalSelected(expID){
       $('#exp_'+expID).find('.variationrow').hide();
       var goalClass = $('#goal_'+expID).val();
@@ -193,7 +192,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
 
     }
     
-
+    // Main function that builds the HTNML for each results block
   	function buildResultsModuleHTML(exp) {
   		// Set the checkbox html
   		var statusClass = 'play';
