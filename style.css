@@ -1,54 +1,54 @@
-.code {
+#optimizely-tabs .code {
 	width: 100%;
 	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
 	font-size: 1.5em;
 }
 
-textarea {
+#optimizely-tabs textarea {
 	width: 100%;
 }
 
-.opt_results{
+#optimizely-tabs .opt_results{
 	border: solid 1px #d5d5d5;
 	margin-bottom: 30px;
 	box-shadow: 4px 4px 5px 2px rgba(36,36,0,0.1);
 }
 
-.header .title{
+#optimizely-tabs .header .title{
 	display: inline-block;
 	width: 60%;
 }
 
-.header .title i{
+#optimizely-tabs .header .title i{
 	color:green;
 	font-size:20px
 }
 
-.winner{
+#optimizely-tabs .winner{
 	background-color: #D9FBD6;
 }
 
-#winners, #stillwaiting{
+#optimizely-tabs #winners, #optimizely-tabs #stillwaiting{
 	display:none;
 }
 
-.header .results_toolbar{
+#optimizely-tabs .header .results_toolbar{
 	display: inline-block;
 	width: 40%;
 	float: right;
 	text-align: right;
 }
 
-.variationrow{
+#optimizely-tabs .variationrow{
 	display:none;
 	border-bottom: 1px solid #000;
 }
 
-#launchWinners{
+#optimizely-tabs #launchWinners{
 	margin-bottom: 15px;
 }
 
-.header, .footer{
+#optimizely-tabs .header, #optimizely-tabs .footer{
 	height: 20px;
 	background: #EAEFF1;
 	padding: 5px 15px 5px 10px;
@@ -62,77 +62,78 @@ textarea {
 	
 }
 
-.header .title{
+#optimizely-tabs .header .title{
 	margin-top:5px;
 }
 
-.header{
+#optimizely-tabs .header{
 	border-bottom: solid 2px #999;
 }
 
-.results_toolbar .button{
+#optimizely-tabs .results_toolbar .button{
 	margin-left: 5px;
 }
 
-td,th{
+#optimizely-tabs td,#optimizely-tabs th{
 	padding:10px 30px 10px 10px;
 
 }
 
-.variations{
+#optimizely-tabs .variations{
 	background-color: gray;
 }
 
-tr{
+#optimizely-tabs tr{
 	background-color: #FFFFFF;
 	
 }
 
-table{
+#optimizely-tabs table{
 	width: 100%;
 	text-align: right;
 	border-spacing: 0pt;
 }
 
-td.first{
+#optimizely-tabs td.first{
 	width: 20%
 }
 
-td.last{
+#optimizely-tabs td.last{
 	border-right: none;
 	text-align: center;
 }
 
-#tabsTesting{
+#optimizely-tabs{
 	background-color: white;
+	z-index: 1;
 }
 
-.tabs-header{
+#optimizely-tabs .tabs-header{
 	background-color: white;
 	border: none;
 	background: #f7f7f7;
 }
 
-th{
+#optimizely-tabs th{
 	background-color: #F8F8F8
 }
 
-td.last i{
+#optimizely-tabs td.last i{
 	color:green;
 	font-size:25px;
 	
 }
-td.last{
+#optimizely-tabs td.last{
 	padding: 0px;
 }
 
-.loading{
+#optimizely-tabs .loading{
 	width: 100%;
 	padding:20px;
 	text-align:center;
 }
 
-.progressbar{
+#optimizely-tabs .progressbar{
 	border-bottom-right-radius: 15px;
 	border-top-right-radius: 15px;
 	border-top-left-radius: 15px;
@@ -144,32 +145,38 @@ td.last{
 	margin-right:50px;
 }
 
-.ready, .not-ready{
+#optimizely-tabs .ready, .not-ready{
 	display: inline-block;
 	height: 20px;
 	width: 140px;
 	text-align: center;
 }
 
-.ready i{
+#optimizely-tabs .ready i{
 	color: #1964AF;
 }
 
-.button.winner{
+#optimizely-tabs .button.winner{
 	background: #1964AF;
 	color:#ffffff;
 }
 
-.ready.launch{
+#optimizely-tabs .ready.launch{
 	background-color:#1964AF;
 	color:#ffffff; 
 }
 
-#successMessage{
+#optimizely-tabs #successMessage{
 	display:none;
 	width: 100%;
 	padding:10px;
 	background-color: #D9FBD6;
 	
+}
+
+
+
+#noresults{
+	display:none;
 }
 

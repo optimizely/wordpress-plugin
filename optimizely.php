@@ -50,6 +50,8 @@ $DEFAULT_VARIATION_TEMPLATE = '$(".post-$POST_ID .entry-title a").text("$NEW_TIT
 add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
 $DEFAULT_VISITOR_COUNT = 10316;
 add_option('optimizely_visitor_count', $DEFAULT_VISITOR_COUNT);
+add_option('num_variations', 2);
+
 
 add_option('optimizely_launch_auto', false);
 

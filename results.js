@@ -14,10 +14,16 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   					displayResultsList(exp,i,function(){
               showGoalSelected(exp.id);
               addSelectChange(exp.id);
+              counter++;
             });
   				});
   			}
   		}
+      if(counter == 0){
+        $('#noresults').show();
+        $('#loading').hide();
+        $('#ready').hide();
+      }
   	});
 
 

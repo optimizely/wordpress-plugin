@@ -1,15 +1,21 @@
 <div class="wrap">
   <script>
     jQuery(function() {
-      jQuery( "#tabsTesting" ).tabs();
+      jQuery( "#optimizely-tabs" ).tabs();
       jQuery( document ).tooltip({
           track: true
         });
-      optimizelyResultsPage("<?= get_option('optimizely_token'); ?>","<?= get_option('optimizely_project_id'); ?>",<?= get_option('optimizely_visitor_count'); ?>);
+        <?php 
+          if(get_option('optimizely_token') && get_option('optimizely_project_id')){
+            echo 'optimizelyResultsPage("'.get_option('optimizely_token').'","'.get_option('optimizely_project_id').'",'.get_option('optimizely_visitor_count').');';
+          }
+        ?>
+
+      
     });
     </script>
-  <div id="tabsTesting">
-    <ul class="tabs-header">
+  <div id="optimizely-tabs">
+    <ul class="tabs-header" id="tabs-header">
         <li><a href="#tabs-1">Results</a></li>
         <li><a href="#tabs-2">Configuration</a></li>
     </ul>
@@ -30,9 +36,15 @@
                 <h2>Almost There!</h2>
 
             </div>
-            <div class="loading">
+            <div class="loading" id="loading">
                 Loading Results.....<br>
-                <img src="<?= plugin_dir_url( __FILE__ ).'images/ajax-loader.gif' ?>" />
+                <img src="<?php echo plugin_dir_url( __FILE__ ).'images/ajax-loader.gif' ?>" />
+                
+            </div>
+
+            <div id="noresults">
+              <h3>No Results Ready!</h3>
+              <p>When you create headline experiments in wordpress you will see those results here</p>
             </div>
         </div>  
 
@@ -49,41 +61,40 @@
               <p>
                 <label for="token"><strong>API Token</strong></label>
                 <br />
-                <input id="token" name="token" type="text" maxlength="80" value="<?= get_option('optimizely_token'); ?>" class="code" />
+                <input id="token" name="token" type="text" maxlength="80" value="<?php echo get_option('optimizely_token') ?>" class="code" />
               </p>
               
               <button id="connect_optimizely" class="button">Connect Optimizely</button>
               
               <h3>Choose a Project</h3>
-              <input type="hidden" id="project_name" name="project_name" value="<?= get_option('optimizely_project_name') ?>" />
+              <input type="hidden" id="project_name" name="project_name" value="<?php echo get_option('optimizely_project_name') ?>" />
               <select id="project_id" name="project_id">
                 <?php if (get_option('optimizely_project_id')) { ?>
-                  <option value="<?= get_option('optimizely_project_id') ?>" selected><?= get_option('optimizely_project_name') ?></option>
+                  <option value="<?php echo get_option('optimizely_project_name') ?>" selected><?php echo get_option('optimizely_project_name') ?></option>
                 <?php } ?>
                 <option value="">Connect Optimizely to choose a project...</option>
               </select>
               <p>Optimizely will add the following project code to your page automatically:</p>
-              <textarea class="code" id="project_code" name="project_code" readonly><?= get_option('optimizely_project_code') ?></textarea>
+              <textarea class="code" id="project_code" name="project_code" readonly><?php echo get_option('optimizely_project_code') ?></textarea>
 
 
               <h3>Variation Code</h3>
               <p>Optimizely will use this variation code to change headlines on your site. We've provided code that works with the default theme, but you might want to add or change it to work with your themes and plugins.</p>  
               
-              <textarea class="code" rows="5" name="variation_template" id="variation_template"><?= get_option('optimizely_variation_template') ?></textarea>
+              <textarea class="code" rows="5" name="variation_template" id="variation_template"><?php echo get_option('optimizely_variation_template') ?></textarea>
               
               <p>You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.</p>
+              
+              <h3>Number of Variations to test</h3>
+              <p>Place a number in the text box below. This will be the additional number of variations a user can test per post.</p>  
+              
+              <input id="num_variations" name="num_variations" type="number" maxlength="1" value="<?php echo get_option('num_variations',2) ?>" class="code" />
 
               <h3>Powered Testing</h3>
-              <p>By default we use a sample size of 10,316 per variation to be considered powered. thsi is based on a baseline conversion rate of 3%, a minimum relative change of 20%, 80% statistical power, 95% statistical significance and 1-tailed test. If you need to change this number use the <a href="https://www.optimizely.com/resources/sample-size-calculator">Sample Size Calculator</a> to adjust to your needs</p>
+              <p>By default we use a sample size of 10,316 per variation to be considered powered. This is based on a baseline conversion rate of 3%, a minimum relative change of 20%, 80% statistical power, 95% statistical significance and 1-tailed test. If you need to change this number use the <a href="https://www.optimizely.com/resources/sample-size-calculator">Sample Size Calculator</a> to adjust to your needs</p>
                 Visitors Per Variation
                 <br />
-                <input id="powered_number" name="optimizely_visitor_count" type="text" maxlength="80" value="<?= get_option('optimizely_visitor_count') ?>" class="code" />
-
-              <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
-
-              <h3>Launch Winners Automatically</h3>
-              <p>When Optimizely has determined a winner and each variation has recieved enough visitors as defined above, winners will automatically be launched.</p>
-                <input id="optimizely_launch_auto" name="optimizely_launch_auto" value="checked" type="checkbox" <?= get_option('optimizely_launch_auto') ?> />Yes launch winners automatically!
+                <input id="powered_number" name="optimizely_visitor_count" type="text" maxlength="80" value="<?php echo get_option('optimizely_visitor_count') ?>" class="code" />
 
               <p class="submit"><input type="submit" name="submit" value="<?php _e('Submit &raquo;'); ?>" class="button-primary" /></p>
 
