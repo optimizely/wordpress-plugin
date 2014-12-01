@@ -22,12 +22,24 @@ You'll need an [Optimizely.com](http://www.optimizely.com) account to use it.
 Sign up at [Optimizely.com](http://www.optimizely.com).
 
 1. Upload the Optimizely WordPress plugin to your blog
-2. Activate the plugin through the 'Plugins' menu in WordPress
+2. Activate the plugin through the Optimizely menu in WordPress
 3. Enter your Optimizely API token in the plugin's settings page, choose a project to use, then save.
 
 You're ready to start using Optimizely!
 
 == Changelog ==
+
+= 2.5.0 =
+* Making repository Open Source
+* Added Results Page
+* Added Ability to launch winners directly from results page by changeing the headline for the post
+* Added powered testing
+* PLEASE NOTE: this was part of an Optimizely hack week project and is not production ready yet! Please use at your own risk!
+
+-- Known Issues --
+* Does not work in Wordpress 4.0
+* style.css is injected into every page
+* Some API errors
 
 = 2.0.0 =
 * Added headline testing

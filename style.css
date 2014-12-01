@@ -41,6 +41,7 @@ textarea {
 
 .variationrow{
 	display:none;
+	border-bottom: 1px solid #000;
 }
 
 #launchWinners{
@@ -136,18 +137,27 @@ td.last{
 	border-top-right-radius: 15px;
 	border-top-left-radius: 15px;
 	border-bottom-left-radius: 15px;
-	width:80%;
+	width:100%;
 	display: inline-block;
 	height: 20px;
 	margin-top:5px;
 	margin-right:50px;
 }
 
-.ready{
+.ready, .not-ready{
 	display: inline-block;
 	height: 20px;
 	width: 140px;
 	text-align: center;
+}
+
+.ready i{
+	color: #1964AF;
+}
+
+.button.winner{
+	background: #1964AF;
+	color:#ffffff;
 }
 
 .ready.launch{

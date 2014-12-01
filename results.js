@@ -20,17 +20,6 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		}
   	});
 
-  	//launch winning variation when Launch button is clicked
-  	$("html").delegate(".launch", 'click', function() {
-      var loserVars = [];
-      $(this).parents('.opt_results').find(".variationrow:visible:not('.winner')").each(function() {
-        loserVars.push($(this).attr('data-var-id'));
-      });
-      var winningVar = $(this).parents(".opt_results").find('.winner .first a').text();
-      var expID = $(this).parents('.opt_results').attr("data-exp-id");
-      var expTitle = $(this).parents('.opt_results').attr("data-exp-title");
-      launchWinner(loserVars, winningVar,expID,expTitle);
-    });
 
   //pause experiment when pause button is pressed
   $("html").delegate(".pause", 'click', function() {
@@ -53,32 +42,22 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     window.open('https://www.optimizely.com/results2?experiment_id='+expID)
   });
 
+  //launch winning variation when Launch button is clicked
+  $("html").delegate(".launch", 'click', function() {
+    var winningVarName = $(this).parents('td').siblings('.first').children('a').text();
+    var expID = $(this).parents('.opt_results').attr("data-exp-id");
+    var expTitle = $(this).parents('.opt_results').attr("data-exp-title");
+    launchWinner(expID,expTitle,winningVarName);
+  });
 
-  function updateWPTitle(extID, expTitle, winningVarName){
-    var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
-    
-
-    var data = {
-      action: "update_post_title",
-      post_id: wpPostID,
-      title: winningVarName
-    };
-
-    $.post(wpAjaxUrl, data, function(){
-        $('#exp_'+extID).fadeOut(1000,function(){
-          $('#successMessage').html('<h3>You have succesfully launched the new headline</h3> Old Headline: '+expTitle+'<br>New Headline: '+winningVarName);
-          $('#successMessage').show();
-        });
-    });
-  }
-
-
+  // changes the results for the goal selected
   function addSelectChange(expId){ 
     $('#goal_'+expId).bind('change', function(){ 
       showGoalSelected(expId);
     });
   } 
 
+    // Simple compare function to sort goals by name
     function compare(a,b) {
       if (a.goal_name < b.goal_name)
          return -1;
@@ -86,6 +65,8 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
         return 1;
       return 0;
     }
+
+    // Gets the results for the experiment
   	function getWPExpResults(expObj,cb) {
   		expObj.results = [];
   		optly.get('experiments/' + expObj.id + '/results', function(response) { 
@@ -97,18 +78,27 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		});
   	}
 
+    // AJAX function that updates the title in Wordpress
+    function launchWinner(expID, expTitle, winningVarName){
+      // Get the ID of the Wordpress post
+      var wpPostID = expTitle.substring(11,expTitle.indexOf(']'));
+      var data = {
+        action: "update_post_title",
+        post_id: wpPostID,
+        title: winningVarName
+      };
 
-  	function launchWinner(loserArray, winningVar, expID,expTitle) {
-  		for (i=0; i<loserArray.length; i++) {
-  			optly.patch('variations/' + loserArray[i], {'is_paused': true}, function(response) {
-  				console.log('just launched winner');
-        		optly.variation = response;
-        		optly.variation.expName = $('tr[data-var-id="'+optly.variation.id+'"]').parents('.opt_results').attr('data-exp-title');
-      		});
-  		}
-  		updateWPTitle(expID, expTitle, winningVar);
-  	}
+      $.post(wpAjaxUrl, data, function(){
+          $('#exp_'+expID).fadeOut(1000,function(){
+            $('#successMessage').html('<h3>You have succesfully launched the new headline</h3> Old Headline: '+expTitle+'<br>New Headline: '+winningVarName);
+            $('#successMessage').show();
+            // Archive the Experiement
+            archiveExperiment(expID);
+          });
+      });
+    }
 
+    // Pause Experiment
   	function pauseExperiment(experimentID) {
     	optly.patch('experiments/' + experimentID, {'status': 'Paused'}, function(response) {
       		$(".opt_results[data-exp-id="+ experimentID +"]").find(".pause").removeClass("pause").addClass("play");
@@ -116,6 +106,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
     	});
     }
 
+    // Start Experiment
     function startExperiment(experimentID) {
     	optly.patch('experiments/' + experimentID, {'status': 'Running'}, function(response) {
     		$(".opt_results[data-exp-id="+ experimentID +"]").find(".play").removeClass("play").addClass("pause");
@@ -123,28 +114,30 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       	});
     }
 
+    // Archive Experiment
     function archiveExperiment(experimentID) {
     	optly.patch('experiments/'+ experimentID, {'status': 'Archived'}, function(response) {
     		$(".opt_results[data-exp-id="+ experimentID +"]").hide();
     	});
     }
 
+    // Will display the resutls and build the HTML
   	function displayResultsList(exp,i,cb) {
   		$('.loading').hide();
       var html = buildResultsModuleHTML(exp);
-      // TODO: Take this out!
-      if($(html).find('.winner').length > 0){
-        $('#winners').show();
-        $('#winners').append(html);
+      if(exp.avgVisitorCount > poweredVisitor){
+        $('#ready').show();
+        $('#ready').append(html);
       }else{
         $('#stillwaiting').show();
         $('#stillwaiting').append(html);
       }
-  		//$('#results_list').append(buildResultsModuleHTML(exp));
+
       animateProgressBar(exp);
       cb();
   	}
 
+    // Loops through the variations and gets an average of the visitor count for powered testing
     function getAverageVisitor(results){
       var totalVisitors = 0;
       for(var i=0;i < results.length;i++){
@@ -154,13 +147,12 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       return totalVisitors/results.length;
     }
 
+    // Uses the average visitor count to create the progress bar
     function animateProgressBar(exp){
-      var progressbar = $('#exp_'+exp.id).find('.progressbar');
-      var averageVisitorPerVariation = getAverageVisitor(exp.results),
-      //var averageVisitorPerVariation = Math.floor((Math.random() * 20000) + 1),
-          poweredPercentage = Math.round((averageVisitorPerVariation/poweredVisitor)*100);
+      var progressbar = $('#exp_'+exp.id).find('.progressbar'),
+          poweredPercentage = Math.round((exp.avgVisitorCount/poweredVisitor)*100);
       progressbar.progressbar({
-        value: averageVisitorPerVariation,
+        value: exp.avgVisitorCount,
         max: poweredVisitor
       });
 
@@ -184,60 +176,23 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
       }
 
       $(progressbar).find('.ui-progressbar-value').css({'background':progBarColor,'border':'1px solid '+progBarColor});
-      $(progressbar).attr('title',Math.round(averageVisitorPerVariation)+' / '+poweredVisitor+' visitors');
-
-      if(checkIfOriginalIsWinner(exp.results,averageVisitorPerVariation)){
-
-      }
+      $(progressbar).attr('title',Math.round(exp.avgVisitorCount)+' / '+poweredVisitor+' visitors');
     }
 
+    // Used to convert the value returned by the results API to a rounded percentage
     function getRoundedPercentage(num){
       return (num*100).toFixed(2)+"%";
     }
 
-    function getBaselineID(results){
-      for(var i=0;i<results.length;i++){
-        if(results[i].status == 'baseline'){
-          return results[i].variation_id;
-        }
-      }
-
-      return 0;
-    }
-
+    // Changes the goal results based on what is selcted
     function showGoalSelected(expID){
       $('#exp_'+expID).find('.variationrow').hide();
       var goalClass = $('#goal_'+expID).val();
       $('#exp_'+expID).find('.'+goalClass).show();
 
     }
-    function checkIfOriginalIsWinner(results,avgVisitor){
-      var origVarId = 0;
-      for(var i=0;i<results.length;i++){
-        if(results[i].improvement > 0 && avgVisitor > poweredVisitor){
-          return false;
-        }
-      }
-      return true;
-    }
-
-    function getReadyButton(isWinner,avgVisitors,results){
-      if(isWinner && avgVisitors >= poweredVisitor){
-        // Show Launch Button
-        return '<div class="ready launch button"><i class="fa fa-rocket fa-fw"></i> <span>Launch Winner!</span></div>';
-      }else if(avgVisitors >= poweredVisitor && checkIfOriginalIsWinner(results,avgVisitors)){
-        var baselineid = getBaselineID(results);
-        $('#variation_'+baselineid).attr('class','winner');
-        return '<div class="ready"><i class="fa fa-question-circle fa-fw"></i> <span>Original Winner</span></div>';
-      }else if(avgVisitors >= poweredVisitor){
-        return '<div class="ready"><i class="fa fa-question-circle fa-fw"></i> <span>Inconclusive</span></div>';
-      }else{
-        return '<div class="ready"><i class="fa fa-clock-o fa-fw"></i> <span>Not Ready Yet!</span></div>';
-      }
-      
-    }
-
-
+    
+    // Main function that builds the HTNML for each results block
   	function buildResultsModuleHTML(exp) {
   		// Set the checkbox html
   		var statusClass = 'play';
@@ -250,7 +205,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
         expTitle = expTitle.substring(0,72)+'...';
       }
 	    var html = ""+
-	    '<div id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results" data-exp-title="'+exp.description+'">'+
+	    '<div name="'+exp.id+'" id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results" data-exp-title="'+exp.description+'">'+
           '<div class="header">'+
               '<div class="title">'+expTitle+'</div>'+
               '<div class="results_toolbar">'+
@@ -295,6 +250,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                       '<th>CONVERSION RATE</th>'+
                       '<th>IMPROVEMENT</th>'+
                       '<th>CONFIDENCE</th>'+
+                      '<th>LAUNCH</th>'+
                   '</tr>';
                   var isWinner = false;
                   for(i=exp.results.length -1;i >= 0;i--){
@@ -310,9 +266,6 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                       confidence = getRoundedPercentage(result.confidence);
                       improvement = getRoundedPercentage(result.improvement);
                     }
-                    if(result.status == "winner"){
-                      isWinner = true;
-                    }
                   	html = html+
                   	'<tr class="variationrow '+result.status+' '+result.goal_id+'" id="variation_'+result.variation_id+'" data-var-id="'+result.variation_id+'">'+
                         '<td class="first"><a target="_blank" href="'+exp.edit_url+ '?optimizely_x' +exp.id+ '='+result.variation_id+'">'+result.variation_name+'</a></td>'+
@@ -321,6 +274,12 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
                         '<td>'+getRoundedPercentage(result.conversion_rate)+'</td>'+
                         '<td>'+improvement+'</td>'+
                         '<td>'+confidence+'</td>'+
+                        '<td>';
+                          if(result.status != 'baseline'){
+                            html += '<div class="button launch '+result.status+'" title="Launch"><i class="fa fa-rocket fa-fw"></i></div>';
+                          }
+                          
+                        html +='</td>'+
                     '</tr>';
                   }
                   html = html+
@@ -328,7 +287,6 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
           '</div>'+
           '<div class="footer">'+
               '<div class="progressbar"></div>'+
-                getReadyButton(isWinner,avgVisitors,exp.results)+
           '</div>'+
       '</div>';
       return html;
