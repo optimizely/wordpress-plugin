@@ -11,7 +11,7 @@ We also use several hidden input fields to store data about the project and expe
 */
 
 // The number of variations to show in the box
-define("NUM_VARIATIONS", 2);
+define("NUM_VARIATIONS", 3);
 
 function title_variations_render($post) {
 

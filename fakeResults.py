@@ -12,14 +12,14 @@ from pprint import *
 
 _ACCOUNT_ID = 1434120272
 _API_HOST = "api.optimizely.com"
-_EXPERIMENT_ID = 1939520037
+_EXPERIMENT_ID = 2008461708
 
 # http://www.optimizely.test/admin/account_token?account_id=128
 # The fields the above request returns that are interesting:
 #   import_token: legacy, never expires
 #   temporary_import_token: more secure, expires after 30 days
 # (Below is import_token for account 128.)
-_IMPORT_TOKEN = "c1e203d88601a70999c9"
+_IMPORT_TOKEN = "7c3343b8c59cfad80a618c45a8456182"
 
 
 def main():
@@ -28,29 +28,29 @@ def main():
     'events': [
       {
         'buckets': {
-          '1939520037': "1937560063"
+          '2008461708': "2003911807"
         },
         'description': "engagement",
-        'time': datetime(2014, 9, 23).isoformat(),
-        'user_id': "123"
+        'time': datetime(2014, 9, 27).isoformat(),
+        'user_id': "oeu1412620890587r0.6371929526794702"
       },
       {
         'buckets': {
-          '1939520037': "1937560064"
+          '2008461708': "2003911808"
         },
         'description': "engagement",
-        'revenue': 1000,
-        'time': datetime(2014, 9, 23).isoformat(),
-        'user_id': "234"
+        #'revenue': 1000,
+        'time': datetime(2014, 9, 27).isoformat(),
+        'user_id': "oeu1412620890587r0.6371929526794702"
       },
       {
         'buckets': {
-          '1939520037': "1928461056"
+          '2008461708': "2018780212"
         },
         'description': "engagement",
-        'revenue': 1000,
-        'time': datetime(2014, 9, 23).isoformat(),
-        'user_id': "345"
+        #'revenue': 1000,
+        'time': datetime(2014, 9, 27).isoformat(),
+        'user_id': "oeu1412620890587r0.6371929526794702"
       }
     ]
   })
