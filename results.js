@@ -9,7 +9,7 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   		optly.wordpressExps = [];
       var counter = 0;
   		for (i=0; i<response.length; i++) {
-  			if (response[i].description.indexOf('Wordpress') > -1 && response[i].status != 'Archived' && response[i].status != 'Draft') {
+  			if (response[i].description.indexOf('Wordpress') > -1 && response[i].status != 'Archived' && response[i].status != 'Not started' && response[i].status != 'Draft') {
   				getWPExpResults(response[i],function(exp){
   					displayResultsList(exp,i,function(){
               showGoalSelected(exp.id);
@@ -19,11 +19,12 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   				});
   			}
   		}
-      if(counter == 0){
-        $('#noresults').show();
-        $('#loading').hide();
-        $('#ready').hide();
-      }
+      // if(counter == 0){
+      //   debugger;
+      //   $('#noresults').show();
+      //   $('#loading').hide();
+      //   $('#ready').hide();
+      // }
   	});
 
 

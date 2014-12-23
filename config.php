@@ -70,7 +70,7 @@
               <input type="hidden" id="project_name" name="project_name" value="<?php echo get_option('optimizely_project_name') ?>" />
               <select id="project_id" name="project_id">
                 <?php if (get_option('optimizely_project_id')) { ?>
-                  <option value="<?php echo get_option('optimizely_project_name') ?>" selected><?php echo get_option('optimizely_project_name') ?></option>
+                  <option value="<?php echo get_option('optimizely_project_id') ?>" selected><?php echo get_option('optimizely_project_name') ?></option>
                 <?php } ?>
                 <option value="">Connect Optimizely to choose a project...</option>
               </select>
