@@ -28,7 +28,7 @@ License: GPL2
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-if ( is_admin() )
+if ( is_admin() ) {
   require_once dirname( __FILE__ ) . '/admin.php';
   require_once dirname( __FILE__ ) . '/edit.php';
   wp_enqueue_script('jquery');
@@ -44,6 +44,7 @@ if ( is_admin() )
   wp_enqueue_style('jquery_ui_styles', plugins_url('jquery-ui.css', __FILE__));
   wp_enqueue_style('font_awesome_styles',plugins_url('font-awesome.min.css', __FILE__));
   wp_enqueue_style('optimizely_styles', plugins_url('style.css', __FILE__));
+}
 
 
 $DEFAULT_VARIATION_TEMPLATE = '$(".post-$POST_ID .entry-title a").text("$NEW_TITLE");';
