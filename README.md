@@ -1,4 +1,4 @@
-=== Optimizely ===
+## Optimizely ##
 Contributors: arthuracs, jonslaught, bradtaylorsf
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
@@ -9,7 +9,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin helps you configure your WordPress website to use Optimizely, a dramatically easier way to improve your website through A/B testing.
 
-== Description ==
+## Description ##
 
 This plugin helps you configure your WordPress website to use Optimizely. After setting up an account at Optimizely.com, you simply enter your Optimizely project code in the plugin's configuration page and you're ready to start improving your website using Optimizely.
 
@@ -17,8 +17,7 @@ Optimizely is a dramatically easier way for you to improve your website through 
 
 You'll need an [Optimizely.com](http://www.optimizely.com) account to use it.
 
-== Installation ==
-
+## Installation ##
 Sign up at [Optimizely.com](http://www.optimizely.com).
 
 1. Upload the Optimizely WordPress plugin to your blog
@@ -27,7 +26,7 @@ Sign up at [Optimizely.com](http://www.optimizely.com).
 
 You're ready to start using Optimizely!
 
-== Changelog ==
+## Changelog ##
 
 = 3.0.0 =
 * Making repository Open Source
