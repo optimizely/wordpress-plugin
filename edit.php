@@ -13,6 +13,17 @@ We also use several hidden input fields to store data about the project and expe
 // The number of variations to show in the box
 define("NUM_VARIATIONS", get_option('num_variations',2));
 
+add_action( 'add_meta_boxes', 'title_variations_add' );
+function title_variations_add()
+{
+	$selected_post_types = explode(',',get_option('optimizely_post_types'));
+	// Only ad the module if the current post type is one the user selected in the admin tab
+	if(in_array(get_post_type(),$selected_post_types)){
+		add_meta_box('optimizely-headlines', 'A/B Test Headlines', title_variations_render, get_post_type(), 'side', 'high');
+	}
+    
+}
+
 function title_variations_render($post) {
 
 	$titles = array();
@@ -61,12 +72,6 @@ function title_variations_render($post) {
 
 }
 
-add_action( 'add_meta_boxes', 'title_variations_add' );
-function title_variations_add()
-{
-    add_meta_box('optimizely-headlines', 'A/B Test Headlines', title_variations_render, 'post', 'side', 'high');
-}
-
 add_action( 'save_post', 'title_variations_save' );
 function title_variations_save($post_id)
 {
@@ -100,18 +105,13 @@ function update_experiment_meta()
 add_action( 'wp_ajax_update_post_title', 'update_post_title' );
 function update_post_title()
 {
-    error_log('Hello AJAX UPDATE POST', 3, "/var/tmp/my-errors.log");
     $post_id = $_REQUEST["post_id"];
     $winning_var_title = $_REQUEST["title"];
-    error_log($post_id, 3, "/var/tmp/my-errors.log");
-    error_log($winning_var_title, 3, "/var/tmp/my-errors.log");
 
     $my_post = array(
       'ID'           => (int)$post_id,
       'post_title' => $winning_var_title
-  );
-
-    error_log($my_post, 3, "/var/tmp/my-errors.log");
+  	);
 
     wp_update_post( $my_post );
 }

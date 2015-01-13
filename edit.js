@@ -4,7 +4,6 @@ function optimizelyEditPage() {
   // Initialize data from the input fields
   var projectId = $('#optimizely_project_id').val();
   var optly = new OptimizelyAPI($("#optimizely_token").val()); 
-
   if(!!$("#optimizely_experiment_id").val()){
     optly.get('experiments/'+$("#optimizely_experiment_id").val(),function(response){
       optly.experiment = response;
@@ -15,6 +14,8 @@ function optimizelyEditPage() {
       id: $("#optimizely_experiment_id").val(),
       status: $("#optimizely_experiment_status").val()
     }
+    $('#optimizely_not_created').show();
+    $('#optimizely_created').hide();  
   }
 
   // On click, run the createExperiment function
@@ -47,6 +48,7 @@ function optimizelyEditPage() {
     }
 
     // Hide create button, show status
+
     $('#optimizely_not_created').hide();
     $('#optimizely_created').show();  
 

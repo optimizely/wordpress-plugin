@@ -3,7 +3,6 @@ Contributors: arthuracs, jonslaught, bradtaylorsf
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
 Tested up to: 4.0
-Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,20 +26,23 @@ Sign up at [Optimizely.com](http://www.optimizely.com).
 
 You're ready to start using Optimizely!
 
-== Changelog ==
+## Changelog ##
 
-= 3.0.0 =
+#### 3.1.0 ####
+* Added ability to choose custom post types
+
+#### 3.0.0 ####
 * Making repository Open Source
 * Added Results Page
 * Added Ability to launch winners directly from results page by changeing the headline for the post
 * Added powered testing
 * Added ability to add configure how many variations to test per post
 
-= 2.0.0 =
+#### 2.0.0 ####
 * Added headline testing
 
-= 1.0.1 =
+#### 1.0.1 ####
 * Prioritizing the Optimizely code snippet so that it appears above other scripts.
 
-= 1.0.0 =
+#### 1.0.0 ####
 * Introducing the Optimizely WordPress plugin. Now it's even easier to start improving your website.

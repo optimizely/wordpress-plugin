@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Optimizely
- * @version 2.0.0
+ * @version 3.0.0
  */
 /*
 Plugin Name: Optimizely
 Plugin URI: http://wordpress.org/extend/plugins/optimizely/
 Description: Simple, fast, and powerful.  <a href="http://www.optimizely.com">Optimizely</a> is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with our easy-to-use visual interface with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue today! To get started: 1) Click the "Activate" link to the left of this description, 2) Sign up for an <a href="http://www.optimizely.com">Optimizely account</a>, and 3) Go to the <a href="admin.php?page=optimizely-config">settings page</a>, and enter your Optimizely project code.
-Author: Arthur Suermondt & Jon Noronha
-Version: 2.0.0
+Author: Arthur Suermondt, Jon Noronha, Brad Taylor
+Version: 3.0.0
 Author URI: http://www.optimizely.com/
 License: GPL2
 */
@@ -46,25 +46,24 @@ if ( is_admin() )
   wp_enqueue_style('optimizely_styles', plugins_url('style.css', __FILE__));
 
 
-$DEFAULT_VARIATION_TEMPLATE = '$(".post-$POST_ID .entry-title a").text("$NEW_TITLE");';
-add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
-$DEFAULT_VISITOR_COUNT = 10316;
-add_option('optimizely_visitor_count', $DEFAULT_VISITOR_COUNT);
-add_option('num_variations', 2);
+  $DEFAULT_VARIATION_TEMPLATE = '$(".post-$POST_ID .entry-title a").text("$NEW_TITLE");';
+  add_option('optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE);
+  $DEFAULT_VISITOR_COUNT = 10316;
+  add_option('optimizely_post_types', 'post');
+  add_option('optimizely_visitor_count', $DEFAULT_VISITOR_COUNT);
+  add_option('num_variations', 2);
 
+  add_option('optimizely_launch_auto', false);
 
-add_option('optimizely_launch_auto', false);
+  // Force Optimizely to load first in the head tag
+  add_action('wp_head', 'add_optimizely_script', -1000);
 
+  function add_optimizely_script() {
+  	echo get_option('optimizely_project_code');
+  }
 
-// Force Optimizely to load first in the head tag
-add_action('wp_head', 'add_optimizely_script', -1000);
-
-function add_optimizely_script() {
-	echo get_option('optimizely_project_code');
-}
-
-function can_create_experiments() {
-  return get_option('optimizely_token');
-}
+  function can_create_experiments() {
+    return get_option('optimizely_token');
+  }
 
 ?>

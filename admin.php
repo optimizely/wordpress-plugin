@@ -32,7 +32,7 @@ function optimizely_conf() {
     $token = $_POST['token'];
     $project_id = $_POST['project_id'];
     $num_variations = $_POST['num_variations'];
-    //$optimizely_launch_auto = $_POST['optimizely_launch_auto'];
+    $optimizely_post_types = $_POST['optimizely_post_types'];
     $optimizely_visitor_count = $_POST['optimizely_visitor_count'];
     $project_name = stripcslashes($_POST['project_name']);
     $project_code = stripcslashes($_POST['project_code']);
@@ -60,6 +60,18 @@ function optimizely_conf() {
       delete_option('num_variations');
     } else {
       update_option('num_variations', $num_variations);
+    }
+
+    $optimizely_post_types = $_POST['optimizely_post_types'];
+    if(empty($optimizely_post_types)){
+      update_option('optimizely_post_types', '');
+    }else{
+      $post_type_string = '';
+      // die(var_dump($optimizely_post_types));
+      foreach($optimizely_post_types as $post_type){
+        $post_type_string = $post_type_string.$post_type.',';
+      }
+      update_option('optimizely_post_types', rtrim($post_type_string, ","));
     }
 
     if ( empty($optimizely_visitor_count) ) {

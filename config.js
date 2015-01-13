@@ -27,21 +27,21 @@ function optimizelyConfigPage() {
       $("#project_id").change(); // update project code w/ the default value
     });
 
-  /*
+    /*
 
-  CHOOSING A PROJECT
+    CHOOSING A PROJECT
 
-  When the user selects a project from the dropdown, we populate the project code box with the Optimizely snippet for that project ID.
+    When the user selects a project from the dropdown, we populate the project code box with the Optimizely snippet for that project ID.
 
-  */
-  $('#project_id').change(function() {
-    var id = $('#project_id').val();
-    var name = $('#project_id option:selected').text();
-    var project_code = '<script src="//cdn.optimizely.com/js/' + id + '.js"></script>';
-    $('#project_code').text(project_code);
-    $('#project_name').val(name);
+    */
+    $('#project_id').change(function() {
+      var id = $('#project_id').val();
+      var name = $('#project_id option:selected').text();
+      var project_code = '<script src="//cdn.optimizely.com/js/' + id + '.js"></script>';
+      $('#project_code').text(project_code);
+      $('#project_name').val(name);
+    });
   });
 
-
-  });
+  
 }

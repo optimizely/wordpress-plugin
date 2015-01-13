@@ -77,6 +77,25 @@
               <p>Optimizely will add the following project code to your page automatically:</p>
               <textarea class="code" id="project_code" name="project_code" readonly><?php echo get_option('optimizely_project_code') ?></textarea>
 
+              <h3>Post Types</h3>
+              <p>Please choose the post types you would like to conduct A/B testing on</p> 
+              <?php
+                $args = array(
+                  'show_ui' => true
+                );
+                $selected_post_types = explode(',',get_option('optimizely_post_types'));
+                $post_types = get_post_types($args, 'objects' ); 
+                foreach($post_types as $post_type){
+                  if($post_type->name != 'page' && $post_type->name != 'attachment'){
+                    if(in_array($post_type->name,$selected_post_types)){
+                      echo '<input type="checkbox" name="optimizely_post_types[]" value="'. $post_type->name .'" checked/>&nbsp;' . $post_type->label . '</br>';
+                    }else{
+                      echo '<input type="checkbox" name="optimizely_post_types[]" value="'. $post_type->name .'"/>&nbsp;' . $post_type->label . '</br>';
+                    }
+                    
+                  }
+                }
+              ?>
 
               <h3>Variation Code</h3>
               <p>Optimizely will use this variation code to change headlines on your site. We've provided code that works with the default theme, but you might want to add or change it to work with your themes and plugins.</p>  
