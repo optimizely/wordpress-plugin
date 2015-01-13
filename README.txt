@@ -25,6 +25,8 @@ Sign up at [Optimizely.com](http://www.optimizely.com).
 3. Enter your Optimizely API token in the plugin's settings page, choose a project to use, then save.
 
 You're ready to start using Optimizely!
+#### 3.1.0 ####
+* Added ability to add custom post types 
 
 #### 3.0.0 ####
 * Making repository Open Source
