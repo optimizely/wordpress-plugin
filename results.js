@@ -7,24 +7,27 @@ function optimizelyResultsPage(apiToken,projectId,poweredVisitor) {
   	//fetch only Wordpress experiments from project
   	optly.get('projects/' + projectId + '/experiments/', function(response) {
   		optly.wordpressExps = [];
-      var counter = 0;
-  		for (i=0; i<response.length; i++) {
-  			if (response[i].description.indexOf('Wordpress') > -1 && response[i].status != 'Archived' && response[i].status != 'Not started' && response[i].status != 'Draft') {
-  				getWPExpResults(response[i],function(exp){
-  					displayResultsList(exp,i,function(){
+      var resultsArray = [];
+      for (i=0; i<response.length; i++) {
+        if (response[i].description.indexOf('Wordpress') > -1 && response[i].status != 'Archived' && response[i].status != 'Not started' && response[i].status != 'Draft') {
+          resultsArray.push(response[i]);
+        }
+        
+      }
+      if(resultsArray.length > 0){
+        for (i=0; i<resultsArray.length; i++) {
+          getWPExpResults(resultsArray[i],function(exp){
+            displayResultsList(exp,i,function(){
               showGoalSelected(exp.id);
               addSelectChange(exp.id);
-              counter++;
             });
-  				});
-  			}
-  		}
-      // if(counter == 0){
-      //   debugger;
-      //   $('#noresults').show();
-      //   $('#loading').hide();
-      //   $('#ready').hide();
-      // }
+          });
+        }
+      }else{
+        $('#noresults').show();
+        $('#loading').hide();
+        $('#ready').hide();
+      }
   	});
 
 

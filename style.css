@@ -28,7 +28,7 @@
 	background-color: #D9FBD6;
 }
 
-#optimizely-tabs #winners, #optimizely-tabs #stillwaiting{
+#optimizely-tabs #winners, #optimizely-tabs #stillwaiting, #optimizely-tabs #ready{
 	display:none;
 }
 
@@ -172,6 +172,19 @@
 	padding:10px;
 	background-color: #D9FBD6;
 	
+}
+
+#optimizely-tabs #stillwaiting > h2{
+	padding: 0px 0px 10px 10px;
+	border-left: solid 1px #1964AF;
+	border-bottom: solid 1px #1964AF;
+	margin-bottom: 10px;
+	
+}
+
+#optimizely-tabs #stillwaiting > h2 > span, #optimizely-tabs #tabs-1 > h2 > span{
+	font-size: 13px;
+	float: right;
 }
 
 

@@ -20,20 +20,20 @@
         <li><a href="#tabs-2">Configuration</a></li>
     </ul>
     <div id="tabs-1">
-        <h2>Wordpress Headline Results</h2>
-        <p>This is a list of all of the experiments that are running headline tests.<p>
+        <h2>Wordpress Headline Results <span>This is a list of all of the experiments that are running headline tests.</span></h2>
+
         <div id="successMessage">
 
         </div>
         <!-- <div class="button" id="launchWinners">Launch Winners</div> -->
         <div id="results_list">
             <div id="ready">
-                <h2>Ready</h2>
+                <h2>Ready to launch! <span>These experiments experiments are ready to launch!</span></h2>
 
 
             </div>
             <div id="stillwaiting">
-                <h2>Almost There!</h2>
+                <h2>Not ready to launch <span>These experiments still need a few more visitors before we can declare a winner</span></h2> 
 
             </div>
             <div class="loading" id="loading">
@@ -43,8 +43,8 @@
             </div>
 
             <div id="noresults">
-              <h3>No Results Ready!</h3>
-              <p>When you create headline experiments in wordpress you will see those results here</p>
+              <h3>No results!</h3>
+              <p>A headline experiement must be created in Wordpress before any results will be displayed here. Please create a new post with multiple headlines, publish the post, and start the experiment. Once the experiment is created and running it will display the results here. <strong>Please Note:</strong> Only experiements created through Wordpress will be displayed here. Experiments created directly in Optimizely will not be displayed here. </p>
             </div>
         </div>  
 

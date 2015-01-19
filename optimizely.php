@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Optimizely
- * @version 3.1.0
+ * @version 3.2.0
  */
 /*
 Plugin Name: Optimizely
@@ -13,7 +13,7 @@ Author URI: http://www.optimizely.com/
 License: GPL2
 */
 
-/*  Copyright 2012 Arthur Suermondt (email: support@optimizely.com)
+/*  Copyright 2015 Optimizely Inc (email: support@optimizely.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
