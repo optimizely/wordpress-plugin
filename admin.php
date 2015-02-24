@@ -11,7 +11,7 @@ function optimizely_admin_warnings() {
 		?>
 		<div id="optimizely-warning" class="updated fade">
 			<p><strong><?php esc_html_e( 'Optimizely is almost ready.', 'optimizely' )</strong> 
-			<?php sprintf( __( 'You must <a href="%1$s">authenticate and choose a project</a> to begin using Optimizely on your site.', 'optimizely' ), 'admin.php?page=optimizely-config') ?>
+			<?php sprintf( esc_html__( 'You must <a href="%1$s">authenticate and choose a project</a> to begin using Optimizely on your site.', 'optimizely' ), 'admin.php?page=optimizely-config' ) ?>
 			</p>
 		</div>
 		<?php
@@ -25,8 +25,8 @@ function optimizely_admin_menu() {
 add_action( 'admin_menu', 'optimizely_admin_menu' );
 
 function optimizely_plugin_action_links( $links, $file ) {
-	if ( $file == plugin_basename( dirname(__FILE__) . '/optimizely.php' ) ) {
-		$links[] = '<a href="admin.php?page=optimizely-config">' . __( 'Settings', 'optimizely' ) . '</a>';
+	if ( $file == plugin_basename( dirname( __FILE__ ) . '/optimizely.php' ) ) {
+		$links[] = '<a href="admin.php?page=optimizely-config">' . esc_html__( 'Settings', 'optimizely' ) . '</a>';
 	}
 	
 	return $links;
@@ -37,7 +37,7 @@ function optimizely_conf() {
 	global $optimizely_nonce, $DEFAULT_VARIATION_TEMPLATE;
 	
 	if ( isset( $_POST['submit'] ) ) {
-		if ( ! current_user_can ('manage_options') ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			die( __( 'Cheatin&#8217; uh?', 'optimizely' )  );
 		}
 		
