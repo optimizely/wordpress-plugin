@@ -94,27 +94,30 @@ function optimizelyEditPage() {
 
   */
   function onExperimentCreated(experiment) {
-
-    optly.experiment = experiment;
-    var variations = $('.optimizely_variation').filter(function(){return $(this).val().length > 0})
+    // Pause for 200ms so that the experiment is guarenteed to be created before editing and adding variations
     
-    // Set variation weights
-    var numVariations = variations.length + 1;
-    var variationWeight = Math.floor(10000 / numVariations);
-    var leftoverWeight = 10000 - variationWeight*numVariations;
+    setTimeout(function () {
+      optly.experiment = experiment;
+      var variations = $('.optimizely_variation').filter(function(){return $(this).val().length > 0})
+      
+      // Set variation weights
+      var numVariations = variations.length + 1;
+      var variationWeight = Math.floor(10000 / numVariations);
+      var leftoverWeight = 10000 - variationWeight*numVariations;
 
-    // Create variations
-    variations.each(function(index, input) {
-      var weight = variationWeight;
-      createVariation(experiment, index + 1, $(input).val(), weight);
-    });
+      // Create variations
+      variations.each(function(index, input) {
+        var weight = variationWeight;
+        createVariation(experiment, index + 1, $(input).val(), weight);
+      });
 
-    // Update original with correct traffic allocation
-    var origVariationWeight = {"weight":variationWeight + (leftoverWeight > 0 ? leftoverWeight : 0)};
-    optly.patch('variations/' + experiment.variation_ids[0], origVariationWeight, checkExperimentReady);
+      // Update original with correct traffic allocation
+      var origVariationWeight = {"weight":variationWeight + (leftoverWeight > 0 ? leftoverWeight : 0)};
+      optly.patch('variations/' + experiment.variation_ids[0], origVariationWeight, checkExperimentReady);
 
-    // Create goal
-    createGoal(experiment);
+      // Create goal
+      createGoal(experiment);
+    }, 200);
 
   }
 
