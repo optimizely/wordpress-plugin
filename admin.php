@@ -1,8 +1,10 @@
 <?php
-// PHP controller for plugin configuration page. The page itself is rendered in config.php  
+/**
+ * PHP controller for plugin configuration page. The page itself is rendered in config.php  
+ */
 
 /**
- * Display any admin notices for the plugin.
+ * Display admin notices for the plugin.
  */
 function optimizely_admin_notices() {
 	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ) :
@@ -56,16 +58,19 @@ function optimizely_conf() {
 			die( __( 'Cheatin&#8217; uh?', 'optimizely' )  );
 		}
 		
+		// Check the nonce
 		check_admin_referer( OPTIMIZELY_NONCE );
 
+		// Sanitize values
 		$token = sanitize_text_field( $_POST['token'] );
 		$project_id = sanitize_text_field( $_POST['project_id'] );
-		$num_variations = sanitize_text_field( $_POST['num_variations'] );
+		$num_variations = sanitize_text_field( $_POST['optimizely_num_variations'] );
 		$optimizely_post_types = array_map( 'sanitize_text_field', $_POST['optimizely_post_types'] );
 		$optimizely_visitor_count = sanitize_text_field( $_POST['optimizely_visitor_count'] );
 		$project_name = sanitize_text_field( stripcslashes( $_POST['project_name'] ) );
 		$variation_template = sanitize_text_field( stripcslashes( $_POST['variation_template' ] ) );
 
+		// Either save or delete/set a default if empty for each value
 		if ( empty( $token ) ) {
 			delete_option( 'optimizely_token' );
 		} else {
@@ -79,9 +84,9 @@ function optimizely_conf() {
 		}
 
 		if ( empty( $num_variations ) ) {
-			delete_option( 'num_variations' );
+			delete_option( 'optimizely_num_variations' );
 		} else {
-			update_option( 'num_variations', $num_variations );
+			update_option( 'optimizely_num_variations', $num_variations );
 		}
 
 		if ( empty( $optimizely_post_types ) ) {
@@ -117,5 +122,6 @@ function optimizely_conf() {
 		<?php
 	}
 
+	// Display the config form.
 	include( dirname( __FILE__ ) . '/config.php' );
 }

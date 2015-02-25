@@ -61,20 +61,14 @@ function optimizely_enqueue_scripts() {
 }
 add_action( 'admin_enqueue_scripts', 'optimizely_enqueue_scripts' );
 
-add_option( 'optimizely_variation_template', OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE );
-add_option( 'optimizely_post_types', 'post' );
-add_option( 'optimizely_visitor_count', OPTIMIZELY_DEFAULT_VISITOR_COUNT );
-add_option( 'num_variations', 2 );
-add_option( 'optimizely_launch_auto', false );
-
 /**
  * Force Optimizely to load first in the head tag.
  */
 function optimizely_add_script() {
 	$project_code = get_option( 'optimizely_project_code' );
 	if ( ! empty( $project_code ) ) {
-		// This cannot be escaped since optimizely_generate_script generates a script tag.
-		// It is however fully escaped within the function.
+		// This cannot be escaped since optimizely_generate_script returns a script tag.
+		// The output of this script is fully escaped within the function below.
 		echo optimizely_generate_script( $project_code );
 	}
 }
