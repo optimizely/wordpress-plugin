@@ -1,10 +1,6 @@
 <div class="wrap">
 	<script>
 		jQuery(document).ready( function( $ ) {
-			$( '#optimizely-tabs' ).tabs();
-			$( document ).tooltip({
-				track: true
-			});
 			<?php 
 				$token = get_option( 'optimizely_token' );
 				$project_id = get_option( 'optimizely_project_id' );
@@ -70,7 +66,7 @@
 						<option value=""><?php esc_html_e( 'Connect Optimizely to choose a project...', 'optimizely' ); ?></option>
 					</select>
 					<p><?php esc_html_e( 'Optimizely will add the following project code to your page automatically:', 'optimizely' ); ?></p>
-					<h3><?php echo esc_html( optimizely_generate_script( $project_id ) ); ?></h3>
+					<h3 id="project_code"><?php echo esc_html( optimizely_generate_script( $project_id ) ); ?></h3>
 					<br/>
 
 					<h3><?php esc_html_e( 'Post Types', 'optimizely' ); ?></h3>
@@ -114,7 +110,6 @@
 
 					<p class="submit"><input type="submit" name="submit" value="<?php esc_html_e( 'Submit &raquo;', 'optimizely' ); ?>" class="button-primary" /></p>
 				</form>
-				<script type="text/javascript">optimizelyConfigPage();</script>
 			</div>
 		</div>
 	</div>

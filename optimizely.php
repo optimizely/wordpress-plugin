@@ -82,7 +82,7 @@ add_action( 'wp_head', 'optimizely_add_script', -1000 );
  * @param int $project_code
  * @return string
  */
-function optimizely_generate_script() {
+function optimizely_generate_script( $project_code ) {
 	return '<script src="//cdn.optimizely.com/js/' . absint( $project_code ) . '.js"></script>';
 }
 
