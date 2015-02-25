@@ -56,7 +56,7 @@ function optimizelyResultsPage( apiToken,projectId,poweredVisitor ) {
 
 	$( 'html' ).delegate( '.fullresults', 'click', function() {
 		var expID = $( this ).parents( '.opt_results' ).attr( 'data-exp-id' );
-		window.open( 'https://www.optimizely.com/results2?experiment_id=' + parseInt( expID ) )
+		window.open( 'https://www.optimizely.com/results2?experiment_id=' + parseInt( expID ) );
 	});
 
 	// Launch winning variation when Launch button is clicked
@@ -131,21 +131,21 @@ function optimizelyResultsPage( apiToken,projectId,poweredVisitor ) {
 	// Pause Experiment
 	function pauseExperiment( experimentID ) {
 		optly.patch( 'experiments/' + experimentID, { 'status': 'Paused' }, function( response ) {
-				$( '.opt_results[data-exp-id=' + experimentID + ']' )
-					.find( '.pause' )
-					.removeClass( 'pause' )
-					.addClass( 'play' );
-					
-				$( '.opt_results[data-exp-id=' + experimentID + ']' )
-					.find( '.fa-pause' )
-					.removeClass( 'fa-pause' )
-					.addClass( 'fa-play' );
+			$( '.opt_results[data-exp-id=' + experimentID + ']' )
+				.find( '.pause' )
+				.removeClass( 'pause' )
+				.addClass( 'play' );
+				
+			$( '.opt_results[data-exp-id=' + experimentID + ']' )
+				.find( '.fa-pause' )
+				.removeClass( 'fa-pause' )
+				.addClass( 'fa-play' );
 		});
 	}
 
 	// Start Experiment
 	function startExperiment( experimentID ) {
-		optly.patch( 'experiments/' + experimentID, {'status': 'Running'}, function( response ) {
+		optly.patch( 'experiments/' + experimentID, { 'status': 'Running' }, function( response ) {
 			$( '.opt_results[data-exp-id=' + experimentID + ']' )
 				.find( '.play' )
 				.removeClass( 'play' )
@@ -194,7 +194,7 @@ function optimizelyResultsPage( apiToken,projectId,poweredVisitor ) {
 	// Uses the average visitor count to create the progress bar
 	function animateProgressBar( exp ) {
 		var progressbar = $( '#exp_' + exp.id ).find( '.progressbar' ),
-		poweredPercentage = Math.round( ( exp.avgVisitorCount/poweredVisitor )*100 );
+		poweredPercentage = Math.round( ( exp.avgVisitorCount/poweredVisitor ) * 100 );
 		progressbar.progressbar({
 			value: exp.avgVisitorCount,
 			max: poweredVisitor
@@ -221,11 +221,11 @@ function optimizelyResultsPage( apiToken,projectId,poweredVisitor ) {
 
 		$( progressbar )
 			.find( '.ui-progressbar-value' )
-				.css({
-					'background': progBarColor,
-					'border': '1px solid ' + progBarColor
-				});
-		$( progressbar ).attr( 'title', Math.round( exp.avgVisitorCount ) + ' / '+poweredVisitor + ' visitors' );
+			.css({
+				'background': progBarColor,
+				'border': '1px solid ' + progBarColor
+			});
+		$( progressbar ).attr( 'title', Math.round( exp.avgVisitorCount ) + ' / ' + poweredVisitor + ' visitors' );
 	}
 
 	// Used to convert the value returned by the results API to a rounded percentage
@@ -241,104 +241,104 @@ function optimizelyResultsPage( apiToken,projectId,poweredVisitor ) {
 
 	}
 		
-		// Main function that builds the HTNML for each results block
-		function buildResultsModuleHTML( exp ) {
-			// Set the checkbox html
-			var statusClass = 'play';
-			if ( exp.status == 'Running' ) {
-				statusClass = 'pause';
-			}
-			var expTitle = exp.description;
-			expTitle = expTitle.substring( expTitle.indexOf( ']:' )+3 );
-			if ( expTitle.length > 73 ) {
-				expTitle = expTitle.substring( 0,72 )+'...';
-			}
-			var html = ""+
-			'<div name="'+exp.id+'" id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results" data-exp-title="'+exp.description+'">'+
-					'<div class="header">'+
-							'<div class="title">'+expTitle+'</div>'+
-							'<div class="results_toolbar">'+
-									'<select class="goalSelector" id="goal_'+exp.id+'">';
-										var goalIdArray = [];
-										for( var i = 0;i <exp.results.length;i++ ) {
-											var result = exp.results[ i ];
-											console.log( $.inArray( goalIdArray,result.goal_id ) );
-											var selected = '';
-											if ( goalIdArray.indexOf( result.goal_id ) == -1 ) {
-												if ( result.goal_name == 'Views to page' ) {
-													selected = 'selected';
-												}
-												html += '<option value="'+result.goal_id+'" '+selected+'>'+result.goal_name+'</option>';
-												goalIdArray.push( result.goal_id );
-											} 
-										}
-										html +=
-									'</select>'+
-									'<div title="Start Experiment" class="'+statusClass+' button">'+
-											'<i class="fa fa-'+statusClass+' fa-fw"></i>'+
-									'</div>'+
-									'<a href="https://www.optimizely.com/edit?experiment_id='+exp.id+'" target="_new">'+
-											'<div title="Edit on Optimizely" class="edit button">'+
-													'<i class="fa fa-edit fa-fw"></i>'+
-											'</div>'+
-									'</a>'+
-									'<div title="Full Results" class="fullresults button">'+
-											'<i class="fa fa-line-chart fa=fw"></i>'+
-									'</div>'+
-									'<div title="Archive Experiment" class="archive button">'+
-											'<i class="fa fa-archive fa=fw"></i>'+
-									'</div>'+
-							'</div>'+
-					'</div>'+
-					'<div class="variations">'+
-							'<table>'+
-									'<tr class="first">'+
-											'<th class="first">VARIATION</th>'+
-											'<th>VISITORS</th>'+
-											'<th>CONVERSIONS</th>'+
-											'<th>CONVERSION RATE</th>'+
-											'<th>IMPROVEMENT</th>'+
-											'<th>CONFIDENCE</th>'+
-											'<th>LAUNCH</th>'+
-									'</tr>';
-									var isWinner = false;
-									for( i=exp.results.length -1;i >= 0;i-- ) {
-										var result = exp.results[ i ],
-												improvement,
-												conversion_rate,
-												avgVisitors = getAverageVisitor( exp.results ),
-												confidence;
-										if ( result.status == "baseline" ) {
-											improvement = 'baseline';
-											confidence = '-';
-										} else {
-											confidence = getRoundedPercentage( result.confidence );
-											improvement = getRoundedPercentage( result.improvement );
-										}
-										html = html+
-										'<tr class="variationrow '+result.status+' '+result.goal_id+'" id="variation_'+result.variation_id+'" data-var-id="'+result.variation_id+'">'+
-												'<td class="first"><a target="_blank" href="'+exp.edit_url+ '?optimizely_x' +exp.id+ '='+result.variation_id+'">'+result.variation_name+'</a></td>'+
-												'<td>'+result.visitors+'</td>'+
-												'<td>'+result.conversions+'</td>'+
-												'<td>'+getRoundedPercentage( result.conversion_rate )+'</td>'+
-												'<td>'+improvement+'</td>'+
-												'<td>'+confidence+'</td>'+
-												'<td>';
-													if ( result.status != 'baseline' ) {
-														html += '<div class="button launch '+result.status+'" title="Launch"><i class="fa fa-rocket fa-fw"></i></div>';
-													}
-													
-												html +='</td>'+
-										'</tr>';
+	// Main function that builds the HTNML for each results block
+	function buildResultsModuleHTML( exp ) {
+		// Set the checkbox html
+		var statusClass = 'play';
+		if ( exp.status == 'Running' ) {
+			statusClass = 'pause';
+		}
+		var expTitle = exp.description;
+		expTitle = expTitle.substring( expTitle.indexOf( ']:' )+3 );
+		if ( expTitle.length > 73 ) {
+			expTitle = expTitle.substring( 0,72 )+'...';
+		}
+		var html = ""+
+		'<div name="'+exp.id+'" id="exp_'+exp.id+'" data-exp-id="'+exp.id+'" class="opt_results" data-exp-title="'+exp.description+'">'+
+				'<div class="header">'+
+						'<div class="title">'+expTitle+'</div>'+
+						'<div class="results_toolbar">'+
+								'<select class="goalSelector" id="goal_'+exp.id+'">';
+									var goalIdArray = [];
+									for( var i = 0;i <exp.results.length;i++ ) {
+										var result = exp.results[ i ];
+										console.log( $.inArray( goalIdArray,result.goal_id ) );
+										var selected = '';
+										if ( goalIdArray.indexOf( result.goal_id ) == -1 ) {
+											if ( result.goal_name == 'Views to page' ) {
+												selected = 'selected';
+											}
+											html += '<option value="'+result.goal_id+'" '+selected+'>'+result.goal_name+'</option>';
+											goalIdArray.push( result.goal_id );
+										} 
+									}
+									html +=
+								'</select>'+
+								'<div title="Start Experiment" class="'+statusClass+' button">'+
+										'<i class="fa fa-'+statusClass+' fa-fw"></i>'+
+								'</div>'+
+								'<a href="https://www.optimizely.com/edit?experiment_id='+exp.id+'" target="_new">'+
+										'<div title="Edit on Optimizely" class="edit button">'+
+												'<i class="fa fa-edit fa-fw"></i>'+
+										'</div>'+
+								'</a>'+
+								'<div title="Full Results" class="fullresults button">'+
+										'<i class="fa fa-line-chart fa=fw"></i>'+
+								'</div>'+
+								'<div title="Archive Experiment" class="archive button">'+
+										'<i class="fa fa-archive fa=fw"></i>'+
+								'</div>'+
+						'</div>'+
+				'</div>'+
+				'<div class="variations">'+
+						'<table>'+
+								'<tr class="first">'+
+										'<th class="first">VARIATION</th>'+
+										'<th>VISITORS</th>'+
+										'<th>CONVERSIONS</th>'+
+										'<th>CONVERSION RATE</th>'+
+										'<th>IMPROVEMENT</th>'+
+										'<th>CONFIDENCE</th>'+
+										'<th>LAUNCH</th>'+
+								'</tr>';
+								var isWinner = false;
+								for( i=exp.results.length -1;i >= 0;i-- ) {
+									var result = exp.results[ i ],
+											improvement,
+											conversion_rate,
+											avgVisitors = getAverageVisitor( exp.results ),
+											confidence;
+									if ( result.status == "baseline" ) {
+										improvement = 'baseline';
+										confidence = '-';
+									} else {
+										confidence = getRoundedPercentage( result.confidence );
+										improvement = getRoundedPercentage( result.improvement );
 									}
 									html = html+
-							'</table>'+
-					'</div>'+
-					'<div class="footer">'+
-							'<div class="progressbar"></div>'+
-					'</div>'+
-			'</div>';
-			return html;
+									'<tr class="variationrow '+result.status+' '+result.goal_id+'" id="variation_'+result.variation_id+'" data-var-id="'+result.variation_id+'">'+
+											'<td class="first"><a target="_blank" href="'+exp.edit_url+ '?optimizely_x' +exp.id+ '='+result.variation_id+'">'+result.variation_name+'</a></td>'+
+											'<td>'+result.visitors+'</td>'+
+											'<td>'+result.conversions+'</td>'+
+											'<td>'+getRoundedPercentage( result.conversion_rate )+'</td>'+
+											'<td>'+improvement+'</td>'+
+											'<td>'+confidence+'</td>'+
+											'<td>';
+												if ( result.status != 'baseline' ) {
+													html += '<div class="button launch '+result.status+'" title="Launch"><i class="fa fa-rocket fa-fw"></i></div>';
+												}
+												
+											html +='</td>'+
+									'</tr>';
+								}
+								html = html+
+						'</table>'+
+				'</div>'+
+				'<div class="footer">'+
+						'<div class="progressbar"></div>'+
+				'</div>'+
+		'</div>';
+		return html;
 	}
 
 }
