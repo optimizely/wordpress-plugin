@@ -1,4 +1,4 @@
-( function( $ ) {
+(function( $ ) {
 
 	/*
 	The OptimizelyAPI class provides a connection to the API via Javascript 
@@ -8,8 +8,8 @@
 	Finally, we keep track of how many requests are outstanding so we can tell when all the calls are complete.
 	*/
 	OptimizelyAPI = function(token) {
-	  this.outstandingRequests = 0;
-	  this.token = token;
+		this.outstandingRequests = 0;
+		this.token = token;
 	}
 
 	/*
@@ -31,16 +31,16 @@
 		var options = {
 			url: 'https://www.optimizelyapis.com/experiment/v1/' + endpoint,
 			type: type,
-			headers: {'Token': this.token},
+			headers: { 'Token': this.token },
 			contentType: 'application/json',
-			success: function(response) {
+			success: function( response ) {
 				self.outstandingRequests -= 1;
-				callback(response);
+				callback( response );
 			}
 		}
 
 		if ( data ) {
-			options.data = JSON.stringify(data);
+			options.data = JSON.stringify( data );
 			options.dataType = 'json';
 		}
 

@@ -1,6 +1,6 @@
 <div class="wrap">
 	<script>
-		jQuery(document).ready( function( $ ) {
+		jQuery( document ).ready( function( $ ) {
 			<?php 
 				$token = get_option( 'optimizely_token' );
 				$project_id = get_option( 'optimizely_project_id' );

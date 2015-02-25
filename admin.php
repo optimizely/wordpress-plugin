@@ -7,7 +7,7 @@
  * Display admin notices for the plugin.
  */
 function optimizely_admin_notices() {
-	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ) :
+	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ):
 		?>
 		<div id="optimizely-warning" class="updated fade">
 			<p><strong><?php esc_html_e( 'Optimizely is almost ready.', 'optimizely' ) ?></strong> 
@@ -55,7 +55,7 @@ add_filter( 'plugin_action_links', 'optimizely_plugin_action_links', 10, 2 );
 function optimizely_conf() {
 	if ( isset( $_POST['submit'] ) ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			die( __( 'Cheatin&#8217; uh?', 'optimizely' )  );
+			die( __( 'Cheatin&#8217; uh?', 'optimizely' ) );
 		}
 		
 		// Check the nonce
@@ -96,7 +96,7 @@ function optimizely_conf() {
 			foreach ( $optimizely_post_types as $post_type ) {
 				$post_type_string = $post_type_string . $post_type . ',';
 			}
-			update_option( 'optimizely_post_types', rtrim( $post_type_string, ',' ) );
+			update_option( 'optimizely_post_types', trim( $post_type_string, ',' ) );
 		}
 
 		if ( empty( $optimizely_visitor_count ) ) {

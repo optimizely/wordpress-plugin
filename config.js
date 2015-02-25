@@ -1,4 +1,4 @@
-( function( $ ) {
+(function( $ ) {
 
 	// Javascript for plugin settings page
 	function optimizelyConfigPage() {
@@ -9,7 +9,7 @@
 		For each project, we show its name in the dropdown and store its ID in the value attribute for submission to a form.
 		*/
 
-		$( 'button#connect_optimizely' ).click( function( event ) {
+		$( 'button#connect_optimizely' ).click(function( event ) {
 			event.preventDefault();
 			$loading = $( '<option>' ).text( 'Loading projects...' );
 			$( '#project_id' ).html( '' );
@@ -36,7 +36,7 @@
 			When the user selects a project from the dropdown, 
 			we populate the project code box with the Optimizely snippet for that project ID.
 			*/
-			$( '#project_id' ).change( function() {
+			$( '#project_id' ).change(function() {
 				var id = $( '#project_id' ).val();
 				var name = $( '#project_id option:selected' ).text();
 				
@@ -51,7 +51,7 @@
   
 	}
 	
-	$( document ).ready( function() {
+	$( document ).ready(function() {
 		$( '#optimizely-tabs' ).tabs();
 		$( document ).tooltip({
 			track: true

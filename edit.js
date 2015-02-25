@@ -1,4 +1,4 @@
-( function( $ ) {
+(function( $ ) {
 
 	function optimizelyEditPage() {
 		// Initialize data from the input fields
@@ -20,12 +20,12 @@
 		}
 
 		// On click, run the createExperiment function
-		$( '#optimizely_create' ).click( function() {
+		$( '#optimizely_create' ).click(function() {
 			createExperiment();
 		});
 
 		// Then, handle starts and pauses on the experiment
-		$( '#optimizely_toggle_running' ).click( function() {
+		$( '#optimizely_toggle_running' ).click(function() {
 			if ( optly.experiment.status == 'Running' ) {
 				pauseExperiment( optly.experiment );
 			} else {
@@ -60,7 +60,7 @@
 				optimizely_experiment_status: experiment.status
 			};
 
-			$( '.optimizely_variation' ).each( function( index, input ) {
+			$( '.optimizely_variation' ).each(function( index, input ) {
 				data[ $( input ).attr( 'name' ) ] = $( input ).val();
 			});
 				$.post( wpAjaxUrl, data );
@@ -93,9 +93,9 @@
 		*/
 		function onExperimentCreated( experiment ) {
 			// Pause for 200ms so that the experiment is guarenteed to be created before editing and adding variations
-			setTimeout( function () {
+			setTimeout(function() {
 				optly.experiment = experiment;
-				var variations = $( '.optimizely_variation' ).filter( function() {
+				var variations = $( '.optimizely_variation' ).filter(function() {
 					return $( this ).val().length > 0
 				});
 
@@ -105,7 +105,7 @@
 				var leftoverWeight = 10000 - ( variationWeight * numVariations );
 
 				// Create variations
-				variations.each( function( index, input ) {
+				variations.each(function( index, input ) {
 					var weight = variationWeight;
 					createVariation( experiment, index + 1, $( input ).val(), weight );
 				});
@@ -207,7 +207,7 @@
 
 	}
 
-	$( document ).ready( function() {
+	$( document ).ready(function() {
 		optimizelyEditPage();
 	});
 
