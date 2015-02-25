@@ -1,29 +1,43 @@
 <?php
-
 // PHP controller for plugin configuration page. The page itself is rendered in config.php  
-function optimizely_nonce_field( $action = -1 ) {
-	return wp_nonce_field( $action );
-}
-$optimizely_nonce = 'optimizely-update-code';
 
-function optimizely_admin_warnings() {
-	if ( ! get_option( 'optimizely_project_code' ) && ! isset( $_POST['submit'] ) ) :
+/**
+ * Display any admin notices for the plugin.
+ */
+function optimizely_admin_notices() {
+	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ) :
 		?>
 		<div id="optimizely-warning" class="updated fade">
-			<p><strong><?php esc_html_e( 'Optimizely is almost ready.', 'optimizely' )</strong> 
-			<?php sprintf( esc_html__( 'You must <a href="%1$s">authenticate and choose a project</a> to begin using Optimizely on your site.', 'optimizely' ), 'admin.php?page=optimizely-config' ) ?>
+			<p><strong><?php esc_html_e( 'Optimizely is almost ready.', 'optimizely' ) ?></strong> 
+			<?php 
+				sprintf( 
+					'%s <a href="admin.php?page=optimizely-config">%s</a> %s.',
+					esc_html__( 'You must', 'optimizely' ),
+					esc_html__( 'authenticate and choose a project', 'optimizely' ),
+					esc_html__( 'to begin using Optimizely on your site', 'optimizely' )
+				);
+			?>
 			</p>
 		</div>
 		<?php
 	endif;
 }
-add_action( 'admin_notices', 'optimizely_admin_warnings' );
+add_action( 'admin_notices', 'optimizely_admin_notices' );
 
+/**
+ * Add Optimizely to the admin menu.
+ */
 function optimizely_admin_menu() {
 	add_menu_page( __( 'Optimizely', 'optimizely' ), __( 'Optimizely', 'optimizely' ), 'manage_options', 'optimizely-config', 'optimizely_conf', plugin_dir_url( __FILE__ ) . 'images/optimizely-icon.png' );
 }
 add_action( 'admin_menu', 'optimizely_admin_menu' );
 
+/**
+ * Add action links for Optimizely.
+ * @param array $links
+ * @param string $file
+ * @return array
+ */
 function optimizely_plugin_action_links( $links, $file ) {
 	if ( $file == plugin_basename( dirname( __FILE__ ) . '/optimizely.php' ) ) {
 		$links[] = '<a href="admin.php?page=optimizely-config">' . esc_html__( 'Settings', 'optimizely' ) . '</a>';
@@ -33,23 +47,23 @@ function optimizely_plugin_action_links( $links, $file ) {
 }
 add_filter( 'plugin_action_links', 'optimizely_plugin_action_links', 10, 2 );
 
+/**
+ * Update the Optimizely configuration.
+ */
 function optimizely_conf() {
-	global $optimizely_nonce, $DEFAULT_VARIATION_TEMPLATE;
-	
 	if ( isset( $_POST['submit'] ) ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			die( __( 'Cheatin&#8217; uh?', 'optimizely' )  );
 		}
 		
-		check_admin_referer( $optimizely_nonce );
+		check_admin_referer( OPTIMIZELY_NONCE );
 
 		$token = sanitize_text_field( $_POST['token'] );
 		$project_id = sanitize_text_field( $_POST['project_id'] );
 		$num_variations = sanitize_text_field( $_POST['num_variations'] );
-		$optimizely_post_types = array_map( $_POST['optimizely_post_types'], 'sanitize_text_field' );
+		$optimizely_post_types = array_map( 'sanitize_text_field', $_POST['optimizely_post_types'] );
 		$optimizely_visitor_count = sanitize_text_field( $_POST['optimizely_visitor_count'] );
 		$project_name = sanitize_text_field( stripcslashes( $_POST['project_name'] ) );
-		$project_code = sanitize_text_field( stripcslashes( $_POST['project_code'] ) );
 		$variation_template = sanitize_text_field( stripcslashes( $_POST['variation_template' ] ) );
 
 		if ( empty( $token ) ) {
@@ -81,7 +95,7 @@ function optimizely_conf() {
 		}
 
 		if ( empty( $optimizely_visitor_count ) ) {
-			delete_option( 'optimizely_visitor_count');
+			delete_option( 'optimizely_visitor_count' );
 		} else {
 			update_option( 'optimizely_visitor_count', $optimizely_visitor_count );
 		}
@@ -92,14 +106,8 @@ function optimizely_conf() {
 			update_option( 'optimizely_project_name', $project_name );
 		}
 
-		if ( empty( $project_code ) ) {
-			delete_option( 'optimizely_project_code' );
-		} else {
-			update_option( 'optimizely_project_code', $project_code );
-		}
-
 		if ( empty( $variation_template ) ) {
-			update_option( 'optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE );
+			update_option( 'optimizely_variation_template', OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE );
 		} else {
 			update_option( 'optimizely_variation_template', $variation_template );
 		}

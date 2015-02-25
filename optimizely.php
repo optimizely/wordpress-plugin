@@ -28,9 +28,23 @@ License: GPL2
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+// Constants for default settings
+define( 'OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE', '$( ".post-$POST_ID .entry-title a" ).text( "$NEW_TITLE" );' );
+define( 'OPTIMIZELY_DEFAULT_VISITOR_COUNT', 10316 );
+define( 'OPTIMIZELY_NUM_VARIATIONS', 2 );
+define( 'OPTIMIZELY_NONCE', 'optimizely-update-code' );
+
+// Include files are only required on the admin dashboard
 if ( is_admin() ) {
-	require_once dirname( __FILE__ ) . '/admin.php';
-	require_once dirname( __FILE__ ) . '/edit.php';
+	require_once( dirname( __FILE__ ) . '/admin.php' );
+	require_once( dirname( __FILE__ ) . '/edit.php' );
+}
+
+/**
+ * Enqueues Optimizely scripts required by the admin dashboard.
+ */
+function optimizely_enqueue_scripts() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
@@ -42,28 +56,44 @@ if ( is_admin() ) {
 	wp_enqueue_script( 'optimizely_config', plugins_url( 'config.js', __FILE__ ) );
 	wp_enqueue_script( 'optimizely_results', plugins_url( 'results.js', __FILE__ ) );
 	wp_enqueue_style( 'jquery_ui_styles', plugins_url( 'jquery-ui.css', __FILE__ ) );
-	wp_enqueue_style( 'font_awesome_styles',plugins_url( 'font-awesome.min.css', __FILE__ ) );
+	wp_enqueue_style( 'font_awesome_styles', plugins_url( 'font-awesome.min.css', __FILE__ ) );
 	wp_enqueue_style( 'optimizely_styles', plugins_url( 'style.css', __FILE__ ) );
 }
+add_action( 'admin_enqueue_scripts', 'optimizely_enqueue_scripts' );
 
-$DEFAULT_VARIATION_TEMPLATE = '$( ".post-$POST_ID .entry-title a" ).text( "$NEW_TITLE" );';
-add_option( 'optimizely_variation_template', $DEFAULT_VARIATION_TEMPLATE );
-$DEFAULT_VISITOR_COUNT = 10316;
+add_option( 'optimizely_variation_template', OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE );
 add_option( 'optimizely_post_types', 'post' );
-add_option( 'optimizely_visitor_count', $DEFAULT_VISITOR_COUNT );
+add_option( 'optimizely_visitor_count', OPTIMIZELY_DEFAULT_VISITOR_COUNT );
 add_option( 'num_variations', 2 );
-
 add_option( 'optimizely_launch_auto', false );
 
-// Force Optimizely to load first in the head tag
-add_action( 'wp_head', 'add_optimizely_script', -1000 );
+/**
+ * Force Optimizely to load first in the head tag.
+ */
+function optimizely_add_script() {
+	$project_code = get_option( 'optimizely_project_code' );
+	if ( ! empty( $project_code ) ) {
+		// This cannot be escaped since optimizely_generate_script generates a script tag.
+		// It is however fully escaped within the function.
+		echo optimizely_generate_script( $project_code );
+	}
+}
+add_action( 'wp_head', 'optimizely_add_script', -1000 );
 
-function add_optimizely_script() {
-	echo get_option( 'optimizely_project_code' );
+/**
+ * Generates the Optimizely script tag.
+ * @param int $project_code
+ * @return string
+ */
+function optimizely_generate_script() {
+	return '<script src="//cdn.optimizely.com/js/' . absint( $project_code ) . '.js"></script>';
 }
 
-function can_create_experiments() {
-	return get_option( 'optimizely_token' );
+/**
+ * Check capabilites for creating experiments.
+ */
+function optimizely_can_create_experiments() {
+	return get_option( 'optimizely_token', false );
 }
 
 ?>
