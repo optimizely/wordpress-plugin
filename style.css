@@ -24,8 +24,8 @@
 }
 
 #optimizely-tabs .header .title i {
-	color:green;
-	font-size:20px
+	color: green;
+	font-size: 20px
 }
 
 #optimizely-tabs .winner {
@@ -33,7 +33,7 @@
 }
 
 #optimizely-tabs #winners, #optimizely-tabs #stillwaiting, #optimizely-tabs #ready {
-	display:none;
+	display: none;
 }
 
 #optimizely-tabs .header .results_toolbar {
@@ -44,7 +44,7 @@
 }
 
 #optimizely-tabs .variationrow {
-	display:none;
+	display: none;
 	border-bottom: 1px solid #000;
 }
 
@@ -67,7 +67,7 @@
 }
 
 #optimizely-tabs .header .title {
-	margin-top:5px;
+	margin-top: 5px;
 }
 
 #optimizely-tabs .header {
@@ -79,7 +79,7 @@
 }
 
 #optimizely-tabs td,#optimizely-tabs th {
-	padding:10px 30px 10px 10px;
+	padding: 10px 30px 10px 10px;
 
 }
 
@@ -123,8 +123,8 @@
 }
 
 #optimizely-tabs td.last i {
-	color:green;
-	font-size:25px;
+	color: green;
+	font-size: 25px;
 	
 }
 #optimizely-tabs td.last {
@@ -133,8 +133,8 @@
 
 #optimizely-tabs .loading {
 	width: 100%;
-	padding:20px;
-	text-align:center;
+	padding: 20px;
+	text-align: center;
 }
 
 #optimizely-tabs .progressbar {
@@ -142,11 +142,11 @@
 	border-top-right-radius: 15px;
 	border-top-left-radius: 15px;
 	border-bottom-left-radius: 15px;
-	width:100%;
+	width: 100%;
 	display: inline-block;
 	height: 20px;
-	margin-top:5px;
-	margin-right:50px;
+	margin-top: 5px;
+	margin-right: 50px;
 }
 
 #optimizely-tabs .ready, .not-ready {
@@ -162,18 +162,18 @@
 
 #optimizely-tabs .button.winner {
 	background: #1964AF;
-	color:#ffffff;
+	color: #ffffff;
 }
 
 #optimizely-tabs .ready.launch {
-	background-color:#1964AF;
-	color:#ffffff; 
+	background-color: #1964AF;
+	color: #ffffff; 
 }
 
 #optimizely-tabs #successMessage {
-	display:none;
+	display: none;
 	width: 100%;
-	padding:10px;
+	padding: 10px;
 	background-color: #D9FBD6;
 	
 }
@@ -191,9 +191,7 @@
 	float: right;
 }
 
-
-
 #noresults {
-	display:none;
+	display: none;
 }
 
