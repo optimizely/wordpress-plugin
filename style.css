@@ -187,6 +187,10 @@
 	float: right;
 }
 
+#optimizely-tabs #stillwaiting, #optimizely-tabs #ready{
+	margin-top: 20px;
+}
+
 
 
 #noresults{
