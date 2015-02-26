@@ -10,8 +10,14 @@ function optimizely_admin_notices() {
 	if ( ! get_option( 'optimizely_token' ) && ! isset( $_POST['submit'] ) ):
 		?>
 		<div id="optimizely-warning" class="updated fade">
-			<p><strong><?php _e( 'Optimizely is almost ready. You must first add your <a href="https://www.optimizely.com/tokens" target="_blank">API Token</a> in the <a href="admin.php?page=optimizely-config#tabs-2">configuration tab</a> ', 'optimizely' ) ?></strong> 
-			<?php 
+			<p><strong><?php sprintf(
+				'%s <a href="https://www.optimizely.com/tokens" target="_blank">%s</a> %s <a href="admin.php?page=optimizely-config#tabs-2">%s</a> ',
+				esc_html__( 'Optimizely is almost ready. You must first add your', 'optimizely' ),
+				esc_html__( 'API Token', 'optimizely' ),
+				esc_html__( 'in the', 'optimizely' ),
+				esc_html__( 'configuration tab', 'optimizely' )
+			);?></strong>
+			<?php
 				sprintf( 
 					'%s <a href="admin.php?page=optimizely-config">%s</a> %s.',
 					esc_html__( 'You must', 'optimizely' ),
@@ -26,7 +32,7 @@ function optimizely_admin_notices() {
 	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ):
 		?>
 		<div id="optimizely-warning" class="updated fade">
-			<p><strong><?php _e( 'Optimizely is almost ready. You must choose a project', 'optimizely' ) ?></strong> 
+			<p><strong><?php esc_html_e( 'Optimizely is almost ready. You must choose a project', 'optimizely' ) ?></strong> 
 			</p>
 		</div>
 		<?php

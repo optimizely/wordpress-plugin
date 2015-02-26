@@ -3,7 +3,7 @@
 		<div class="header">
 			<div class="title"><%- title %></div>
 			<div class="results_toolbar">
-				<span>Goals: </span>
+				<span><?php esc_html_e( 'Goals', 'optimizely' ) ?>: </span>
 				<select class="goalSelector" id="goal_<%- id %>">
 					<% _.each( goalOptions, function( goalOption ) { %>
 					<option value="<%- goalOption.id %>" <%- goalOption.selected %>><%- goalOption.name %></option>
