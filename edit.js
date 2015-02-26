@@ -107,7 +107,9 @@
 				// Create variations
 				variations.each(function( index, input ) {
 					var weight = variationWeight;
-					createVariation( experiment, index + 1, $( input ).val(), weight );
+					setTimeout(function() {
+						createVariation( experiment, index + 1, $( input ).val(), weight );
+					}, 200 );
 				});
 
 				// Update original with correct traffic allocation
@@ -116,7 +118,7 @@
 
 				// Create goal
 				createGoal( experiment );
-			}, 200 );
+			}, 1000 );
 		}
 		
 		/*

@@ -1,7 +1,6 @@
 ( function( $ ) {
 
 	function optimizelyResultsPage( apiToken, projectId, poweredVisitor ) {
-	
 		var optly = new OptimizelyAPI( apiToken );	
 
 		// Fetch only Wordpress experiments from project
@@ -52,6 +51,11 @@
 		$( 'html' ).delegate( '.archive', 'click', function() {
 			var expID = $( this ).parents( '.opt_results' ).attr( 'data-exp-id' );
 			archiveExperiment( expID );
+		});
+
+		$( 'html' ).delegate( '.edit', 'click', function() {
+			var expID = $( this ).parents( '.opt_results' ).attr( 'data-exp-id' );
+			window.open( 'https://www.optimizely.com/edit?experiment_id=' + parseInt( expID ) );
 		});
 
 		$( 'html' ).delegate( '.fullresults', 'click', function() {
@@ -300,6 +304,7 @@
 				var conversionRate = getRoundedPercentage( result.conversion_rate );
 				
 				variations.push({
+					expID: exp.id,
 					status: result.status,
 					goalId: result.goal_id,
 					variationId: result.variation_id,
@@ -329,6 +334,8 @@
 	$( document ).ready(function() {
 		if ( 'toplevel_page_optimizely-config' == pagenow && '' != optimizelySettings.token && '' != optimizelySettings.projectId ) {
 			optimizelyResultsPage( optimizelySettings.token, optimizelySettings.projectId, optimizelySettings.visitorCount );
+		} else {
+			$( '#loading' ).hide();
 		}
 	});
 })(	jQuery	);

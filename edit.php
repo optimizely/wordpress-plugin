@@ -38,14 +38,14 @@ function optimizely_title_variations_render( $post ) {
 
 	$titles = array();
 	$contents = '';
-	$num_variations = get_option( 'num_variations', OPTIMIZELY_NUM_VARIATIONS );
+	$num_variations = get_option( 'optimizely_num_variations', OPTIMIZELY_NUM_VARIATIONS );
 
 	for ( $i = 1; $i <= $num_variations; $i++ ) {
 		$meta_key = optimizely_meta_key( $i );
 		$titles[ $i ] = get_post_meta( $post->ID, $meta_key, true );
 		echo '<p>';
 		echo sprintf(
-			'<label for="%s">%s #%u</label>',
+			'<label for="%s">%s #%u</label><br>',
 			esc_attr( $meta_key ),
 			esc_html__( 'Variation', 'optimizely' ),
 			absint( $i )
@@ -91,13 +91,13 @@ function optimizely_title_variations_save( $post_id ) {
 	}
 
 	// Save the variations
-	$num_variations = get_option( 'num_variations', OPTIMIZELY_NUM_VARIATIONS );
+	$num_variations = get_option( 'optimizely_num_variations', OPTIMIZELY_NUM_VARIATIONS );
 	for ( $i = 1; $i <= $num_variations; $i++ ) {
 		$meta_key = optimizely_meta_key( $i );
-		if ( isset( $_POST[ $key ] ) ) {
+		if ( isset( $_POST[ $meta_key ] ) ) {
 			// Save titles
-			$new_title = sanitize_text_field( $_POST[ $key ] );
-			update_post_meta( $post_id, $key, $new_title );
+			$new_title = sanitize_text_field( $_POST[ $meta_key ] );
+			update_post_meta( $post_id, $meta_key, $new_title );
 		}
 	}
 
