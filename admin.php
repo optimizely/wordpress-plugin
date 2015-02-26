@@ -20,7 +20,7 @@ function optimizely_admin_notices() {
 		</div>
 		<?php
 	endif;
-	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ):
+	if ( get_option( 'optimizely_token' ) && ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ):
 		?>
 		<div id="optimizely-warning" class="updated fade">
 			<p><strong><?php esc_html_e( 'Optimizely is almost ready. You must choose a project', 'optimizely' ) ?>.</strong> 
