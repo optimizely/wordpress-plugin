@@ -7,10 +7,10 @@
  * Display admin notices for the plugin.
  */
 function optimizely_admin_notices() {
-	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ):
+	if ( ! get_option( 'optimizely_token' ) && ! isset( $_POST['submit'] ) ):
 		?>
 		<div id="optimizely-warning" class="updated fade">
-			<p><strong><?php esc_html_e( 'Optimizely is almost ready.', 'optimizely' ) ?></strong> 
+			<p><strong><?php _e( 'Optimizely is almost ready. You must first add your <a href="https://www.optimizely.com/tokens" target="_blank">API Token</a> in the <a href="admin.php?page=optimizely-config#tabs-2">configuration tab</a> ', 'optimizely' ) ?></strong> 
 			<?php 
 				sprintf( 
 					'%s <a href="admin.php?page=optimizely-config">%s</a> %s.',
@@ -19,6 +19,14 @@ function optimizely_admin_notices() {
 					esc_html__( 'to begin using Optimizely on your site', 'optimizely' )
 				);
 			?>
+			</p>
+		</div>
+		<?php
+	endif;
+	if ( ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ):
+		?>
+		<div id="optimizely-warning" class="updated fade">
+			<p><strong><?php _e( 'Optimizely is almost ready. You must choose a project', 'optimizely' ) ?></strong> 
 			</p>
 		</div>
 		<?php

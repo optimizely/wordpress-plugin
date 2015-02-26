@@ -38,14 +38,14 @@ function optimizely_title_variations_render( $post ) {
 
 	$titles = array();
 	$contents = '';
-	$num_variations = get_option( 'num_variations', OPTIMIZELY_NUM_VARIATIONS );
+	$num_variations = get_option( 'optimizely_num_variations', OPTIMIZELY_NUM_VARIATIONS );
 
 	for ( $i = 1; $i <= $num_variations; $i++ ) {
 		$meta_key = optimizely_meta_key( $i );
 		$titles[ $i ] = get_post_meta( $post->ID, $meta_key, true );
 		echo '<p>';
 		echo sprintf(
-			'<label for="%s">%s #%u</label>',
+			'<label for="%s">%s #%u</label><br>',
 			esc_attr( $meta_key ),
 			esc_html__( 'Variation', 'optimizely' ),
 			absint( $i )

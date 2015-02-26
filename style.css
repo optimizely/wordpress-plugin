@@ -195,3 +195,11 @@
 	display: none;
 }
 
+#optimizely-tabs #stillwaiting, #optimizely-tabs #ready{
+	margin-top: 30px;
+}
+
+input.optimizely_variation{
+	width: 100%;
+}
+

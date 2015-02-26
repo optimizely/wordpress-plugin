@@ -3,6 +3,7 @@
 		<div class="header">
 			<div class="title"><%- title %></div>
 			<div class="results_toolbar">
+				<span>Goals: </span>
 				<select class="goalSelector" id="goal_<%- id %>">
 					<% _.each( goalOptions, function( goalOption ) { %>
 					<option value="<%- goalOption.id %>" <%- goalOption.selected %>><%- goalOption.name %></option>
@@ -11,11 +12,9 @@
 				<div title="<?php esc_html_e( 'Start Experiment', 'optimizely' ) ?>" class="<%- statusClass %> button">
 					<i class="fa fa-<%- statusClass %> fa-fw"></i>
 				</div>
-				<a href="https://www.optimizely.com/edit?experiment_id=<%- id %>" target="_new">
-					<div title="<?php esc_html_e( 'Edit on Optimizely', 'optimizely' ) ?>" class="edit button">
-						<i class="fa fa-edit fa-fw"></i>
-					</div>
-				</a>
+				<div title="<?php esc_html_e( 'Edit on Optimizely', 'optimizely' ) ?>" class="edit button">
+					<i class="fa fa-edit fa-fw"></i>
+				</div>
 				<div title="<?php esc_html_e( 'Full Results', 'optimizely' ) ?>" class="fullresults button">
 					<i class="fa fa-line-chart fa=fw"></i>
 				</div>
@@ -37,7 +36,7 @@
 				</tr>
 				<% _.each( variations, function( variation ) { %>
 				<tr class="variationrow <%- variation.status %> <%- variation.goalId %>" id="variation_<%- variation.variationId %>" data-var-id="<%- variation.variationId %>">
-					<td class="first"><a target="_blank" href="<%- variation.editUrl %>?optimizely_x<%- variation.id %>=<%- variation.variationId %>"><%- variation.variationName %></a></td>
+					<td class="first"><a target="_blank" href="<%- variation.editUrl %>?optimizely_x<%- variation.expID %>=<%- variation.variationId %>"><%- variation.variationName %></a></td>
 					<td><%- variation.visitors %></td>
 					<td><%- variation.conversions %></td>
 					<td><%- variation.conversionRate %></td>
