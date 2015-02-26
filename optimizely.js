@@ -37,7 +37,7 @@
 				self.outstandingRequests -= 1;
 				callback( response );
 			}
-		}
+		};
 
 		if ( data ) {
 			options.data = JSON.stringify( data );
@@ -45,40 +45,39 @@
 		}
 
 		this.outstandingRequests += 1;
-			$.ajax( options );
-		}
+		$.ajax( options );
+	}
 
-		// Using our `call` function, we can define convenience functions for GETs, POSTs, PUTs, and DELETEs.
-		OptimizelyAPI.prototype.get = function( endpoint, callback ) {
-			this.call( 'GET', endpoint, '', callback );
-		}
+	// Using our `call` function, we can define convenience functions for GETs, POSTs, PUTs, and DELETEs.
+	OptimizelyAPI.prototype.get = function( endpoint, callback ) {
+		this.call( 'GET', endpoint, '', callback );
+	}
 
-		OptimizelyAPI.prototype.delete = function( endpoint, callback ) {
-			this.call( 'DELETE', endpoint, '', callback );
-		}
+	OptimizelyAPI.prototype.delete = function( endpoint, callback ) {
+		this.call( 'DELETE', endpoint, '', callback );
+	}
 
-		OptimizelyAPI.prototype.post = function( endpoint, data, callback ) {
-			this.call( 'POST', endpoint, data, callback );
-		}
+	OptimizelyAPI.prototype.post = function( endpoint, data, callback ) {
+		this.call( 'POST', endpoint, data, callback );
+	}
 
-		OptimizelyAPI.prototype.put = function( endpoint, data, callback ) {
-			this.call( 'PUT', endpoint, data, callback );
-		}
+	OptimizelyAPI.prototype.put = function( endpoint, data, callback ) {
+		this.call( 'PUT', endpoint, data, callback );
+	}
 
-		/*
-		We've also added an extra convenience function, `patch`, that updates a model by changing only the specified fields. 
-		The function works by reading in an entity, changing a few keys, and then sending it back to Optimizely.
-		*/
-		OptimizelyAPI.prototype.patch = function( endpoint, data, callback ) {
-			var self = this;
+	/*
+	We've also added an extra convenience function, `patch`, that updates a model by changing only the specified fields. 
+	The function works by reading in an entity, changing a few keys, and then sending it back to Optimizely.
+	*/
+	OptimizelyAPI.prototype.patch = function( endpoint, data, callback ) {
+		var self = this;
+		
+		self.get( endpoint, function( base ) {
+			for ( var key in data ) {
+				base[ key ] = data[ key ];
+			}
 			
-			self.get( endpoint, function( base ) {
-				for ( var key in data ) {
-					base[ key ] = data[ key ];
-				}
-				
-				self.put( endpoint, base, callback );
-			});
+			self.put( endpoint, base, callback );
 		});
 	}
 })(  jQuery  );

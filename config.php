@@ -1,15 +1,64 @@
+<script type="text/template" id="optimizely_results">
+	<div name="<%- id %>" id="exp_<%- id %>" data-exp-id="<%- id %>" class="opt_results" data-exp-title="<%- description %>">
+		<div class="header">
+			<div class="title"><%- title %></div>
+			<div class="results_toolbar">
+				<select class="goalSelector" id="goal_<%- id %>">
+					<% _.each( goalOptions, function( goalOption ) { %>
+					<option value="<%- goalOption.id %>" <%- goalOption.selected %>><%- goalOption.name %></option>
+ 					<% }); %>
+				</select>
+				<div title="<?php esc_html_e( 'Start Experiment', 'optimizely' ) ?>" class="<%- statusClass %> button">
+					<i class="fa fa-<%- statusClass %> fa-fw"></i>
+				</div>
+				<a href="https://www.optimizely.com/edit?experiment_id=<%- id %>" target="_new">
+					<div title="<?php esc_html_e( 'Edit on Optimizely', 'optimizely' ) ?>" class="edit button">
+						<i class="fa fa-edit fa-fw"></i>
+					</div>
+				</a>
+				<div title="<?php esc_html_e( 'Full Results', 'optimizely' ) ?>" class="fullresults button">
+					<i class="fa fa-line-chart fa=fw"></i>
+				</div>
+				<div title="<?php esc_html_e( 'Archive Experiment', 'optimizely' ) ?>" class="archive button">
+					<i class="fa fa-archive fa=fw"></i>
+				</div>
+			</div>
+		</div>
+		<div class="variations">
+			<table>
+				<tr class="first">
+					<th class="first"><?php esc_html_e( 'VARIATION', 'optimizely' ) ?></th>
+					<th><?php esc_html_e( 'VISITORS', 'optimizely' ) ?></th>
+					<th><?php esc_html_e( 'CONVERSIONS', 'optimizely' ) ?></th>
+					<th><?php esc_html_e( 'CONVERSION RATE', 'optimizely' ) ?></th>
+					<th><?php esc_html_e( 'IMPROVEMENT', 'optimizely' ) ?></th>
+					<th><?php esc_html_e( 'CONFIDENCE', 'optimizely' ) ?></th>
+					<th><?php esc_html_e( 'LAUNCH', 'optimizely' ) ?></th>
+				</tr>
+				<% _.each( variations, function( variation ) { %>
+				<tr class="variationrow <%- variation.status %> <%- variation.goalId %>" id="variation_<%- variation.variationId %>" data-var-id="<%- variation.variationId %>">
+					<td class="first"><a target="_blank" href="<%- variation.editUrl %>?optimizely_x<%- variation.id %>=<%- variation.variationId %>"><%- variation.variationName %></a></td>
+					<td><%- variation.visitors %></td>
+					<td><%- variation.conversions %></td>
+					<td><%- variation.conversionRate %></td>
+					<td><%- variation.improvement %></td>
+					<td><%- variation.confidence %></td>
+					<td>
+						<% if ( 'baseline' != variation.status ) { %>
+						<div class="button launch <%- variation.status %>" title="<?php esc_html_e( 'Launch', 'optimizely' ) ?>"><i class="fa fa-rocket fa-fw"></i></div>
+						<% } %>
+					</td>
+				</tr>
+				<% }); %>
+			</table>
+		</div>
+		<div class="footer">
+			<div class="progressbar"></div>
+		</div>
+	</div>
+</script>
+
 <div class="wrap">
-	<script>
-		jQuery( document ).ready( function( $ ) {
-			<?php 
-				$token = get_option( 'optimizely_token' );
-				$project_id = get_option( 'optimizely_project_id' );
-				if( ! empty( $token ) && ! empty( $project_id ) ){
-					echo 'optimizelyResultsPage( "' . esc_js( $token ) . '", "' . esc_js( $project_id ) . '", ' . absint( get_option( 'optimizely_visitor_count', 0 ) ) . ' );';
-				}
-			?>
-		});
-	</script>
 	<div id="optimizely-tabs">
 		<ul class="tabs-header" id="tabs-header">
 			<li><a href="#tabs-1"><?php echo esc_html_e( 'Results', 'optimizely' ) ?></a></li>

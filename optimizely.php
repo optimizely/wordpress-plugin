@@ -47,6 +47,7 @@ if ( is_admin() ) {
 function optimizely_enqueue_scripts() {
 	// Core scripts
 	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'underscore' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'jquery-ui-progressbar' );
@@ -56,7 +57,12 @@ function optimizely_enqueue_scripts() {
 	wp_enqueue_script( 'optimizely_editor', plugins_url( 'edit.js', __FILE__ ), array( 'jquery' ) );
 	wp_localize_script( 'optimizely_editor', 'wpAjaxUrl', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'optimizely_config', plugins_url( 'config.js', __FILE__ ), array( 'jquery' ) );
-	wp_enqueue_script( 'optimizely_results', plugins_url( 'results.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-tabs','jquery-ui-progressbar','jquery-ui-tooltip' ) );
+	wp_enqueue_script( 'optimizely_results', plugins_url( 'results.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-tabs','jquery-ui-progressbar','jquery-ui-tooltip', 'underscore' ) );
+	wp_localize_script( 'optimizely_editor', 'optimizelySettings', array(
+		'token' => get_option( 'optimizely_token' ),
+		'projectId' => get_option( 'optimizely_project_id' ),
+		'visitorCount' => get_option( 'optimizely_visitor_count', 0 ),
+	) );
 	
 	wp_enqueue_style( 'jquery_ui_styles', plugins_url( 'jquery-ui.css', __FILE__ ) );
 	wp_enqueue_style( 'font_awesome_styles', plugins_url( 'font-awesome.min.css', __FILE__ ) );
