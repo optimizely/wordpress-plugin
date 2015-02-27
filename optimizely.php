@@ -80,14 +80,15 @@ function optimizely_add_script() {
 		// This cannot be escaped since optimizely_generate_script returns a script tag.
 		// The output of this script is fully escaped within the function below
 		echo optimizely_generate_script( $project_id );
-	}else if ( ! empty( $project_code ) && strpos($project_code,'js')){
-		// older versions used an old filled project_code. 
-		// If this field is filled out we will strip the ID out of the field and use that id
-		$project_id = substr($project_code,strpos($project_code,'js')+3);
-       	$project_id = substr($project_id,0,strpos($project_id,'js')-1);
-       	update_option('optimizely_project_id', $project_id);
-       	delete_option('optimizely_project_code');
-       	echo optimizely_generate_script( $project_id );
+	} else if ( ! empty( $project_code ) && false !== strpos( $project_code, 'js' ) && true !== WPCOM_IS_VIP_ENV ){
+		// Older non-VIP sites used an old filled project_code. 
+		// If this field is filled out we will strip the ID out of the field and use that id.
+		// This will execute ONLY on non-VIP sites and is necessary for backwards compatibility.
+		$project_id = substr( $project_code,strpos( $project_code,'js' ) + 3 );
+		$project_id = substr( $project_id, 0, strpos( $project_id, 'js' ) -1 );
+		update_option( 'optimizely_project_id', absint( $project_id ) );
+		delete_option( 'optimizely_project_code' );
+		echo optimizely_generate_script( $project_id );
 	}
 }
 add_action( 'wp_head', 'optimizely_add_script', -1000 );
