@@ -1,9 +1,9 @@
 === Optimizely ===
-Contributors: bradtaylorsf, arthuracs, jonslaught 
+Contributors: arthuracs, jonslaught, bradtaylorsf
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
 Tested up to: 4.0.1
-Stable tag: 3.2.2
+Stable tag: 3.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,15 @@ Sign up at [Optimizely.com](http://www.optimizely.com).
 3. Enter your Optimizely API token in the plugin's settings page, choose a project to use, then save.
 
 You're ready to start using Optimizely!
+
+== Screenshots ==
+1. Create multiple headlines for each post
+2. View your results and launch winners directly from the dashboard
+
+
+= 3.5.0 =
+* Major changes to get the plugin ready for Wordpress VIP
+* Fixed bug that caused some snippets not to get loaded correctly after performing an upgrade
 
 = 3.2.1 =
 * Fixed bug that caused some variations to not get updated or created after experiment creation
