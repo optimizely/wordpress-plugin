@@ -80,7 +80,7 @@ function optimizely_add_script() {
 		// This cannot be escaped since optimizely_generate_script returns a script tag.
 		// The output of this script is fully escaped within the function below
 		echo optimizely_generate_script( $project_id );
-	} else if ( ! empty( $project_code ) && false !== strpos( $project_code, 'js' ) && true !== WPCOM_IS_VIP_ENV ){
+	} else if ( ! empty( $project_code ) && false !== strpos( $project_code, 'js' ) && true !== WPCOM_IS_VIP_ENV ) {
 		// Older non-VIP sites used an old filled project_code. 
 		// If this field is filled out we will strip the ID out of the field and use that id.
 		// This will execute ONLY on non-VIP sites and is necessary for backwards compatibility.
