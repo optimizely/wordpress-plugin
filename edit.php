@@ -13,9 +13,9 @@
 function get_full_permalink() {
 	$permalinkArray = get_sample_permalink( $post->ID );
 	$permalinkTemplate = array_values( $permalinkArray )[0];
-	$permalinkSlug = array_values( $permalinkArray )[1];
+	$permalinkTitle = array_values( $permalinkArray )[1];
 	
-	return str_replace( '%postname%', $permalinkSlug, $permalinkTemplate );
+	return str_replace( '%postname%', $permalinkTitle, $permalinkTemplate );
 }
 
 /**
@@ -88,7 +88,7 @@ function optimizely_title_variations_render( $post ) {
 	<input type="hidden" id="optimizely_project_id" value="<?php echo esc_attr( get_option('optimizely_project_id') ) ?>" />
 	<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_id', true ) ) ?>" />
 	<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_status', true ) ) ?>" />
-	<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo get_full_permalink() ?>" />
+	<input type="hidden" id="optimizely_url" name="optimizely_url" value="<?php echo get_full_permalink() ?>" />
 	<textarea id="optimizely_variation_template" style="display: none"><?php echo esc_attr( get_option( 'optimizely_variation_template' ) ) ?></textarea>
 	<?php
 }
