@@ -113,8 +113,8 @@ add_action( 'save_post', 'optimizely_title_variations_save' );
  * @param int $post_id
  */
 function optimizely_update_experiment_meta() {
-	if ( isset( $_REQUEST['post_id'] ) ) {
-		optimizely_title_variations_save( absint( $_REQUEST['post_id'] ) );
+	if ( isset( $_POST['post_id'] ) ) {
+		optimizely_title_variations_save( absint( $_POST['post_id'] ) );
 	}
 	
 	exit;
@@ -126,9 +126,9 @@ add_action( 'wp_ajax_update_experiment_meta', 'optimizely_update_experiment_meta
  * @param int $post_id
  */
 function optimizely_update_post_title() {
-	if ( isset( $_REQUEST['post_id'] ) && isset( $_REQUEST['title'] ) ) {
-		$post_id = absint( $_REQUEST['post_id'] );
-		$winning_var_title = sanitize_text_field( $_REQUEST['title'] );
+	if ( isset( $_POST['post_id'] ) && isset( $_POST['title'] ) ) {
+		$post_id = absint( $_POST['post_id'] );
+		$winning_var_title = sanitize_text_field( $_POST['title'] );
 
 		wp_update_post( array(
 			'ID' => $post_id,
