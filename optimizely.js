@@ -48,13 +48,9 @@
 		$.ajax( options );
 	}
 
-	// Using our `call` function, we can define convenience functions for GETs, POSTs, PUTs, and DELETEs.
+	// Using our `call` function, we can define convenience functions for GETs, POSTs, PUTs.
 	OptimizelyAPI.prototype.get = function( endpoint, callback ) {
 		this.call( 'GET', endpoint, '', callback );
-	}
-
-	OptimizelyAPI.prototype.delete = function( endpoint, callback ) {
-		this.call( 'DELETE', endpoint, '', callback );
 	}
 
 	OptimizelyAPI.prototype.post = function( endpoint, data, callback ) {
