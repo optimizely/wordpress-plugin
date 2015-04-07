@@ -332,7 +332,7 @@
 	}
 
 	$( document ).ready(function() {
-		if ( 'toplevel_page_optimizely-config' == pagenow && '' != optimizelySettings.token && '' != optimizelySettings.projectId ) {
+		if (typeof pagenow != 'undefined' && 'toplevel_page_optimizely-config' == pagenow && '' != optimizelySettings.token && '' != optimizelySettings.projectId ) {
 			optimizelyResultsPage( optimizelySettings.token, optimizelySettings.projectId, optimizelySettings.visitorCount );
 		} else {
 			$( '#loading' ).hide();

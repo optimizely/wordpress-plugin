@@ -71,7 +71,7 @@ function optimizely_conf() {
 		$project_id = sanitize_text_field( $_POST['project_id'] );
 		$num_variations = sanitize_text_field( $_POST['optimizely_num_variations'] );
 		$optimizely_post_types = array_map( 'sanitize_text_field', $_POST['optimizely_post_types'] );
-		$optimizely_visitor_count = sanitize_text_field( $_POST['optimizely_visitor_count'] );
+		$optimizely_visitor_count = str_replace( ',', '', sanitize_text_field( $_POST['optimizely_visitor_count'] ) );
 		$project_name = sanitize_text_field( stripcslashes( $_POST['project_name'] ) );
 		$variation_template = sanitize_text_field( stripcslashes( $_POST['variation_template' ] ) );
 
