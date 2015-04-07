@@ -30,6 +30,8 @@ You're ready to start using Optimizely!
 1. Create multiple headlines for each post
 2. View your results and launch winners directly from the dashboard
 
+= 3.5.1 =
+* Fixed bug in optimizely.php that was preventing large snippet ids to render correctly
 
 = 3.5.0 =
 * Major changes to get the plugin ready for Wordpress VIP

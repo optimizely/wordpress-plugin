@@ -77,7 +77,7 @@
 				<div class="loading" id="loading"><?php echo esc_html_e( 'Loading Results.....', 'optimizely' ) ?><br><img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ).'images/ajax-loader.gif' ?>" /></div>
 				<div id="noresults">
 					<h3><?php echo esc_html_e( 'No results!', 'optimizely' ) ?></h3>
-					<p><?php echo esc_html_e( 'A headline experiement must be created in Wordpress before any results will be displayed here. Please create a new post with multiple headlines, publish the post, and start the experiment. Once the experiment is created and running it will display the results here. <strong>Please Note:</strong> Only experiements created through Wordpress will be displayed here. Experiments created directly in Optimizely will not be displayed here.', 'optimizely' ) ?></p>
+					<p><?php echo esc_html_e( 'A headline experiement must be created in Wordpress before any results will be displayed here. Please create a new post with multiple headlines, publish the post, and start the experiment. Once the experiment is created and running it will display the results here. Please Note: Only experiements created through Wordpress will be displayed here. Experiments created directly in Optimizely will not be displayed here.', 'optimizely' ) ?></p>
 				</div>
 			</div>  
 		</div>

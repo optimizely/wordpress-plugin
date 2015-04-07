@@ -99,7 +99,7 @@ add_action( 'wp_head', 'optimizely_add_script', -1000 );
  * @return string
  */
 function optimizely_generate_script( $project_id ) {
-	return '<script src="//cdn.optimizely.com/js/' . absint( $project_id ) . '.js"></script>';
+	return '<script src="//cdn.optimizely.com/js/' . abs( floatval( $project_id ) ) . '.js"></script>';
 }
 
 /**
