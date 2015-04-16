@@ -9,7 +9,7 @@
 					<option value="<%- goalOption.id %>" <%- goalOption.selected %>><%- goalOption.name %></option>
  					<% }); %>
 				</select>
-				<div title="<?php esc_html_e( 'Start Experiment', 'optimizely' ) ?>" class="<%- statusClass %> button">
+				<div title="<?php esc_html_e( 'Start/Pause Experiment', 'optimizely' ) ?>" class="<%- statusClass %> button">
 					<i class="fa fa-<%- statusClass %> fa-fw"></i>
 				</div>
 				<div title="<?php esc_html_e( 'Edit on Optimizely', 'optimizely' ) ?>" class="edit button">
@@ -69,7 +69,7 @@
 
 			<div id="results_list">
 				<div id="ready">
-					<h2><?php echo esc_html_e( 'Ready to launch!', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments experiments are ready to launch!', 'optimizely' ) ?></span></h2>
+					<h2><?php echo esc_html_e( 'Ready to launch!', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments are ready to launch!', 'optimizely' ) ?></span></h2>
 				</div>
 				<div id="stillwaiting">
 					<h2><?php echo esc_html_e( 'Not ready to launch', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments still need a few more visitors before we can declare a winner', 'optimizely' ) ?></span></h2> 
