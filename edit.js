@@ -72,7 +72,7 @@
 			experiment = {};
 			post_id = $( '#post_ID' ).val();
 			experiment.description = 'Wordpress [' + post_id + ']: ' + $( '#title' ).val();
-			experiment.edit_url = $( '#optimizely_experiment_url' ).val();
+			experiment.edit_url = $( '#sample-permalink' ).text();
 			var loc = document.createElement( 'a' );
 			loc.href = experiment.edit_url;
 			var urlTargetdomain = loc.hostname;
@@ -132,7 +132,7 @@
 			var goal = {
 				goal_type: 3, // pageview goal
 				title: 'Views to page',
-				urls: [ $( '#optimizely_experiment_url' ).val() ],
+				urls: [ $( '#sample-permalink' ).text() ],
 				url_match_types: [4], // substring
 				addable: false, // don't clog up the goal list
 				experiment_ids: [ experiment.id ]
