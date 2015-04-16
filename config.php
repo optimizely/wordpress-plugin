@@ -9,7 +9,7 @@
 					<option value="<%- goalOption.id %>" <%- goalOption.selected %>><%- goalOption.name %></option>
  					<% }); %>
 				</select>
-				<div title="<?php esc_html_e( 'Start Experiment', 'optimizely' ) ?>" class="<%- statusClass %> button">
+				<div title="<?php esc_html_e( 'Start/Pause Experiment', 'optimizely' ) ?>" class="<%- statusClass %> button">
 					<i class="fa fa-<%- statusClass %> fa-fw"></i>
 				</div>
 				<div title="<?php esc_html_e( 'Edit on Optimizely', 'optimizely' ) ?>" class="edit button">
