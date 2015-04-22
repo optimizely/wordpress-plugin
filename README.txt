@@ -30,6 +30,9 @@ You're ready to start using Optimizely!
 1. Create multiple headlines for each post
 2. View your results and launch winners directly from the dashboard
 
+= 3.6.0 =
+* prevented the creation of an experiment until the post is published. This is to prevent goals and URL targeting to be incorrect when a post title changes.
+
 = 3.5.2 =
 * Fixed issue where the powered testing number will only accept 2 digits
 * Fixed issue where pagenow can be undefined. Check to see if its undefined before displaying the page
