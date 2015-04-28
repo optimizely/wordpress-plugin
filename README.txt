@@ -2,7 +2,7 @@
 Contributors: arthuracs, jonslaught, bradtaylorsf
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
-Tested up to: 4.0.1
+Tested up to: 4.1.1
 Stable tag: 3.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -31,7 +31,8 @@ You're ready to start using Optimizely!
 2. View your results and launch winners directly from the dashboard
 
 = 3.6.0 =
-* prevented the creation of an experiment until the post is published. This is to prevent goals and URL targeting to be incorrect when a post title changes.
+* prevented the creation of an experiment until the post is published. This is to prevent goals and URL targeting to be incorrect when a post title changes and URL truncating 
+* updated the results page to use the new Optimizely statistics engine
 
 = 3.5.2 =
 * Fixed issue where the powered testing number will only accept 2 digits

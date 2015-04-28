@@ -27,12 +27,13 @@
 			<table>
 				<tr class="first">
 					<th class="first"><?php esc_html_e( 'VARIATION', 'optimizely' ) ?></th>
-					<th><?php esc_html_e( 'VISITORS', 'optimizely' ) ?></th>
-					<th><?php esc_html_e( 'CONVERSIONS', 'optimizely' ) ?></th>
-					<th><?php esc_html_e( 'CONVERSION RATE', 'optimizely' ) ?></th>
-					<th><?php esc_html_e( 'IMPROVEMENT', 'optimizely' ) ?></th>
-					<th><?php esc_html_e( 'CONFIDENCE', 'optimizely' ) ?></th>
-					<th><?php esc_html_e( 'LAUNCH', 'optimizely' ) ?></th>
+					<th><div title="The total number of visitors for this variation"><?php esc_html_e( 'VISITORS', 'optimizely' ) ?><i class="fa fa-question-circle fa-fw"></i></div></th>
+					<th><div title="The total number of visitors that converted on the goal"><?php esc_html_e( 'CONVERSIONS', 'optimizely' ) ?><i class="fa fa-question-circle fa-fw"></i></div></th>
+					<th><div title="The percentage of unique visitors who saw this variation and triggered this goal"><?php esc_html_e( 'RATE', 'optimizely' ) ?><i class="fa fa-question-circle fa-fw"></i></div></th>
+					<th><div title="The relative improvement in Conversion Rate for this variation over the baseline"><?php esc_html_e( 'IMPROVEMENT', 'optimizely' ) ?><i class="fa fa-question-circle fa-fw"></i></div></th>
+					<th><div title="The confidence percentage that the Optimizely stats engine believes the variation is a winner or looser"><?php esc_html_e( 'CONFIDENCE', 'optimizely' ) ?><i class="fa fa-question-circle fa-fw"></i></div></th>
+					<th><div title="The estimated number of visitors this variation needs to be come statistically significant"><?php esc_html_e( '~VISITORS REMAINING', 'optimizely' ) ?><i class="fa fa-question-circle fa-fw"></i></div></th>
+					<th><div title="When clicked the variation headline will be updated and the experiment will be archived"><?php esc_html_e( 'LAUNCH', 'optimizely' ) ?><i class="fa fa-question-circle fa-fw"></i></div></th>
 				</tr>
 				<% _.each( variations, function( variation ) { %>
 				<tr class="variationrow <%- variation.status %> <%- variation.goalId %>" id="variation_<%- variation.variationId %>" data-var-id="<%- variation.variationId %>">
@@ -42,6 +43,7 @@
 					<td><%- variation.conversionRate %></td>
 					<td><%- variation.improvement %></td>
 					<td><%- variation.confidence %></td>
+					<td>~<%- variation.vistitorsRemaining %></td>
 					<td>
 						<% if ( 'baseline' != variation.status ) { %>
 						<div class="button launch <%- variation.status %>" title="<?php esc_html_e( 'Launch', 'optimizely' ) ?>"><i class="fa fa-rocket fa-fw"></i></div>
@@ -50,9 +52,6 @@
 				</tr>
 				<% }); %>
 			</table>
-		</div>
-		<div class="footer">
-			<div class="progressbar"></div>
 		</div>
 	</div>
 </script>
@@ -69,10 +68,10 @@
 
 			<div id="results_list">
 				<div id="ready">
-					<h2><?php echo esc_html_e( 'Ready to launch!', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments are ready to launch!', 'optimizely' ) ?></span></h2>
+					<h2><?php echo esc_html_e( 'Ready for review', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments have at least one statistically significant variation.', 'optimizely' ) ?></span></h2>
 				</div>
 				<div id="stillwaiting">
-					<h2><?php echo esc_html_e( 'Not ready to launch', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments still need a few more visitors before we can declare a winner', 'optimizely' ) ?></span></h2> 
+					<h2><?php echo esc_html_e( 'Not ready yet', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments still need a few more visitors before we can declare a winner', 'optimizely' ) ?></span></h2> 
 				</div>
 				<div class="loading" id="loading"><?php echo esc_html_e( 'Loading Results.....', 'optimizely' ) ?><br><img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ).'images/ajax-loader.gif' ?>" /></div>
 				<div id="noresults">
