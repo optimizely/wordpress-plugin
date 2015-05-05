@@ -11,10 +11,10 @@
  */
 function get_full_permalink() {
 	$permalinkArray = get_sample_permalink( $post->ID );
-	$permalinkTemplate = array_values( $permalinkArray )[0];
-	$permalinkSlug = array_values( $permalinkArray )[1];
+	$permalinkTemplate = array_values( $permalinkArray );
+	$permalinkSlug = array_values( $permalinkArray );
 	
-	return str_replace( '%postname%', $permalinkSlug, $permalinkTemplate );
+	return str_replace( '%postname%', $permalinkSlug[1], $permalinkTemplate[0] );
 }
 /**
  * Add the meta box for title variations.
@@ -69,6 +69,13 @@ function optimizely_title_variations_render( $post ) {
 	}
 	?>
 
+	<input type="hidden" id="optimizely_token" value="<?php echo esc_attr( get_option( 'optimizely_token' ) )?>" />
+	<input type="hidden" id="optimizely_project_id" value="<?php echo esc_attr( get_option('optimizely_project_id') ) ?>" />
+	<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_id', true ) ) ?>" />
+	<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_status', true ) ) ?>" />
+	<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo get_full_permalink() ?>" />
+	<textarea id="optimizely_variation_template" style="display: none"><?php echo esc_attr( get_option( 'optimizely_variation_template' ) ) ?></textarea>
+
 	<?php if(get_post_status($post->ID) == 'publish'): ?>
 		<div id="optimizely_not_created">
 			<a id="optimizely_create" class="button-primary"><?php esc_html_e( 'Create Experiment', 'optimizely' ) ?></a>
@@ -81,12 +88,6 @@ function optimizely_title_variations_render( $post ) {
 			<br />
 			<?php esc_html_e( 'Results', 'optimizely' ) ?>: <a href="<?php echo esc_url( menu_page_url( 'optimizely-config', false ) ) ?>" id="optimizely_results" target="_blank"><?php esc_html_e( 'View Results', 'optimizely' ) ?></a></p>
 		</div>
-		<input type="hidden" id="optimizely_token" value="<?php echo esc_attr( get_option( 'optimizely_token' ) )?>" />
-		<input type="hidden" id="optimizely_project_id" value="<?php echo esc_attr( get_option('optimizely_project_id') ) ?>" />
-		<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_id', true ) ) ?>" />
-		<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_status', true ) ) ?>" />
-		<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo get_full_permalink() ?>" />
-		<textarea id="optimizely_variation_template" style="display: none"><?php echo esc_attr( get_option( 'optimizely_variation_template' ) ) ?></textarea>
 	<?php else:	?>
 		<p><?php esc_html_e( 'You must first publish this post before creating the experiment on Optimizely', 'optimizely' ) ?></p>
 	<?php endif; ?>

@@ -30,6 +30,10 @@ You're ready to start using Optimizely!
 1. Create multiple headlines for each post
 2. View your results and launch winners directly from the dashboard
 
+= 3.7.0 =
+* Added conditional activation so that experiments only get activated when it is actually on the page (requires update to the HTML)
+* fixed bug in edit.php that only happened on servers running lower than PHP 5.4 
+
 = 3.6.0 =
 * prevented the creation of an experiment until the post is published. This is to prevent goals and URL targeting to be incorrect when a post title changes and URL truncating 
 * updated the results page to use the new Optimizely statistics engine
