@@ -3,7 +3,7 @@ Contributors: arthuracs, jonslaught, bradtaylorsf
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
 Tested up to: 4.1.1
-Stable tag: 3.6.0
+Stable tag: 3.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,8 +30,7 @@ You're ready to start using Optimizely!
 1. Create multiple headlines for each post
 2. View your results and launch winners directly from the dashboard
 
-= 3.7.0 =
-* Added conditional activation so that experiments only get activated when it is actually on the page (requires update to the HTML)
+= 3.6.1 =
 * fixed bug in edit.php that only happened on servers running lower than PHP 5.4 
 
 = 3.6.0 =
