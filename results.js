@@ -1,6 +1,6 @@
 ( function( $ ) {
 
-	function optimizelyResultsPage( apiToken, projectId, poweredVisitor ) {
+	function optimizelyResultsPage( apiToken, projectId ) {
 		var optly = new OptimizelyAPI( apiToken );	
 
 		// Fetch only Wordpress experiments from project
@@ -311,7 +311,7 @@
 
 	$( document ).ready(function() {
 		if (typeof pagenow != 'undefined' && 'toplevel_page_optimizely-config' == pagenow && '' != optimizelySettings.token && '' != optimizelySettings.projectId ) {
-			optimizelyResultsPage( optimizelySettings.token, optimizelySettings.projectId, optimizelySettings.visitorCount );
+			optimizelyResultsPage( optimizelySettings.token, optimizelySettings.projectId );
 		} else {
 			$( '#loading' ).hide();
 		}
