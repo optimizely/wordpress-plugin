@@ -11,7 +11,7 @@ function optimizely_admin_notices() {
 		?>
 		<div id="optimizely-warning" class="updated fade">
 			<p><strong><?php echo sprintf(
-				'%s <a href="https://www.optimizely.com/tokens" target="_blank">%s</a> %s <a href="admin.php?page=optimizely-config#tabs-2">%s</a>.',
+				'%s <a href="https://app.optimizely.com/tokens" target="_blank">%s</a> %s <a href="admin.php?page=optimizely-config#tabs-2">%s</a>.',
 				esc_html__( 'Optimizely is almost ready. You must first add your', 'optimizely' ),
 				esc_html__( 'API Token', 'optimizely' ),
 				esc_html__( 'in the', 'optimizely' ),

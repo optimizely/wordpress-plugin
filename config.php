@@ -91,7 +91,7 @@
 					<h3><?php esc_html_e( 'About Optimizely', 'optimizely' ); ?></h3>
 					<p><?php esc_html_e( 'Simple, fast, and powerful.', 'optimizely' ); ?> <a href="http://www.optimizely.com" target="_blank">Optimizely</a> <?php esc_html_e( 'is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue: create an account at', 'optimizely' ) ?> <a href="http://www.optimizely.com" target="_blank">optimizely.com</a> <?php esc_html_e( 'and start A/B testing today!', 'optimizely' ) ?></p>
 					<h3><?php esc_html_e( 'Optimizely API tokens', 'optimizely' ); ?></h3>
-					<p><?php esc_html_e( 'Once you create an account, you can find your API Token on your account page at', 'optimizely' ); ?> <a href="https://www.optimizely.com/account">optimizely.com/account</a>.</p>
+					<p><?php esc_html_e( 'Once you create an account, you can find your API Token on your account page at', 'optimizely' ); ?> <a href="https://app.optimizely.com/tokens">optimizely.com/tokens</a>.</p>
 					<p>
 						<label for="token"><strong><?php esc_html_e( 'API Token', 'optimizely' ); ?></strong></label>
 						<br />

@@ -54,12 +54,12 @@
 
 		$( 'html' ).delegate( '.edit', 'click', function() {
 			var expID = $( this ).parents( '.opt_results' ).attr( 'data-exp-id' );
-			window.open( 'https://www.optimizely.com/edit?experiment_id=' + parseInt( expID ) );
+			window.open( 'https://app.optimizely.com/edit?experiment_id=' + parseInt( expID ) );
 		});
 
 		$( 'html' ).delegate( '.fullresults', 'click', function() {
 			var expID = $( this ).parents( '.opt_results' ).attr( 'data-exp-id' );
-			window.open( 'https://www.optimizely.com/results2?experiment_id=' + parseInt( expID ) );
+			window.open( 'https://app.optimizely.com/results2?experiment_id=' + parseInt( expID ) );
 		});
 
 		// Launch winning variation when Launch button is clicked
