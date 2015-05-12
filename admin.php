@@ -76,6 +76,8 @@ function optimizely_conf() {
 		$variation_template = sanitize_text_field( stripcslashes( $_POST['variation_template' ] ) );
 		$activation_mode = sanitize_text_field( $_POST['optimizely_activation_mode' ] );
 		$conditional_activation_code = sanitize_text_field( stripcslashes( $_POST['conditional_activation_code' ] ) );
+		$optimizely_url_targeting_type = sanitize_text_field( $_POST['optimizely_url_targeting_type'] );
+		$optimizely_url_targeting = sanitize_text_field( $_POST['optimizely_url_targeting'] );
 
 		// Either save or delete/set a default if empty for each value
 		if ( empty( $token ) ) {
@@ -128,6 +130,18 @@ function optimizely_conf() {
 			delete_option( 'optimizely_activation_mode', 'immediate' );
 		} else {
 			update_option( 'optimizely_activation_mode', $activation_mode );
+		}
+
+		if ( empty( $optimizely_url_targeting ) ) {
+			delete_option( 'optimizely_url_targeting', get_site_url() );
+		} else {
+			update_option( 'optimizely_url_targeting', $optimizely_url_targeting );
+		}
+
+		if ( empty( $optimizely_url_targeting_type ) ) {
+			delete_option( 'optimizely_url_targeting_type', 'substring' );
+		} else {
+			update_option( 'optimizely_url_targeting_type', $optimizely_url_targeting_type );
 		}
 
 		?>

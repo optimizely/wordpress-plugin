@@ -87,21 +87,30 @@
 			experiment = {};
 			post_id = $( '#post_ID' ).val();
 			experiment.description = 'Wordpress [' + post_id + ']: ' + $( '#title' ).val();
+			
 			// Activation Mode
 			experiment.activation_mode = $( '#optimizely_activation_mode' ).val();
 			if(experiment.activation_mode == 'conditional'){
 				experiment.conditional_code = replacePlaceholderVariables($( '#optimizely_conditional_activation_code' ).val() , "");
 			}
 			experiment.edit_url = $( '#optimizely_experiment_url' ).val();
+
+			// Setup url targeting
 			var loc = document.createElement( 'a' );
 			loc.href = experiment.edit_url;
 			var urlTargetdomain = loc.hostname;
+			var urlTargetType = 'substring';
+			if ( $( '#optimizely_url_targeting' ).val() != "" && $( '#optimizely_url_targeting_type' ).val() != ""){
+				urlTargetdomain = $( '#optimizely_url_targeting' ).val();
+				urlTargetType = $( '#optimizely_url_targeting_type' ).val();
+			}
 			experiment.url_conditions = [
 				{
-					'match_type': 'substring',
+					'match_type': urlTargetType,
 					'value': urlTargetdomain
 				}
 			];
+
 			optly.post( 'projects/' + projectId + '/experiments', experiment, onExperimentCreated );
 		}
 		
