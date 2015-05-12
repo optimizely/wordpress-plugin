@@ -2,8 +2,8 @@
 Contributors: arthuracs, jonslaught, bradtaylorsf
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
-Tested up to: 4.1.1
-Stable tag: 3.6.1
+Tested up to: 4.2.2
+Stable tag: 3.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,11 @@ You're ready to start using Optimizely!
 == Screenshots ==
 1. Create multiple headlines for each post
 2. View your results and launch winners directly from the dashboard
+
+= 3.7.0 =
+* NEW - Conditional activation mode. Now you can only run an experiment if the user actually see's the headline
+* NEW - Default URL targeting. Now you can have a default URL to run experiments on or across the entire site.
+* Updated the links to go to app.optimizely.com
 
 = 3.6.1 =
 * fixed bug in edit.php that only happened on servers running lower than PHP 5.4 
