@@ -74,6 +74,8 @@ function optimizely_conf() {
 		$optimizely_visitor_count = str_replace( ',', '', sanitize_text_field( $_POST['optimizely_visitor_count'] ) );
 		$project_name = sanitize_text_field( stripcslashes( $_POST['project_name'] ) );
 		$variation_template = sanitize_text_field( stripcslashes( $_POST['variation_template' ] ) );
+		$activation_mode = sanitize_text_field( $_POST['optimizely_activation_mode' ] );
+		$conditional_activation_code = sanitize_text_field( stripcslashes( $_POST['conditional_activation_code' ] ) );
 
 		// Either save or delete/set a default if empty for each value
 		if ( empty( $token ) ) {
@@ -104,12 +106,6 @@ function optimizely_conf() {
 			update_option( 'optimizely_post_types', trim( $post_type_string, ',' ) );
 		}
 
-		if ( empty( $optimizely_visitor_count ) ) {
-			delete_option( 'optimizely_visitor_count' );
-		} else {
-			update_option( 'optimizely_visitor_count', $optimizely_visitor_count );
-		}
-
 		if ( empty( $project_name ) ) {
 			delete_option( 'optimizely_project_name' );
 		} else {
@@ -120,6 +116,18 @@ function optimizely_conf() {
 			update_option( 'optimizely_variation_template', OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE );
 		} else {
 			update_option( 'optimizely_variation_template', $variation_template );
+		}
+
+		if ( empty( $conditional_activation_code ) ) {
+			update_option( 'optimizely_conditional_activation_code', OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE );
+		} else {
+			update_option( 'optimizely_conditional_activation_code', $conditional_activation_code );
+		}
+
+		if ( empty( $activation_mode ) ) {
+			delete_option( 'optimizely_activation_mode', 'immediate' );
+		} else {
+			update_option( 'optimizely_activation_mode', $activation_mode );
 		}
 
 		?>
