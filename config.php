@@ -141,6 +141,40 @@
 						}
 					?>
 
+					<?php
+
+						if ( get_option( 'optimizely_url_targeting' ) && get_option( 'optimizely_url_targeting_type' )){
+							$optimizely_url_targeting = get_option( 'optimizely_url_targeting' );
+							$optimizely_url_targeting_type = get_option( 'optimizely_url_targeting_type' );
+						} else {
+							// Set the default to the current host and substring
+							$optimizely_url_targeting = get_site_url();
+							$optimizely_url_targeting_type = 'substring';
+						}	
+					?>
+
+					<h3><?php esc_html_e( 'Default URL Targeting', 'optimizely' ); ?></h3>
+					<p><?php esc_html_e( "This is the default location on your site you would like to run experiments on. By default we use your domain and a substring match so that the experiment will run anywhere on your site. Used with conditional activation this will assure you change the headline no matter where it is. For more info on URL targeting ", 'optimizely' ); ?><a href="https://help.optimizely.com/hc/en-us/articles/200040835" target="_blank"><?php esc_html_e( 'please visit our knowledge base article located here','optimizely'); ?></a></p>  
+					<input id="optimizely_url_targeting" name="optimizely_url_targeting" type="text" value="<?php echo esc_attr( $optimizely_url_targeting )  ?>" />
+					<select id="optimizely_url_targeting_type" name="optimizely_url_targeting_type">
+						<?php 
+							$url_type_array = array(
+								"simple",
+								"exact",
+								"substring",
+								"regex"
+							);
+							foreach ($url_type_array as $type){
+								echo ($type. ' -> '.$optimizely_url_targeting_type);
+								if ( strcmp($type, $optimizely_url_targeting_type) !== 0){
+									echo ( '<option value="'. esc_attr( $type) .'">'. $type .'</option>');
+								} else {
+									echo ( '<option value="'. esc_attr( $type) .'" selected>'. $type .'</option>');
+								}
+							}
+						?>
+					</select>
+
 					<h3><?php esc_html_e( 'Variation Code', 'optimizely' ); ?></h3>
 					<p><?php esc_html_e( "Optimizely will use this variation code to change headlines on your site. We've provided code that works if you have changed your headlines to have a class with the format optimizely-$POST_ID, but you might want to add or change it to work with your themes and plugins. For more information on how to update your HTML or write custom variation code please visit ", 'optimizely' ); ?><a href="#" target="_blank"><?php esc_html_e( 'this article on our knowledge base','optimizely'); ?></a></p>  
 					<p><?php esc_html_e( 'You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.', 'optimizely' ); ?></p>
@@ -150,7 +184,7 @@
 
 					<h3><?php esc_html_e( 'Activation Mode', 'optimizely' ); ?></h3>
 					<p><?php esc_html_e( 'You can choose between Immediate Activation Mode or Conditional Activation Mode. If you choose immediate, the experiment will run on every page of your site reguardless if the headline is on the page or not. Conditional Activation will only run the experiment if the headline is on the page. However this does require additional coding. For more information about activation modes please visit ', 'optimizely' ); ?><a href="https://help.optimizely.com/hc/en-us/articles/200040225" target="_blank"><?php esc_html_e( 'this article on our knowledge base','optimizely'); ?></a></p>
-					<?php if(get_option( 'optimizely_activation_mode' ) == 'conditional'): ?>
+					<?php if(!get_option( 'optimizely_activation_mode' ) || get_option( 'optimizely_activation_mode' ) == 'conditional'): ?>
 						<input type="radio" name="optimizely_activation_mode" value="immediate"> Immediate 
 						<input type="radio" name="optimizely_activation_mode" value="conditional" checked> Conditional
 						<div id="optimizely_conditional_activation_code_block">

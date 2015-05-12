@@ -205,5 +205,9 @@ input.optimizely_variation {
   	padding-left: 3px;
 }
 
+#optimizely_url_targeting {
+	width:500px;
+}
+
 
 
