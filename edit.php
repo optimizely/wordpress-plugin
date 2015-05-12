@@ -74,9 +74,7 @@ function optimizely_title_variations_render( $post ) {
 	<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_id', true ) ) ?>" />
 	<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_status', true ) ) ?>" />
 	<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo get_full_permalink() ?>" />
-	<input type="hidden" id="optimizely_activation_mode" name="optimizely_activation_mode" value="<?php echo esc_attr( get_option( 'optimizely_activation_mode' ) ) ?>" />
 	<textarea id="optimizely_variation_template" style="display: none"><?php echo esc_attr( get_option( 'optimizely_variation_template' ) ) ?></textarea>
-	<textarea id="optimizely_conditional_activation_code" style="display: none"><?php echo esc_attr( get_option( 'optimizely_conditional_activation_code' ) ) ?></textarea>
 
 	<?php if(get_post_status($post->ID) == 'publish'): ?>
 		<div id="optimizely_not_created">

@@ -30,8 +30,8 @@ License: GPL2
 */
 
 // Constants for default settings
-define( 'OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE', '$( ".optimizely-$POST_ID" ).text( "$NEW_TITLE" );' );
-define( 'OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE', '$( ".optimizely-$POST_ID" ).length > 0' );
+define( 'OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE', '$( ".post-$POST_ID .entry-title a" ).text( "$NEW_TITLE" );' );
+define( 'OPTIMIZELY_DEFAULT_VISITOR_COUNT', 10316 );
 define( 'OPTIMIZELY_NUM_VARIATIONS', 2 );
 define( 'OPTIMIZELY_NONCE', 'optimizely-update-code' );
 
@@ -60,7 +60,8 @@ function optimizely_enqueue_scripts() {
 	wp_enqueue_script( 'optimizely_results', plugins_url( 'results.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-tabs','jquery-ui-progressbar','jquery-ui-tooltip', 'underscore' ) );
 	wp_localize_script( 'optimizely_editor', 'optimizelySettings', array(
 		'token' => get_option( 'optimizely_token' ),
-		'projectId' => get_option( 'optimizely_project_id' )
+		'projectId' => get_option( 'optimizely_project_id' ),
+		'visitorCount' => get_option( 'optimizely_visitor_count', 0 ),
 	) );
 	
 	wp_enqueue_style( 'jquery_ui_styles', plugins_url( 'jquery-ui.css', __FILE__ ) );

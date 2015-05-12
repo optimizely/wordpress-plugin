@@ -64,22 +64,7 @@
 				data[ $( input ).attr( 'name' ) ] = $( input ).val();
 			});
 				$.post( wpAjaxUrl, data );
-		}
-
-		/* 
-		Replace all dynamic place holders with the values of the post and variation
-		*/
-
-		function replacePlaceholderVariables (template, newTitle){
-			var postId = $( '#post_ID' ).val();
-			var originalTitle = $( '#title' ).val();
-			var code = template
-				.replace( /\$OLD_TITLE/g, originalTitle )
-				.replace( /\$NEW_TITLE/g, newTitle )
-				.replace( /\$POST_ID/g, postId );
-
-			return code;
-		}
+			}
 
 		// This function creates an experiment by providing a description based on the post's title and an edit_url based on the permalink of the Wordpress post. We send these as a POST request and register a callback to run the onExperimentCreated function when it completes.
 		function createExperiment() {
@@ -87,11 +72,6 @@
 			experiment = {};
 			post_id = $( '#post_ID' ).val();
 			experiment.description = 'Wordpress [' + post_id + ']: ' + $( '#title' ).val();
-			// Activation Mode
-			experiment.activation_mode = $( '#optimizely_activation_mode' ).val();
-			if(experiment.activation_mode == 'conditional'){
-				experiment.conditional_code = replacePlaceholderVariables($( '#optimizely_conditional_activation_code' ).val() , "");
-			}
 			experiment.edit_url = $( '#optimizely_experiment_url' ).val();
 			var loc = document.createElement( 'a' );
 			loc.href = experiment.edit_url;
@@ -177,7 +157,10 @@
 			var variationTemplate = $( '#optimizely_variation_template' ).val();
 			var postId = $( '#post_ID' ).val();
 			var originalTitle = $( '#title' ).val();
-			var code = replacePlaceholderVariables(variationTemplate,newTitle);
+			var code = variationTemplate
+				.replace( /\$OLD_TITLE/g, originalTitle )
+				.replace( /\$NEW_TITLE/g, newTitle )
+				.replace( /\$POST_ID/g, postId );
 
 			// Request data
 			var variation = {
