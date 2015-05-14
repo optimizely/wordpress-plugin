@@ -1,0 +1,31 @@
+// # Lego chrome
+// Root file driving the chrome CSS.
+
+// Compass polyfills
+@import 'core/core-polyfills';
+
+// ## Core functions and mixins
+@import 'core/partials/elements/functions';
+@import 'core/partials/elements/mixins';
+
+// ## Core and chrome variables
+// Import `core` and `chrome` variables
+
+@import 'core/core-variables';
+@import 'chrome/chrome-variables';
+
+// ## Core and chrome partials
+// Import `core` and `chrome` partials
+
+@import 'core/core-partials';
+@import 'chrome/chrome-partials';
+
+// ## Trumps
+// Trumps use `!important` classes for overrides and should always be loaded last.
+
+@import 'core/partials/trumps/background';
+@import 'core/partials/trumps/layout';
+@import 'core/partials/trumps/margin';
+@import 'core/partials/trumps/padding';
+@import 'core/partials/trumps/type';
+@import 'core/partials/trumps/sizing';

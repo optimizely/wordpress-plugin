@@ -1,0 +1,64 @@
+// Font weights to include in this project.
+
+$include-fonts:(
+  weights: 300 400 500 600 700,
+  italics: true
+);
+
+// Overriding Core.
+
+$font: map-extend($font,
+  (
+    size: (
+      base                    : 14px,
+      milli                   : 13px,
+      micro                   : 11px,
+      alpha                   : 32px, // h1
+      beta                    : 24px, // h2
+      gamma                   : 20px, // h3
+      delta                   : 18px, // h4
+      epsilon                 : 16px, // h5
+      zeta                    : 13px // h6
+    )
+  )
+);
+
+
+$button: map-extend($button,
+  (
+  size: (
+    base: (
+      padding                 : 0 15px,
+      font-weight             : 500
+      ),
+    small: (
+      height                  : 26px,
+      font-size               : 11px,
+      padding                 : 0 10px,
+      font-weight             : 500
+      )
+    )
+  )
+);
+
+// Values for unique objects
+
+$layout: (
+  width:(
+    root-nav                  : 56px,
+    side-stage-nav            : 350px
+  ),
+  reading:(
+    max-width                 : 700px,
+    min-width                 : 550px
+  )
+);
+
+
+$transition: (
+    stage:(
+      speed                   : 300ms,
+      easing                  : cubic-bezier(0.1, -0.1, 0.1, 1.1)
+    ),
+    background-hover          : 300ms
+);

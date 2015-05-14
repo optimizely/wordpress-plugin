@@ -1,0 +1,126 @@
+// # Type
+// Special type design treatments.
+
+// When we define a heading we also define a corresponding class to go with it.
+// This allows us to apply, say, `class="alpha"` to a `h3`; a double-stranded
+// heading hierarchy.
+
+// See: [Font sizing in CSS](http://tinyurl.com/mlbssj3)
+
+//[c]
+//     <div class="sub-content">
+//       <h2 class="alpha">Lorem</h2>
+//     </div>
+
+//     <div class="footer">
+//       <h4 class="gamma">Lorem</h4>
+//     </div>
+
+//[/c]
+
+//[hc]
+//     <h1>Heading 1</h1>
+//     <h2>Heading 2</h2>
+//     <h3>Heading 3</h3>
+//     <h4>Heading 4</h4>
+//     <h5>Heading 5</h5>
+//     <h6>Heading 6</h6>
+//     <h5 class="alpha">Heading 5 with class</h5>
+//     <h5 class="beta">Heading 5 with class</h5>
+//     <h5 class="gamma">Heading 5 with class</h5>
+//[/hc]
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+}
+
+h1,
+.alpha {
+  font-size: map-fetch($font, size alpha);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+h2,
+.beta {
+  font-size: map-fetch($font, size beta);
+  font-weight: 500;
+}
+
+h3,
+.gamma {
+  font-size: map-fetch($font, size gamma);
+  font-weight: 500;
+}
+
+h4,
+.delta {
+  font-size: map-fetch($font, size delta);
+}
+
+h5,
+.epsilon {
+  font-size: map-fetch($font, size epsilon);
+}
+
+h6,
+.zeta {
+  font-size: map-fetch($font, size zeta);
+  font-weight: 500;
+  letter-spacing: map-fetch($font, letter-spacing loose);
+  text-transform: uppercase;
+  margin-bottom: spacer(.5);
+}
+
+// ## Heading Margin Defaults
+
+h1 {
+  margin-bottom: spacer(2);
+}
+
+h2 {
+  margin-bottom: spacer(2);
+}
+
+h3 {
+  margin-bottom: spacer(1);
+}
+
+
+// ## Small Text
+
+// A couple classes for setting small type.
+
+//[c]
+//     <div class="milli">Text</div>
+//[/c]
+
+.milli {
+  font-size: map-fetch($font, size milli);
+}
+
+.micro {
+  font-size: map-fetch($font, size micro);
+}
+
+
+// ## Large Heading
+
+// A series of classes for setting massive type; for use in heroes, mastheads,
+// promos, etc.
+
+//[c]
+//     <div class="giga">Text</div>
+//[/c]
+
+.giga {
+  font-size: map-fetch($font, size giga);
+}
+
+.mega {
+  font-size: map-fetch($font, size mega);
+}
+
+.kilo {
+  font-size: map-fetch($font, size kilo);
+}

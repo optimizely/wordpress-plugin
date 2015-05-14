@@ -1,0 +1,25 @@
+{
+  "name": "wordpress-plugin",
+  "version": "1.0.0",
+  "description": "Optimizely plugin.",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-sass": "^2.0.0",
+    "lego": "git+ssh://git@github.com:optimizely/lego.git#core-shuffle"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/optimizely/wordpress-plugin.git"
+  },
+  "author": "Tom Genoni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/optimizely/wordpress-plugin/issues"
+  },
+  "homepage": "https://github.com/optimizely/wordpress-plugin"
+}
