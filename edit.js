@@ -37,7 +37,7 @@
 		function showExperiment( experiment ) {
 			// ID and links
 			$( '#optimizely_experiment_id' ).val( experiment.id );
-			$( '#optimizely_view' ).attr( 'href', 'https://app.optimizely.com/edit?experiment_id=' + experiment.id );
+			$( '#optimizely_view' ).attr( 'href', 'https://www.optimizely.com/edit?experiment_id=' + experiment.id );
 
 			// Status and buttons
 			$( '#optimizely_experiment_status' ).val( experiment.status );
@@ -64,22 +64,7 @@
 				data[ $( input ).attr( 'name' ) ] = $( input ).val();
 			});
 				$.post( wpAjaxUrl, data );
-		}
-
-		/* 
-		Replace all dynamic place holders with the values of the post and variation
-		*/
-
-		function replacePlaceholderVariables (template, newTitle){
-			var postId = $( '#post_ID' ).val();
-			var originalTitle = $( '#title' ).val();
-			var code = template
-				.replace( /\$OLD_TITLE/g, originalTitle )
-				.replace( /\$NEW_TITLE/g, newTitle )
-				.replace( /\$POST_ID/g, postId );
-
-			return code;
-		}
+			}
 
 		// This function creates an experiment by providing a description based on the post's title and an edit_url based on the permalink of the Wordpress post. We send these as a POST request and register a callback to run the onExperimentCreated function when it completes.
 		function createExperiment() {
@@ -87,30 +72,16 @@
 			experiment = {};
 			post_id = $( '#post_ID' ).val();
 			experiment.description = 'Wordpress [' + post_id + ']: ' + $( '#title' ).val();
-			
-			// Activation Mode
-			experiment.activation_mode = $( '#optimizely_activation_mode' ).val();
-			if(experiment.activation_mode == 'conditional'){
-				experiment.conditional_code = replacePlaceholderVariables($( '#optimizely_conditional_activation_code' ).val() , "");
-			}
-			experiment.edit_url = $( '#optimizely_experiment_url' ).val();
-
-			// Setup url targeting
+			experiment.edit_url = $( '#sample-permalink' ).text();
 			var loc = document.createElement( 'a' );
 			loc.href = experiment.edit_url;
 			var urlTargetdomain = loc.hostname;
-			var urlTargetType = 'substring';
-			if ( $( '#optimizely_url_targeting' ).val() != "" && $( '#optimizely_url_targeting_type' ).val() != ""){
-				urlTargetdomain = $( '#optimizely_url_targeting' ).val();
-				urlTargetType = $( '#optimizely_url_targeting_type' ).val();
-			}
 			experiment.url_conditions = [
 				{
-					'match_type': urlTargetType,
+					'match_type': 'substring',
 					'value': urlTargetdomain
 				}
 			];
-
 			optly.post( 'projects/' + projectId + '/experiments', experiment, onExperimentCreated );
 		}
 		
@@ -161,7 +132,7 @@
 			var goal = {
 				goal_type: 3, // pageview goal
 				title: 'Views to page',
-				urls: [ $( '#optimizely_experiment_url' ).val() ],
+				urls: [ $( '#sample-permalink' ).text() ],
 				url_match_types: [4], // substring
 				addable: false, // don't clog up the goal list
 				experiment_ids: [ experiment.id ]
@@ -186,7 +157,10 @@
 			var variationTemplate = $( '#optimizely_variation_template' ).val();
 			var postId = $( '#post_ID' ).val();
 			var originalTitle = $( '#title' ).val();
-			var code = replacePlaceholderVariables(variationTemplate,newTitle);
+			var code = variationTemplate
+				.replace( /\$OLD_TITLE/g, originalTitle )
+				.replace( /\$NEW_TITLE/g, newTitle )
+				.replace( /\$POST_ID/g, postId );
 
 			// Request data
 			var variation = {
