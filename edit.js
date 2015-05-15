@@ -90,8 +90,8 @@
 			
 			// Activation Mode
 			experiment.activation_mode = $( '#optimizely_activation_mode' ).val();
-			if(experiment.activation_mode == 'conditional'){
-				experiment.conditional_code = replacePlaceholderVariables($( '#optimizely_conditional_activation_code' ).val() , "");
+			if('conditional' === experiment.activation_mode ){
+				experiment.conditional_code = replacePlaceholderVariables( $( '#optimizely_conditional_activation_code' ).val() , "" );
 			}
 			experiment.edit_url = $( '#optimizely_experiment_url' ).val();
 
@@ -100,7 +100,7 @@
 			loc.href = experiment.edit_url;
 			var urlTargetdomain = loc.hostname;
 			var urlTargetType = 'substring';
-			if ( $( '#optimizely_url_targeting' ).val() != "" && $( '#optimizely_url_targeting_type' ).val() != ""){
+			if ( "" != $( '#optimizely_url_targeting' ).val() &&  "" != $( '#optimizely_url_targeting_type' ).val() ){
 				urlTargetdomain = $( '#optimizely_url_targeting' ).val();
 				urlTargetType = $( '#optimizely_url_targeting_type' ).val();
 			}
@@ -186,7 +186,7 @@
 			var variationTemplate = $( '#optimizely_variation_template' ).val();
 			var postId = $( '#post_ID' ).val();
 			var originalTitle = $( '#title' ).val();
-			var code = replacePlaceholderVariables(variationTemplate,newTitle);
+			var code = replacePlaceholderVariables( variationTemplate , newTitle );
 
 			// Request data
 			var variation = {

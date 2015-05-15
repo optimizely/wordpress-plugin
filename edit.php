@@ -73,7 +73,7 @@ function optimizely_title_variations_render( $post ) {
 	<input type="hidden" id="optimizely_project_id" value="<?php echo esc_attr( get_option('optimizely_project_id') ) ?>" />
 	<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_id', true ) ) ?>" />
 	<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_status', true ) ) ?>" />
-	<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo get_full_permalink() ?>" />
+	<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo esc_url( get_full_permalink() ) ?>" />
 	<input type="hidden" id="optimizely_url_targeting" name="optimizely_url_targeting" value="<?php echo esc_attr( get_option( 'optimizely_url_targeting' ) ) ?>" />
 	<input type="hidden" id="optimizely_url_targeting_type" name="optimizely_url_targeting_type" value="<?php echo esc_attr( get_option( 'optimizely_url_targeting_type' ) ) ?>" />
 	<input type="hidden" id="optimizely_activation_mode" name="optimizely_activation_mode" value="<?php echo esc_attr( get_option( 'optimizely_activation_mode' ) ) ?>" />
@@ -128,8 +128,8 @@ add_action( 'save_post', 'optimizely_title_variations_save' );
  * @param int $post_id
  */
 function optimizely_update_experiment_meta() {
-	if ( isset( $_REQUEST['post_id'] ) ) {
-		optimizely_title_variations_save( absint( $_REQUEST['post_id'] ) );
+	if ( isset( $_POST['post_id'] ) ) {
+		optimizely_title_variations_save( absint( $_POST['post_id'] ) );
 	}
 	
 	exit;
@@ -140,9 +140,9 @@ add_action( 'wp_ajax_update_experiment_meta', 'optimizely_update_experiment_meta
  * @param int $post_id
  */
 function optimizely_update_post_title() {
-	if ( isset( $_REQUEST['post_id'] ) && isset( $_REQUEST['title'] ) ) {
-		$post_id = absint( $_REQUEST['post_id'] );
-		$winning_var_title = sanitize_text_field( $_REQUEST['title'] );
+	if ( isset( $_POST['post_id'] ) && isset( $_POST['title'] ) ) {
+		$post_id = absint( $_POST['post_id'] );
+		$winning_var_title = sanitize_text_field( $_POST['title'] );
 		wp_update_post( array(
 			'ID' => $post_id,
 			'post_title' => $winning_var_title
