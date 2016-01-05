@@ -193,7 +193,7 @@
 						<div id="optimizely_conditional_activation_code_block" style="display:none;">
 					<?php endif;	?> 
 					
-						<p><?php esc_html_e( 'You can use the variables $POST_ID and $OLD_TITLE in your code.', 'optimizely' ); ?></p>
+						<p><?php esc_html_e( 'You can use the variables $POST_ID and $OLD_TITLE in your code. The code below will activate the experiment if the original title is on the page and its not the first page the user has visited.', 'optimizely' ); ?></p>
 						<textarea class="code" rows="5" name="conditional_activation_code" id="conditional_activation_code"><?php echo esc_html( get_option( 'optimizely_conditional_activation_code', OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE ) ) ?></textarea>
 					</div>
 					

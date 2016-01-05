@@ -209,5 +209,9 @@ input.optimizely_variation {
 	width:500px;
 }
 
+[role='tooltip'] { 
+    display:none !important; 
+}
+
 
 

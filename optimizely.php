@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Optimizely
- * @version 3.7.1
+ * @version 3.7.5
  */
 /*
 Plugin Name: Optimizely
 Plugin URI: http://wordpress.org/extend/plugins/optimizely/
 Description: Simple, fast, and powerful.  <a href="http://www.optimizely.com">Optimizely</a> is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with our easy-to-use visual interface with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue today! To get started: 1) Click the "Activate" link to the left of this description, 2) Sign up for an <a href="http://www.optimizely.com">Optimizely account</a>, and 3) Create an API Token here: <a href="https://www.optimizely.com/tokens">API Tokens</a>, and enter your API token in the Configuration Tab of the Plugin, then select a project to start testing!
 Author: Optimizely Inc.
-Version: 3.7.1
+Version: 3.7.5
 Author URI: http://www.optimizely.com/
 License: GPL2
 */
@@ -31,7 +31,7 @@ License: GPL2
 
 // Constants for default settings
 define( 'OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE', '$( ".optimizely-$POST_ID" ).text( "$NEW_TITLE" );' );
-define( 'OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE', '$( ".optimizely-$POST_ID" ).length > 0' );
+define( 'OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE', '$( ".optimizely-$POST_ID" ).length > 0 && window.document.referrer.indexOf(window.document.domain) > -1' );
 define( 'OPTIMIZELY_NUM_VARIATIONS', 2 );
 define( 'OPTIMIZELY_NONCE', 'optimizely-update-code' );
 
