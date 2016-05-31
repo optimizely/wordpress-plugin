@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP controller for plugin configuration page. The page itself is rendered in config.php  
+ * PHP controller for plugin configuration page. The page itself is rendered in config.php
  */
 
 /**
@@ -23,7 +23,7 @@ function optimizely_admin_notices() {
 	if ( get_option( 'optimizely_token' ) && ! get_option( 'optimizely_project_id' ) && ! isset( $_POST['submit'] ) ):
 		?>
 		<div id="optimizely-warning" class="updated fade">
-			<p><strong><?php esc_html_e( 'Optimizely is almost ready. You must choose a project', 'optimizely' ) ?>.</strong> 
+			<p><strong><?php esc_html_e( 'Optimizely is almost ready. You must choose a project', 'optimizely' ) ?>.</strong>
 			</p>
 		</div>
 		<?php
@@ -35,7 +35,7 @@ add_action( 'admin_notices', 'optimizely_admin_notices' );
  * Add Optimizely to the admin menu.
  */
 function optimizely_admin_menu() {
-	add_menu_page( __( 'Optimizely', 'optimizely' ), __( 'Optimizely', 'optimizely' ), 'manage_options', 'optimizely-config', 'optimizely_conf', plugin_dir_url( __FILE__ ) . 'images/optimizely-icon.png' );
+	add_menu_page( __( 'Optimizely', 'optimizely' ), __( 'Optimizely', 'optimizely' ), apply_filters( 'optimizely_admin_capability', 'manage_options' ), 'optimizely-config', 'optimizely_conf', plugin_dir_url( __FILE__ ) . 'images/optimizely-icon.png' );
 }
 add_action( 'admin_menu', 'optimizely_admin_menu' );
 
@@ -49,7 +49,7 @@ function optimizely_plugin_action_links( $links, $file ) {
 	if ( $file == plugin_basename( dirname( __FILE__ ) . '/optimizely.php' ) ) {
 		$links[] = '<a href="admin.php?page=optimizely-config">' . esc_html__( 'Settings', 'optimizely' ) . '</a>';
 	}
-	
+
 	return $links;
 }
 add_filter( 'plugin_action_links', 'optimizely_plugin_action_links', 10, 2 );
@@ -59,10 +59,10 @@ add_filter( 'plugin_action_links', 'optimizely_plugin_action_links', 10, 2 );
  */
 function optimizely_conf() {
 	if ( isset( $_POST['submit'] ) ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( apply_filters( 'optimizely_admin_capability', 'manage_options' ) ) ) {
 			die( __( 'Cheatin&#8217; uh?', 'optimizely' ) );
 		}
-		
+
 		// Check the nonce
 		check_admin_referer( OPTIMIZELY_NONCE );
 
