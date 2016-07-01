@@ -1,21 +1,10 @@
 <?php
 /**
- * When users go to write their posts, they'll see a new section for A/B testing headlines. 
+ * When users go to write their posts, they'll see a new section for A/B testing headlines.
  * This section will include inputs for users to write alternate headlines and a button to create the experiment.
  * We also use several hidden input fields to store data about the project and experiment.
  * These are used in edit.js to send AJAX requests to the Optimizely API.
  */
-/**
- * Return the full permalink of the current post.
- * @return string
- */
-function get_full_permalink() {
-	$permalinkArray = get_sample_permalink( $post->ID );
-	$permalinkTemplate = array_values( $permalinkArray );
-	$permalinkSlug = array_values( $permalinkArray );
-	
-	return str_replace( '%postname%', $permalinkSlug[1], $permalinkTemplate[0] );
-}
 /**
  * Add the meta box for title variations.
  */
@@ -24,7 +13,7 @@ function optimizely_title_variations_add() {
 	if ( optimizely_is_post_type_enabled( get_post_type() ) ) {
 		add_meta_box( 'optimizely-headlines', 'A/B Test Headlines', 'optimizely_title_variations_render', get_post_type(), 'side', 'high' );
 	}
-    
+
 }
 add_action( 'add_meta_boxes', 'optimizely_title_variations_add' );
 /**
@@ -73,7 +62,7 @@ function optimizely_title_variations_render( $post ) {
 	<input type="hidden" id="optimizely_project_id" value="<?php echo esc_attr( get_option('optimizely_project_id') ) ?>" />
 	<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_id', true ) ) ?>" />
 	<input type="hidden" id="optimizely_experiment_status" name="optimizely_experiment_status" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_status', true ) ) ?>" />
-	<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo esc_url( get_full_permalink() ) ?>" />
+	<input type="hidden" id="optimizely_experiment_url" name="optimizely_experiment_url" value="<?php echo esc_url( get_permalink( $post->ID ) ) ?>" />
 	<input type="hidden" id="optimizely_url_targeting" name="optimizely_url_targeting" value="<?php echo esc_attr( get_option( 'optimizely_url_targeting' ) ) ?>" />
 	<input type="hidden" id="optimizely_url_targeting_type" name="optimizely_url_targeting_type" value="<?php echo esc_attr( get_option( 'optimizely_url_targeting_type' ) ) ?>" />
 	<input type="hidden" id="optimizely_activation_mode" name="optimizely_activation_mode" value="<?php echo esc_attr( get_option( 'optimizely_activation_mode' ) ) ?>" />
@@ -85,7 +74,7 @@ function optimizely_title_variations_render( $post ) {
 			<a id="optimizely_create" class="button-primary"><?php esc_html_e( 'Create Experiment', 'optimizely' ) ?></a>
 		</div>
 		<div id="optimizely_created">
-			<a id="optimizely_toggle_running" class="button-primary"><?php esc_html_e( 'Start Experiment', 'optimizely' ) ?></a>	
+			<a id="optimizely_toggle_running" class="button-primary"><?php esc_html_e( 'Start Experiment', 'optimizely' ) ?></a>
 			<p></p>
 			<a id="optimizely_view" class="button" target="_blank"><?php esc_html_e( 'View on Optimizely', 'optimizely' ) ?></a>
 			<p><?php esc_html_e( 'Status', 'optimizely' ) ?>: <b id="optimizely_experiment_status_text"><?php echo esc_html( get_post_meta( $post->ID, 'optimizely_experiment_status', true ) ) ?></b>
@@ -117,7 +106,7 @@ function optimizely_title_variations_save( $post_id ) {
 			update_post_meta( $post_id, $meta_key, $new_title );
 		}
 	}
-	if ( isset( $_POST['optimizely_experiment_id'] ) ) {	
+	if ( isset( $_POST['optimizely_experiment_id'] ) ) {
 		update_post_meta( $post_id, 'optimizely_experiment_id', sanitize_text_field( $_POST['optimizely_experiment_id'] ) );
 		update_post_meta( $post_id, 'optimizely_experiment_status', sanitize_text_field( $_POST['optimizely_experiment_status'] ) );
 	}
@@ -131,7 +120,7 @@ function optimizely_update_experiment_meta() {
 	if ( isset( $_POST['post_id'] ) ) {
 		optimizely_title_variations_save( absint( $_POST['post_id'] ) );
 	}
-	
+
 	exit;
 }
 add_action( 'wp_ajax_update_experiment_meta', 'optimizely_update_experiment_meta' );
@@ -148,7 +137,7 @@ function optimizely_update_post_title() {
 			'post_title' => $winning_var_title
 		) );
 	}
-	
+
 	exit;
 }
 add_action( 'wp_ajax_update_post_title', 'optimizely_update_post_title' );
