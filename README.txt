@@ -3,7 +3,7 @@ Contributors: arthuracs, jonslaught, bradtaylorsf
 Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
 Tested up to: 4.4
-Stable tag: 3.7.5
+Stable tag: 3.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,9 @@ You're ready to start using Optimizely!
 == Screenshots ==
 1. Create multiple headlines for each post
 2. View your results and launch winners directly from the dashboard
+
+= 3.7.6 =
+* NEW Register integration users with Optimizely
 
 = 3.7.5 =
 * FIXED bug on edit post page that displayed unwanted tooltip

@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Optimizely
- * @version 3.7.5
+ * @version 3.7.6
  */
 /*
 Plugin Name: Optimizely
 Plugin URI: http://wordpress.org/extend/plugins/optimizely/
 Description: Simple, fast, and powerful.  <a href="http://www.optimizely.com">Optimizely</a> is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with our easy-to-use visual interface with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue today! To get started: 1) Click the "Activate" link to the left of this description, 2) Sign up for an <a href="http://www.optimizely.com">Optimizely account</a>, and 3) Create an API Token here: <a href="https://www.optimizely.com/tokens">API Tokens</a>, and enter your API token in the Configuration Tab of the Plugin, then select a project to start testing!
 Author: Optimizely Inc.
-Version: 3.7.5
+Version: 3.7.6
 Author URI: http://www.optimizely.com/
 License: GPL2
 */
@@ -98,7 +98,13 @@ add_action( 'wp_head', 'optimizely_add_script', -1000 );
  * @return string
  */
 function optimizely_generate_script( $project_id ) {
-	return '<script src="//cdn.optimizely.com/js/' . abs( floatval( $project_id ) ) . '.js"></script>';
+
+	$script = "<script src='//cdn.optimizely.com/js/" . abs( floatval( $project_id ) ) . ".js'></script>";
+	$tracking = "\n<script>";
+	$tracking .= "\nwindow['optimizely'] = window['optimizely'] || [];";
+	$tracking .= "\nwindow['optimizely'].push({ type: 'integration', OAuthClientId: '5406170423' });";
+	$tracking .= "\n</script>";
+	return $tracking.$result;
 }
 
 /**

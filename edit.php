@@ -56,6 +56,14 @@ function optimizely_title_variations_render( $post ) {
 		);
 		echo '</p>';
 	}
+
+	function get_tracking_function(){
+		$tracking = "\n<script>";
+		$tracking .= "\nwindow['optimizely'] = window['optimizely'] || [];";
+		$tracking .= "\nwindow['optimizely'].push({ type: 'integration', OAuthClientId: '5406170423' });";
+		$tracking .= "\n</script>";
+		return $tracking;
+	};
 	?>
 
 	<input type="hidden" id="optimizely_token" value="<?php echo esc_attr( get_option( 'optimizely_token' ) )?>" />
@@ -66,8 +74,8 @@ function optimizely_title_variations_render( $post ) {
 	<input type="hidden" id="optimizely_url_targeting" name="optimizely_url_targeting" value="<?php echo esc_attr( get_option( 'optimizely_url_targeting' ) ) ?>" />
 	<input type="hidden" id="optimizely_url_targeting_type" name="optimizely_url_targeting_type" value="<?php echo esc_attr( get_option( 'optimizely_url_targeting_type' ) ) ?>" />
 	<input type="hidden" id="optimizely_activation_mode" name="optimizely_activation_mode" value="<?php echo esc_attr( get_option( 'optimizely_activation_mode' ) ) ?>" />
-	<textarea id="optimizely_variation_template" style="display: none"><?php echo esc_attr( get_option( 'optimizely_variation_template' ) ) ?></textarea>
-	<textarea id="optimizely_conditional_activation_code" style="display: none"><?php echo esc_attr( get_option( 'optimizely_conditional_activation_code' ) ) ?></textarea>
+	<textarea id="optimizely_variation_template" style="display: none"><?php echo esc_attr( get_option( 'optimizely_variation_template' ) ) . get_tracking_function() ?></textarea>
+	<textarea id="optimizely_conditional_activation_code" style="display: none"><?php echo esc_attr( get_option( 'optimizely_conditional_activation_code' ) ) . get_tracking_function() ?></textarea>
 
 	<?php if(get_post_status($post->ID) == 'publish'): ?>
 		<div id="optimizely_not_created">
