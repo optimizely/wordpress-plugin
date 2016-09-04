@@ -16,7 +16,7 @@ License: GPL2
 /*  Copyright 2015 Optimizely Inc (email: support@optimizely.com)
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -28,10 +28,14 @@ License: GPL2
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
+$optimizely_x_variation_code = 'var utils = window[\"optimizely\"].get(\'utils\'); utils.waitForElement(\'.post-$POST_ID h2\').then(function(){ var element = document.querySelector(\'.post-1 h2\'); element.innerHTML = \'new title\'; });';
+$optimizely_x_activation_code = 'function pollingFn() { return document.querySelectorAll(".post-1").length > 0; }';
 // Constants for default settings
 define( 'OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE', '$( ".optimizely-$POST_ID" ).text( "$NEW_TITLE" );' );
+define( 'OPTIMIZELY_X_DEFAULT_VARIATION_TEMPLATE', $optimizely_x_variation_code );
 define( 'OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE', '$( ".optimizely-$POST_ID" ).length > 0 && window.document.referrer.indexOf(window.document.domain) > -1' );
+define( 'OPTIMIZELY_X_DEFAULT_CONDITIONAL_TEMPLATE', $optimizely_x_activation_code );
+define( 'OPTIMIZELY_DEFAULT_PLATFORM', 'optimizely_classic' );
 define( 'OPTIMIZELY_NUM_VARIATIONS', 2 );
 define( 'OPTIMIZELY_NONCE', 'optimizely-update-code' );
 
@@ -52,8 +56,9 @@ function optimizely_enqueue_scripts() {
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'jquery-ui-progressbar' );
 	wp_enqueue_script( 'jquery-ui-tooltip' );
-	
+
 	wp_enqueue_script( 'optimizely_api', plugins_url( 'optimizely.js', __FILE__ ), array( 'jquery' ) );
+	wp_enqueue_script( 'optimizely_x_api', plugins_url( 'swagger-client.min.js', __FILE__ ), array(  ) );
 	wp_enqueue_script( 'optimizely_editor', plugins_url( 'edit.js', __FILE__ ), array( 'jquery' ) );
 	wp_localize_script( 'optimizely_editor', 'wpAjaxUrl', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'optimizely_config', plugins_url( 'config.js', __FILE__ ), array( 'jquery' ) );
@@ -62,7 +67,7 @@ function optimizely_enqueue_scripts() {
 		'token' => get_option( 'optimizely_token' ),
 		'projectId' => get_option( 'optimizely_project_id' )
 	) );
-	
+
 	wp_enqueue_style( 'jquery_ui_styles', plugins_url( 'jquery-ui.css', __FILE__ ) );
 	wp_enqueue_style( 'font_awesome_styles', plugins_url( 'font-awesome.min.css', __FILE__ ) );
 	wp_enqueue_style( 'optimizely_styles', plugins_url( 'style.css', __FILE__ ) );
@@ -80,7 +85,7 @@ function optimizely_add_script() {
 		// The output of this script is fully escaped within the function below
 		echo optimizely_generate_script( $project_id );
 	} else if ( ! empty( $project_code ) && false !== strpos( $project_code, 'js' ) && true !== WPCOM_IS_VIP_ENV ) {
-		// Older non-VIP sites used an old filled project_code. 
+		// Older non-VIP sites used an old filled project_code.
 		// If this field is filled out we will strip the ID out of the field and use that id.
 		// This will execute ONLY on non-VIP sites and is necessary for backwards compatibility.
 		$project_id = substr( $project_code, strpos( $project_code,'js' ) + 3 );

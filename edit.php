@@ -57,7 +57,9 @@ function optimizely_title_variations_render( $post ) {
 		echo '</p>';
 	}
 	?>
-
+	<script>
+		var optimizely_platform = "<?php echo esc_attr( get_option( 'optimizely_platform' ) ) ?>";
+	</script>
 	<input type="hidden" id="optimizely_token" value="<?php echo esc_attr( get_option( 'optimizely_token' ) )?>" />
 	<input type="hidden" id="optimizely_project_id" value="<?php echo esc_attr( get_option('optimizely_project_id') ) ?>" />
 	<input type="hidden" id="optimizely_experiment_id" name="optimizely_experiment_id" value="<?php echo esc_attr( get_post_meta( $post->ID, 'optimizely_experiment_id', true ) ) ?>" />

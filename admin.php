@@ -11,10 +11,11 @@ function optimizely_admin_notices() {
 		?>
 		<div id="optimizely-warning" class="updated fade">
 			<p><strong><?php echo sprintf(
-				'%s <a href="https://app.optimizely.com/tokens" target="_blank">%s</a> %s <a href="admin.php?page=optimizely-config#tabs-2">%s</a>.',
+				'%s <a href="https://app.optimizely.com/tokens" target="_blank">%s</a> %s <a href="#tabs-2" onclick="%s">%s</a>.',
 				esc_html__( 'Optimizely is almost ready. You must first add your', 'optimizely' ),
 				esc_html__( 'API Token', 'optimizely' ),
 				esc_html__( 'in the', 'optimizely' ),
+				esc_html__( 'jQuery("[href=#tabs-2]").click()' ),
 				esc_html__( 'configuration tab', 'optimizely' )
 			);?></strong></p>
 		</div>
@@ -73,6 +74,7 @@ function optimizely_conf() {
 		$optimizely_post_types = array_map( 'sanitize_text_field', $_POST['optimizely_post_types'] );
 		$optimizely_visitor_count = str_replace( ',', '', sanitize_text_field( $_POST['optimizely_visitor_count'] ) );
 		$project_name = sanitize_text_field( stripcslashes( $_POST['project_name'] ) );
+		$platform = sanitize_text_field( stripcslashes( $_POST['platform'] ) );
 		$variation_template = sanitize_text_field( stripcslashes( $_POST['variation_template' ] ) );
 		$activation_mode = sanitize_text_field( $_POST['optimizely_activation_mode' ] );
 		$conditional_activation_code = sanitize_text_field( stripcslashes( $_POST['conditional_activation_code' ] ) );
@@ -118,6 +120,12 @@ function optimizely_conf() {
 			update_option( 'optimizely_variation_template', OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE );
 		} else {
 			update_option( 'optimizely_variation_template', $variation_template );
+		}
+
+		if ( empty( $platform ) ) {
+			update_option( 'optimizely_platform', OPTIMIZELY_DEFAULT_PLATFORM );
+		} else {
+			update_option( 'optimizely_platform', $platform );
 		}
 
 		if ( empty( $conditional_activation_code ) ) {

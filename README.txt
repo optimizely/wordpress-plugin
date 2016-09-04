@@ -13,7 +13,7 @@ This plugin helps you configure your WordPress website to use Optimizely, a dram
 
 Optimizely is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with our easy-to-use visual interface with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue today!
 
-This plugin helps you configure your WordPress website to use Optimizely. After setting up an account at Optimizely.com, you simply enter your Optimizely project code in the plugin's configuration page and you're ready to start improving your website using Optimizely. Built for testing headlines, this plugin allows you to, create new experiments, see your experiment results, launch winners and much more all without leaving Wordpress. 
+This plugin helps you configure your WordPress website to use Optimizely. After setting up an account at Optimizely.com, you simply enter your Optimizely project code in the plugin's configuration page and you're ready to start improving your website using Optimizely. Built for testing headlines, this plugin allows you to, create new experiments, see your experiment results, launch winners and much more all without leaving Wordpress.
 
 You'll need an [Optimizely.com](http://www.optimizely.com) account to use it.
 
@@ -30,9 +30,12 @@ You're ready to start using Optimizely!
 1. Create multiple headlines for each post
 2. View your results and launch winners directly from the dashboard
 
+= 4.0.0 =
+* The plugin is now working with Optimizely X
+
 = 3.7.5 =
 * FIXED bug on edit post page that displayed unwanted tooltip
-* UPDATED default conditional activation code to exclude users coming from other sites 
+* UPDATED default conditional activation code to exclude users coming from other sites
 
 = 3.7.1 =
 * FIXED bug on config.js around the conditional activation input
@@ -43,10 +46,10 @@ You're ready to start using Optimizely!
 * Updated the links to go to app.optimizely.com
 
 = 3.6.1 =
-* fixed bug in edit.php that only happened on servers running lower than PHP 5.4 
+* fixed bug in edit.php that only happened on servers running lower than PHP 5.4
 
 = 3.6.0 =
-* prevented the creation of an experiment until the post is published. This is to prevent goals and URL targeting to be incorrect when a post title changes and URL truncating 
+* prevented the creation of an experiment until the post is published. This is to prevent goals and URL targeting to be incorrect when a post title changes and URL truncating
 * updated the results page to use the new Optimizely statistics engine
 
 = 3.5.2 =
@@ -68,7 +71,7 @@ You're ready to start using Optimizely!
 
 
 = 3.1.0 =
-* Added ability to add custom post types 
+* Added ability to add custom post types
 
 = 3.0.0 =
 * Making repository Open Source
