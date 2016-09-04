@@ -72,7 +72,7 @@
 	font-size: 1.15em;
 	font-weight: 300;
 	line-height: 1.2;
-	
+
 }
 
 #optimizely-tabs .header .title {
@@ -98,7 +98,7 @@
 
 #optimizely-tabs tr {
 	background-color: #FFFFFF;
-	
+
 }
 
 #optimizely-tabs table {
@@ -134,7 +134,7 @@
 #optimizely-tabs td.last i {
 	color: green;
 	font-size: 25px;
-	
+
 }
 #optimizely-tabs td.last {
 	padding: 0px;
@@ -164,7 +164,7 @@
 
 #optimizely-tabs .ready.launch {
 	background-color: #1964AF;
-	color: #ffffff; 
+	color: #ffffff;
 }
 
 #optimizely-tabs #successMessage {
@@ -172,7 +172,7 @@
 	width: 100%;
 	padding: 10px;
 	background-color: #D9FBD6;
-	
+
 }
 
 #optimizely-tabs #stillwaiting > h2 {
@@ -180,7 +180,7 @@
 	border-left: solid 1px #1964AF;
 	border-bottom: solid 1px #1964AF;
 	margin-bottom: 10px;
-	
+
 }
 
 #optimizely-tabs #stillwaiting > h2 > span, #optimizely-tabs #ready > h2 > span {
@@ -200,6 +200,10 @@ input.optimizely_variation {
 	width: 100%;
 }
 
+span.optimizely_create_error {
+	color: red;
+}
+
 #optimizely-tabs th > div > i.fa.fa-question-circle.fa-fw {
 	display: inline;
   	padding-left: 3px;
@@ -209,9 +213,6 @@ input.optimizely_variation {
 	width:500px;
 }
 
-[role='tooltip'] { 
-    display:none !important; 
+[role='tooltip'] {
+    display:none !important;
 }
-
-
-

@@ -55,6 +55,13 @@
 		</div>
 	</div>
 </script>
+<script>
+	var OPTIMIZELY_X_DEFAULT_VARIATION_TEMPLATE = "<?php echo OPTIMIZELY_X_DEFAULT_VARIATION_TEMPLATE ?>";
+	var OPTIMIZELY_X_DEFAULT_CONDITIONAL_TEMPLATE = '<?php echo OPTIMIZELY_X_DEFAULT_CONDITIONAL_TEMPLATE ?>';
+	var OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE = '<?php echo OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE ?>';
+	var OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE = '<?php echo OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE ?>';
+</script>
+
 
 <div class="wrap">
 	<div id="optimizely-tabs">
@@ -71,28 +78,46 @@
 					<h2><?php echo esc_html_e( 'Ready for review', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments have at least one statistically significant variation.', 'optimizely' ) ?></span></h2>
 				</div>
 				<div id="stillwaiting">
-					<h2><?php echo esc_html_e( 'Not ready yet', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments still need a few more visitors before we can declare a winner', 'optimizely' ) ?></span></h2> 
+					<h2><?php echo esc_html_e( 'Not ready yet', 'optimizely' ) ?> <span><?php echo esc_html_e( 'These experiments still need a few more visitors before we can declare a winner', 'optimizely' ) ?></span></h2>
 				</div>
 				<div class="loading" id="loading"><?php echo esc_html_e( 'Loading Results.....', 'optimizely' ) ?><br><img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ).'images/ajax-loader.gif' ?>" /></div>
 				<div id="noresults">
 					<h3><?php echo esc_html_e( 'No results!', 'optimizely' ) ?></h3>
 					<p><?php echo esc_html_e( 'A headline experiement must be created in Wordpress before any results will be displayed here. Please create a new post with multiple headlines, publish the post, and start the experiment. Once the experiment is created and running it will display the results here. Please Note: Only experiements created through Wordpress will be displayed here. Experiments created directly in Optimizely will not be displayed here.', 'optimizely' ) ?></p>
 				</div>
-			</div>  
+			</div>
 		</div>
 		<div id="tabs-2">
 			<h2><?php esc_html_e( 'Optimizely Configuration', 'optimizely' ); ?></h2>
 			<div class="narrow">
 				<form action="" method="post" id="optimizely-conf">
-					<?php 
+					<?php
 						wp_nonce_field( OPTIMIZELY_NONCE );
-						$project_name = get_option( 'optimizely_project_name' );	
+						$project_name = get_option( 'optimizely_project_name' );
 					?>
 					<h3><?php esc_html_e( 'Installation Instructions', 'optimizely' ); ?></h3>
 					<p><?php esc_html_e( 'For full instructions on how to configure the settings and use the Optimizely plugin, please', 'optimizely' ) ?> <a href="#" target="_blank"><?php esc_html_e( 'visit our knowledge base article', 'optimizely' ) ?></a></p>
 
 					<h3><?php esc_html_e( 'About Optimizely', 'optimizely' ); ?></h3>
 					<p><?php esc_html_e( 'Simple, fast, and powerful.', 'optimizely' ); ?> <a href="http://www.optimizely.com" target="_blank">Optimizely</a> <?php esc_html_e( 'is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue: create an account at', 'optimizely' ) ?> <a href="http://www.optimizely.com" target="_blank">optimizely.com</a> <?php esc_html_e( 'and start A/B testing today!', 'optimizely' ) ?></p>
+
+					<h3><?php esc_html_e( 'Choose which platform you want to use', 'optimizely' ); ?></h3>
+					<select id="platform" name="platform">
+						<?php
+							$platform = get_option( 'optimizely_platform' );
+							if ( empty( $platform ) || $platform == 'optimizely_classic'):
+								?>
+								<option value="optimizely_classic" selected>Optimizely classic</option>
+								<option value="optimizely_x">Optimizely X</option>
+								<?php
+							else:
+								?>
+								<option value="optimizely_classic">Optimizely classic</option>
+								<option value="optimizely_x" selected>Optimizely X</option>
+								<?php
+							endif;
+						?>
+					</select>
 
 					<h3><?php esc_html_e( 'Optimizely API tokens', 'optimizely' ); ?></h3>
 					<p><?php esc_html_e( 'Once you create an account, you can find your API Token on your account page at', 'optimizely' ); ?> <a href="https://app.optimizely.com/tokens">optimizely.com/tokens</a>.</p>
@@ -106,30 +131,30 @@
 					<h3><?php esc_html_e( 'Choose a Project', 'optimizely' ); ?></h3>
 					<input type="hidden" id="project_name" name="project_name" value="<?php echo esc_attr( $project_name ) ?>" />
 					<select id="project_id" name="project_id">
-						<?php 
+						<?php
 							$project_id = get_option( 'optimizely_project_id' );
-							if ( ! empty( $project_id ) ): 
+							if ( ! empty( $project_id ) ):
 								?>
 								<option value="<?php echo esc_attr( $project_id ) ?>" selected><?php echo esc_html( $project_name ) ?></option>
-								<?php 
+								<?php
 							endif;
 						?>
 						<option value=""><?php esc_html_e( 'Connect Optimizely to choose a project...', 'optimizely' ); ?></option>
 					</select>
 					<p><?php esc_html_e( 'Optimizely will add the following project code to your page automatically:', 'optimizely' ); ?></p>
-					<h3 id="project_code"><?php echo esc_html( optimizely_generate_script( $project_id ) ); ?></h3>
-					<br/>
 
+					<pre id="project_code"><?php echo esc_html( optimizely_generate_script( $project_id ) ); ?></pre>
+					<br/>
 					<h3><?php esc_html_e( 'Post Types', 'optimizely' ); ?></h3>
-					<p><?php esc_html_e( 'Please choose the post types you would like to conduct A/B testing on', 'optimizely' ); ?></p> 
+					<p><?php esc_html_e( 'Please choose the post types you would like to conduct A/B testing on', 'optimizely' ); ?></p>
 					<?php
 						$args = array(
 							'show_ui' => true
 						);
-						
+
 						$selected_post_types_str = get_option( 'optimizely_post_types', 'post' );
 						$selected_post_types = ( ! empty( $selected_post_types_str ) ) ? explode( ',', $selected_post_types_str ) : array();
-						$post_types = get_post_types( $args, 'objects' ); 
+						$post_types = get_post_types( $args, 'objects' );
 						foreach( $post_types as $post_type ) {
 							if ( 'page' != $post_type->name && 'attachment' != $post_type->name ) {
 								if ( in_array( $post_type->name, $selected_post_types ) ) {
@@ -150,14 +175,14 @@
 							// Set the default to the current host and substring
 							$optimizely_url_targeting = get_site_url();
 							$optimizely_url_targeting_type = 'substring';
-						}	
+						}
 					?>
 
 					<h3><?php esc_html_e( 'Default URL Targeting', 'optimizely' ); ?></h3>
-					<p><?php esc_html_e( 'This is the default location on your site you would like to run experiments on. By default we use your domain and a substring match so that the experiment will run anywhere on your site. Used with conditional activation this will assure you change the headline no matter where it is. For more info on URL targeting ', 'optimizely' ); ?><a href="https://help.optimizely.com/hc/en-us/articles/200040835" target="_blank"><?php esc_html_e( 'please visit our knowledge base article located here','optimizely' ); ?></a></p>  
+					<p><?php esc_html_e( 'This is the default location on your site you would like to run experiments on. By default we use your domain and a substring match so that the experiment will run anywhere on your site. Used with conditional activation this will assure you change the headline no matter where it is. For more info on URL targeting ', 'optimizely' ); ?><a href="https://help.optimizely.com/hc/en-us/articles/200040835" target="_blank"><?php esc_html_e( 'please visit our knowledge base article located here','optimizely' ); ?></a></p>
 					<input id="optimizely_url_targeting" name="optimizely_url_targeting" type="text" value="<?php echo esc_attr( $optimizely_url_targeting )  ?>" />
 					<select id="optimizely_url_targeting_type" name="optimizely_url_targeting_type">
-						<?php 
+						<?php
 							$url_type_array = array(
 								"simple",
 								"exact",
@@ -175,10 +200,16 @@
 					</select>
 
 					<h3><?php esc_html_e( 'Variation Code', 'optimizely' ); ?></h3>
-					<p><?php esc_html_e( "Optimizely will use this variation code to change headlines on your site. We've provided code that works if you have changed your headlines to have a class with the format optimizely-$POST_ID, but you might want to add or change it to work with your themes and plugins. For more information on how to update your HTML or write custom variation code please visit ", 'optimizely' ); ?><a href="#" target="_blank"><?php esc_html_e( 'this article on our knowledge base','optimizely' ); ?></a></p>  
+					<p><?php esc_html_e( "Optimizely will use this variation code to change headlines on your site. We've provided code that works if you have changed your headlines to have a class with the format optimizely-$POST_ID, but you might want to add or change it to work with your themes and plugins. For more information on how to update your HTML or write custom variation code please visit ", 'optimizely' ); ?><a href="#" target="_blank"><?php esc_html_e( 'this article on our knowledge base','optimizely' ); ?></a></p>
 					<p><?php esc_html_e( 'You can use the variables $POST_ID, $OLD_TITLE, and $NEW_TITLE in your code.', 'optimizely' ); ?></p>
-					<textarea class="code" rows="5" name="variation_template" id="variation_template"><?php echo esc_html( get_option( 'optimizely_variation_template', OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE ) ) ?></textarea>
-					
+					<textarea class="code" rows="5" name="variation_template" id="variation_template"><?php
+					if($platform == 'optimizely_classic'){
+					  echo esc_html( get_option( 'optimizely_variation_template', OPTIMIZELY_DEFAULT_VARIATION_TEMPLATE ) );
+					} else {
+						echo esc_html( get_option( 'optimizely_variation_template', OPTIMIZELY_X_DEFAULT_VARIATION_TEMPLATE ) );
+					}
+					?></textarea>
+
 
 
 					<h3><?php esc_html_e( 'Activation Mode', 'optimizely' ); ?></h3>
@@ -191,16 +222,22 @@
 						<input type="radio" name="optimizely_activation_mode" value="immediate" checked> <?php esc_html_e( 'Immediate', 'optimizely' ); ?>
 						<input type="radio" name="optimizely_activation_mode" value="conditional"> <?php esc_html_e( 'Conditional', 'optimizely' ); ?>
 						<div id="optimizely_conditional_activation_code_block" style="display:none;">
-					<?php endif;	?> 
-					
+					<?php endif;	?>
+
 						<p><?php esc_html_e( 'You can use the variables $POST_ID and $OLD_TITLE in your code. The code below will activate the experiment if the original title is on the page and its not the first page the user has visited.', 'optimizely' ); ?></p>
-						<textarea class="code" rows="5" name="conditional_activation_code" id="conditional_activation_code"><?php echo esc_html( get_option( 'optimizely_conditional_activation_code', OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE ) ) ?></textarea>
+						<textarea class="code" rows="5" name="conditional_activation_code" id="conditional_activation_code"><?php
+						if($platform == 'optimizely_classic'){
+							echo esc_html( get_option( 'optimizely_conditional_activation_code', OPTIMIZELY_DEFAULT_CONDITIONAL_TEMPLATE ) ) ;
+						} else {
+							echo esc_html( get_option( 'optimizely_conditional_activation_code', OPTIMIZELY_X_DEFAULT_CONDITIONAL_TEMPLATE ) ) ;
+						}
+						?></textarea>
 					</div>
-					
+
 
 
 					<h3><?php esc_html_e( 'Maximum number of variations to test', 'optimizely' ); ?></h3>
-					<p><?php esc_html_e( 'Place a number in the text box below. This will be the maximum additional number of variations a user can test per post.', 'optimizely' ); ?></p>  
+					<p><?php esc_html_e( 'Place a number in the text box below. This will be the maximum additional number of variations a user can test per post.', 'optimizely' ); ?></p>
 
 					<input id="optimizely_num_variations" name="optimizely_num_variations" type="number" maxlength="1" value="<?php echo absint( get_option( 'optimizely_num_variations', OPTIMIZELY_NUM_VARIATIONS ) ) ?>" class="code" />
 
