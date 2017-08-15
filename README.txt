@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 This plugin helps you configure your WordPress website to use Optimizely Classic, a dramatically easier way to improve your website through A/B testing.
 
 == Description ==
-This plugin helps you configure your WordPress website to use Optimizely Classic. If you are new to Optimizely or have started using Optimizely X (not Classic), than please use the [Optimizely X plugin](https://wordpress.org/plugins/optimizely-x/).
+This plugin helps you configure your WordPress website to use Optimizely Classic. If you are new to Optimizely or have started using Optimizely X (not Classic), then please use the [Optimizely X plugin](https://wordpress.org/plugins/optimizely-x/).
 
 Optimizely is a dramatically easier way for you to improve your website through A/B testing. Create an experiment in minutes with our easy-to-use visual interface with absolutely no coding or engineering required. Convert your website visitors into customers and earn more revenue today!
 
