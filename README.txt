@@ -5,7 +5,7 @@ Tags: optimizely, ab testing, split testing, website optimization
 Requires at least: 3.0
 Tested up to: 4.4
 Stable tag: 3.7.8
-License: GPLv2 or later
+License: BSD 3-Clause
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin helps you configure your WordPress website to use Optimizely Classic, a dramatically easier way to improve your website through A/B testing.
