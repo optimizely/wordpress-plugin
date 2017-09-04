@@ -6,7 +6,7 @@
 		var optly = new OptimizelyAPI( $( '#optimizely_token' ).val() ); 
 		
 		if ( !! $( '#optimizely_experiment_id' ).val() ) {
-			optly.get( 'experiments/' + $( '#optimizely_experiment_id' ).val(), function( response ) {
+			optly.get(f 'experiments/' + $( '#optimizely_experiment_id' ).val(), function( response ) {
 				optly.experiment = response;
 				showExperiment( optly.experiment );
 			});
@@ -56,6 +56,7 @@
 			var data = {
 				action: 'update_experiment_meta',
 				post_id: $( '#post_ID' ).val(),
+				optimizely_experiment_nonce: $( '#optimizely_experiment_nonce' ).val(),
 				optimizely_experiment_id: experiment.id,
 				optimizely_experiment_status: experiment.status
 			};
